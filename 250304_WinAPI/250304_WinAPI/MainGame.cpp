@@ -67,6 +67,9 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		case 'r': case 'R':
 			tank->Skill(SkillType::Bomb);
 			break;
+		case 'e': case 'E':
+			tank->Skill(SkillType::Bounce);
+			break;
 		}
 
 

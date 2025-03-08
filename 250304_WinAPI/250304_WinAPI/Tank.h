@@ -4,11 +4,12 @@
 enum class SkillType {
 	None,
 	Bomb,
-	Skill2, // change this later,,
+	Bounce, // change this later,,
 	length
 };
 
 class BombBullet;
+class BounceBullet;
 class Tank : public GameObject
 {
 private:
@@ -27,6 +28,8 @@ private:
 	vector<BombBullet*> vBullets;
 	int nLoadedBullets;
 
+	BounceBullet* bullet;
+
 	int bombExplodeTime;
 
 	int skillsCooldownTime[(int)SkillType::length];
@@ -42,6 +45,7 @@ public:
 	void Skill(SkillType type);
 	void Fire();
 	void FireBomb();
+	void FireBounce();
 	void RotateBarrel(float angle);
 	void Dead();
 

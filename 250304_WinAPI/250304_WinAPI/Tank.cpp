@@ -21,7 +21,8 @@ void Tank::Init()
 
 	skillsCooldownTime[(int)SkillType::None] = 0;
 	skillsCooldownTime[(int)SkillType::Bomb] = 0;
-	skillsCooldownTime[(int)SkillType::Skill2] = 0;
+	skillsCooldownTime[(int)SkillType::Bounce] = 0;
+	bullet = new BounceBullet;
 }
 
 void Tank::Release()
@@ -29,6 +30,7 @@ void Tank::Release()
 	for (int i = 0; i < vBullets.size(); ++i) {
 		delete vBullets[i];
 	}
+	delete bullet;
 }
 
 void Tank::Update()
@@ -46,6 +48,8 @@ void Tank::Update()
 		if (b->IsLoaded()) loadedBullets++;
 	}
 	nLoadedBullets = loadedBullets;
+
+	bullet->Update();
 }
 
 void Tank::Render(HDC hdc)
@@ -58,6 +62,7 @@ void Tank::Render(HDC hdc)
 	for (auto b : vBullets) {
 		b->Render(hdc);
 	}
+	bullet->Render(hdc);
 }
 
 void Tank::Move()
@@ -78,8 +83,8 @@ void Tank::Skill(SkillType type)
 	case SkillType::Bomb:
 		FireBomb();
 		break;
-	case SkillType::Skill2:
-
+	case SkillType::Bounce:
+		FireBounce();
 		break;
 	}
 }
@@ -133,6 +138,13 @@ void Tank::FireBomb()
 		vBullets.push_back(bullet);
 		fireSuccess++;
 	}
+}
+
+void Tank::FireBounce()
+{
+	bullet->Init(barrelEnd, barrelAngle);
+	bullet->SetBounceNum(5);
+	bullet->Fire();
 }
 
 void Tank::RotateBarrel(float angle)
