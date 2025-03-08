@@ -183,6 +183,19 @@ void Tank::Dead()
 {
 }
 
+int Tank::GetCreatedBulletsNum(SkillType type)
+{
+	switch (type) {
+	case SkillType::Basic:
+		return vBasics.size();
+	case SkillType::Bomb:
+		return vBombs.size();
+	case SkillType::Bounce:
+		return vBounces.size();
+	}
+	return -1;
+}
+
 Tank::Tank()
 {
 }

@@ -52,6 +52,9 @@ public:
 	void RotateBarrel(float angle);
 	void Dead();
 
+	int GetLoadedBulletsNum(SkillType type) { return nLoadedBullets[(int)type]; }
+	int GetCreatedBulletsNum(SkillType type);
+
 	Tank();
 	~Tank();
 };
