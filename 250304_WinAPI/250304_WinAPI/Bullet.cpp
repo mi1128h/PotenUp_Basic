@@ -90,3 +90,39 @@ void BounceBullet::CheckWallCollision()
 		}
 	}
 }
+
+void ConfettiBullet::SetConfettiValues(int life)
+{
+	colors[0] = uid_R(dre);
+	colors[1] = uid_GB(dre);
+	colors[2] = uid_GB(dre);
+	lifeTime = life * uid_Life(dre);
+}
+
+void ConfettiBullet::Update()
+{
+	BombBullet::Update();
+	if (countDown <= 0) {
+		speed = 3.0f;
+		size = 5;
+		lifeTime--;
+	}
+	if (lifeTime <= 0) isLoaded = true;
+}
+
+void ConfettiBullet::Render(HDC hdc)
+{
+	if (isLoaded) return;
+	if (countDown > 0) {
+		Bullet::Render(hdc);
+	}
+	else {
+		HBRUSH hBrush = CreateSolidBrush(RGB(colors[0], colors[1], colors[2]));
+		HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+
+		RenderRectAtCenter(hdc, position.x, position.y, lifeTime, lifeTime);
+
+		SelectObject(hdc, hOldBrush);
+		DeleteObject(hBrush);
+	}
+}

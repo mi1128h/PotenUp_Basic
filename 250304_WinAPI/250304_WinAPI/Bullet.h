@@ -14,7 +14,7 @@ public:
 	void Init(POINT pos, float angle);
 	void Release();
 	virtual void Update();
-	void Render(HDC hdc);
+	virtual void Render(HDC hdc);
 
 	virtual void Move();
 	bool IsLoaded() { return isLoaded; }
@@ -27,7 +27,7 @@ public:
 
 class BombBullet : public Bullet
 {
-private:
+protected:
 	int countDown{};	// one direction(fireAngle) while countdown
 	float angle_360{};	// new direction after countdown
 
@@ -45,4 +45,16 @@ private:
 public:
 	void SetBounceNum(int cnt);
 	void CheckWallCollision() override;
+};
+
+class ConfettiBullet : public BombBullet
+{
+private:
+	int colors[3];
+	int lifeTime;
+
+public:
+	void SetConfettiValues(int life);
+	void Update() override;
+	void Render(HDC hdc) override;
 };

@@ -26,6 +26,7 @@ void Tank::Init()
 
 	bombExplodeTime = 10;
 	bounceNum = 5;
+	confettiLife = 5;
 }
 
 void Tank::Release()
@@ -63,6 +64,11 @@ void Tank::Update()
 		if (b->IsLoaded()) loadedNum++;
 	}
 	nLoadedBullets[(int)SkillType::Bounce] = loadedNum;
+	loadedNum = 0;
+	for (auto b : vConfettis) {
+		if (b->IsLoaded()) loadedNum++;
+	}
+	nLoadedBullets[(int)SkillType::Confetti] = loadedNum;
 }
 
 void Tank::Render(HDC hdc)
@@ -99,6 +105,9 @@ void Tank::Skill(SkillType type)
 		break;
 	case SkillType::Bounce:
 		FireBounce();
+		break;
+	case SkillType::Confetti:
+		FireConfetti();
 		break;
 	}
 }
@@ -176,6 +185,37 @@ void Tank::FireBounce()
 	}
 }
 
+void Tank::FireConfetti()
+{
+	int fireSuccess{};
+
+	if (nLoadedBullets[(int)SkillType::Confetti] > 0) {
+		for (int i = 0; i < vConfettis.size(); ++i) {
+			if (!vConfettis[i]->IsLoaded()) continue;
+			vConfettis[i]->Init(barrelEnd, barrelAngle);
+			vConfettis[i]->SetBombValues(bombExplodeTime, 6 * fireSuccess);
+			vConfettis[i]->SetConfettiValues(confettiLife);
+			vConfettis[i]->Fire();
+
+			fireSuccess++;
+			nLoadedBullets[(int)SkillType::Confetti]--;
+
+			if (fireSuccess >= 60) break;
+		}
+	}
+
+	while (fireSuccess < 60) {
+		ConfettiBullet* bullet = new ConfettiBullet;
+		bullet->Init(barrelEnd, barrelAngle);
+		bullet->SetBombValues(bombExplodeTime, 6 * fireSuccess);
+		bullet->SetConfettiValues(confettiLife);
+		bullet->Fire();
+		vBullets.push_back(bullet);
+		vConfettis.push_back(bullet);
+		fireSuccess++;
+	}
+}
+
 void Tank::RotateBarrel(float angle)
 {
 	barrelAngle += angle;
@@ -194,6 +234,8 @@ int Tank::GetCreatedBulletsNum(SkillType type)
 		return vBombs.size();
 	case SkillType::Bounce:
 		return vBounces.size();
+	case SkillType::Confetti:
+		return vConfettis.size();
 	}
 	return -1;
 }
@@ -212,6 +254,10 @@ void Tank::RenderBulletsNum(HDC hdc)
 	wsprintf(szText, L"Bounce Bullets Num: %d/%d",
 		GetLoadedBulletsNum(SkillType::Bounce), GetCreatedBulletsNum(SkillType::Bounce));
 	TextOut(hdc, 20, 220, szText, wcslen(szText));
+
+	wsprintf(szText, L"Confetti Bullets Num: %d/%d",
+		GetLoadedBulletsNum(SkillType::Confetti), GetCreatedBulletsNum(SkillType::Confetti));
+	TextOut(hdc, 20, 240, szText, wcslen(szText));
 }
 
 Tank::Tank()
