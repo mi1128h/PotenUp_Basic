@@ -73,3 +73,13 @@ inline bool IsOutOfRange(POINT pos, int size_x, int size_y)
 	if (pos.y > size_y) return true;
 	return false;
 }
+
+inline int ClampInt(int val, int low, int high)
+{
+	int retVal;
+	if (val < low) retVal = low;
+	else if (val > high) retVal = high;
+	else retVal = val;
+
+	return retVal;
+}

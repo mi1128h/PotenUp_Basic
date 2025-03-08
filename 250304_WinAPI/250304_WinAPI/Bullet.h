@@ -19,6 +19,7 @@ public:
 	virtual void Move();
 	bool IsLoaded() { return isLoaded; }
 	void Fire() { isLoaded = false; }
+	virtual void CheckWallCollision();
 
 	Bullet();
 	~Bullet();
@@ -34,4 +35,14 @@ public:
 	void SetBombValues(int time, float angle);
 	void Update() override;
 	void Move() override;
+};
+
+class BounceBullet : public Bullet
+{
+private:
+	int bounceNum{};
+
+public:
+	void SetBounceNum(int cnt);
+	void CheckWallCollision() override;
 };

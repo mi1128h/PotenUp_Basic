@@ -20,8 +20,7 @@ void Bullet::Update()
 	if (isLoaded) return;
 
 	Move();
-	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
-	if (IsOutOfRange(position, WINSIZE_X, WINSIZE_Y)) isLoaded = true;
+	CheckWallCollision();
 }
 
 void Bullet::Render(HDC hdc)
@@ -35,6 +34,12 @@ void Bullet::Move()
 {
 	position.x += cosf(TORADIAN(fireAngle)) * speed;
 	position.y -= sinf(TORADIAN(fireAngle)) * speed;
+}
+
+void Bullet::CheckWallCollision()
+{
+	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
+	if (IsOutOfRange(position, WINSIZE_X, WINSIZE_Y)) isLoaded = true;
 }
 
 Bullet::Bullet()
@@ -63,5 +68,25 @@ void BombBullet::Move()
 	else {
 		position.x += cosf(TORADIAN(angle_360)) * speed;
 		position.y -= sinf(TORADIAN(angle_360)) * speed;
+	}
+}
+
+void BounceBullet::SetBounceNum(int cnt)
+{
+	bounceNum = cnt;
+}
+
+void BounceBullet::CheckWallCollision()
+{
+	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
+	if (IsOutOfRange(position, WINSIZE_X, WINSIZE_Y)) {
+		if (!bounceNum) isLoaded = true;
+		else {
+			bounceNum--;
+			bool isUpsideDown = IsOutOfRange({ WINSIZE_X / 2, position.y }, WINSIZE_X, WINSIZE_Y);
+			fireAngle = 180 * (isUpsideDown ? 2 : 1) - fireAngle;
+			position.x = ClampInt(position.x, 0, WINSIZE_X);
+			position.y = ClampInt(position.y, 0, WINSIZE_Y);
+		}
 	}
 }
