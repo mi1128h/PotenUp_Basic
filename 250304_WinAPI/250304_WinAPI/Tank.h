@@ -2,12 +2,13 @@
 #include "GameObject.h"
 
 enum class SkillType {
-	None,
+	Basic,
 	Bomb,
 	Bounce, // change this later,,
 	length
 };
 
+class Bullet;
 class BombBullet;
 class BounceBullet;
 class Tank : public GameObject
@@ -25,15 +26,17 @@ private:
 	float barrelAngle;
 
 	// πÃªÁ¿œ
-	vector<BombBullet*> vBullets;
-	int nLoadedBullets;
-
-	BounceBullet* bullet;
+	vector<Bullet*> vBullets;
+	int nLoadedBullets[(int)SkillType::length];
+	vector<Bullet*> vBasics;
+	vector<BombBullet*> vBombs;
+	vector<BounceBullet*> vBounces;
 
 	int bombExplodeTime;
+	int bounceNum;
 
 	int skillsCooldownTime[(int)SkillType::length];
-	const int skillsCooldownMaxTime[(int)SkillType::length]{ 3,10,15 };
+	int skillsCooldownMaxTime[(int)SkillType::length];
 
 public:
 	void Init();

@@ -62,7 +62,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			tank->RotateBarrel(-5);
 			break;
 		case VK_SPACE:
-			tank->Skill(SkillType::None);
+			tank->Skill(SkillType::Basic);
 			break;
 		case 'r': case 'R':
 			tank->Skill(SkillType::Bomb);
