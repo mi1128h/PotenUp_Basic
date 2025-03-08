@@ -3,8 +3,8 @@
 
 enum class SkillType {
 	Basic,
+	Bounce,
 	Bomb,
-	Bounce, // change this later,,
 	length
 };
 
@@ -54,6 +54,7 @@ public:
 
 	int GetLoadedBulletsNum(SkillType type) { return nLoadedBullets[(int)type]; }
 	int GetCreatedBulletsNum(SkillType type);
+	void RenderBulletsNum(HDC hdc);
 
 	Tank();
 	~Tank();

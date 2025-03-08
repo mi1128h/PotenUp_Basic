@@ -32,20 +32,6 @@ void MainGame::Render(HDC hdc)
 	wsprintf(szText, L"Mouse X: %d, Y: %d", mousePosX, mousePosY);
 	TextOut(hdc, 20, 160, szText, wcslen(szText));
 
-	if (tank) {
-		wsprintf(szText, L"Basic Bullets Num: %d/%d", 
-			tank->GetLoadedBulletsNum(SkillType::Basic), tank->GetCreatedBulletsNum(SkillType::Basic));
-		TextOut(hdc, 20, 180, szText, wcslen(szText));
-
-		wsprintf(szText, L"Bomb Bullets Num: %d/%d",
-			tank->GetLoadedBulletsNum(SkillType::Bomb), tank->GetCreatedBulletsNum(SkillType::Bomb));
-		TextOut(hdc, 20, 200, szText, wcslen(szText));
-
-		wsprintf(szText, L"Bounce Bullets Num: %d/%d",
-			tank->GetLoadedBulletsNum(SkillType::Bounce), tank->GetCreatedBulletsNum(SkillType::Bounce));
-		TextOut(hdc, 20, 220, szText, wcslen(szText));
-	}
-
 	if(tank) tank->Render(hdc);
 }
 

@@ -75,6 +75,8 @@ void Tank::Render(HDC hdc)
 	for (auto b : vBullets) {
 		b->Render(hdc);
 	}
+
+	RenderBulletsNum(hdc);
 }
 
 void Tank::Move()
@@ -194,6 +196,22 @@ int Tank::GetCreatedBulletsNum(SkillType type)
 		return vBounces.size();
 	}
 	return -1;
+}
+
+void Tank::RenderBulletsNum(HDC hdc)
+{
+	TCHAR szText[128]{};
+	wsprintf(szText, L"Basic Bullets Num: %d/%d",
+		GetLoadedBulletsNum(SkillType::Basic), GetCreatedBulletsNum(SkillType::Basic));
+	TextOut(hdc, 20, 180, szText, wcslen(szText));
+
+	wsprintf(szText, L"Bomb Bullets Num: %d/%d",
+		GetLoadedBulletsNum(SkillType::Bomb), GetCreatedBulletsNum(SkillType::Bomb));
+	TextOut(hdc, 20, 200, szText, wcslen(szText));
+
+	wsprintf(szText, L"Bounce Bullets Num: %d/%d",
+		GetLoadedBulletsNum(SkillType::Bounce), GetCreatedBulletsNum(SkillType::Bounce));
+	TextOut(hdc, 20, 220, szText, wcslen(szText));
 }
 
 Tank::Tank()
