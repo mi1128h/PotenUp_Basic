@@ -89,25 +89,19 @@ void Tank::Fire()
 	if (nLoadedBullets > 0) {
 		for (int i = 0; i < vBullets.size(); ++i) {
 			if (vBullets[i]->IsLoaded()) {
-				BombBullet* pBullet = dynamic_cast<BombBullet*>(vBullets[i]);
-				if (pBullet) {
-					pBullet->Init(barrelEnd, barrelAngle);
-					pBullet->SetBombValues(0, barrelAngle);
-					pBullet->Fire();
-					nLoadedBullets--;
-				}
-				else {
-					vBullets[i]->Init(barrelEnd, barrelAngle);
-					vBullets[i]->Fire();
-					nLoadedBullets--;
-				}
+				vBullets[i]->Init(barrelEnd, barrelAngle);
+				vBullets[i]->SetBombValues(0, barrelAngle);
+				vBullets[i]->Fire();
+				nLoadedBullets--;
+
 				break;
 			}
 		}
 	}
 	else {
-		Bullet* bullet = new Bullet;
+		BombBullet* bullet = new BombBullet;
 		bullet->Init(barrelEnd, barrelAngle);
+		bullet->SetBombValues(0, barrelAngle);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 	}
@@ -120,12 +114,9 @@ void Tank::FireBomb()
 	if (nLoadedBullets > 0) {
 		for (int i = 0; i < vBullets.size(); ++i) {
 			if (!vBullets[i]->IsLoaded()) continue;
-			BombBullet* pBullet = dynamic_cast<BombBullet*>(vBullets[i]);
-			if (!pBullet) continue;
-
-			pBullet->Init(barrelEnd, barrelAngle);
-			pBullet->SetBombValues(bombExplodeTime, 10 * fireSuccess);
-			pBullet->Fire();
+			vBullets[i]->Init(barrelEnd, barrelAngle);
+			vBullets[i]->SetBombValues(bombExplodeTime, 10 * fireSuccess);
+			vBullets[i]->Fire();
 
 			fireSuccess++;
 			nLoadedBullets--;

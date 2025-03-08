@@ -8,7 +8,7 @@ enum class SkillType {
 	length
 };
 
-class Bullet;
+class BombBullet;
 class Tank : public GameObject
 {
 private:
@@ -24,7 +24,7 @@ private:
 	float barrelAngle;
 
 	// πÃªÁ¿œ
-	vector<Bullet*> vBullets;
+	vector<BombBullet*> vBullets;
 	int nLoadedBullets;
 
 	int bombExplodeTime;
