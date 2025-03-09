@@ -103,8 +103,7 @@ void ConfettiBullet::Update()
 {
 	BombBullet::Update();
 	if (countDown <= 0) {
-		speed = 3.0f;
-		size = 5;
+		speed = uid(dre);
 		lifeTime--;
 	}
 	if (lifeTime <= 0) isLoaded = true;
