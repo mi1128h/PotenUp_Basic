@@ -93,17 +93,17 @@ void BounceBullet::CheckWallCollision()
 
 void ConfettiBullet::SetConfettiValues(int life)
 {
-	colors[0] = uid_R(dre);
-	colors[1] = uid_GB(dre);
-	colors[2] = uid_GB(dre);
-	lifeTime = life * uid_Life(dre);
+	colors[0] = uid_200_255(dre);
+	colors[1] = uid_0_255(dre);
+	colors[2] = uid_0_255(dre);
+	lifeTime = life * uid_1_2(dre);
 }
 
 void ConfettiBullet::Update()
 {
 	BombBullet::Update();
 	if (countDown <= 0) {
-		speed = uid(dre);
+		speed = uid_0_10(dre);
 		lifeTime--;
 	}
 	if (lifeTime <= 0) isLoaded = true;

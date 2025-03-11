@@ -18,7 +18,7 @@ extern HWND g_hWnd;
 
 extern random_device rd;
 extern default_random_engine dre;
-extern uniform_int_distribution<int> uid;
-extern uniform_int_distribution<int> uid_R;
-extern uniform_int_distribution<int> uid_GB;
-extern uniform_int_distribution<int> uid_Life;
+extern uniform_int_distribution<int> uid_0_10;
+extern uniform_int_distribution<int> uid_200_255;
+extern uniform_int_distribution<int> uid_0_255;
+extern uniform_int_distribution<int> uid_1_2;

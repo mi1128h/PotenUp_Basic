@@ -8,10 +8,10 @@ MainGame g_mainGame;
 
 std::random_device rd;
 std::default_random_engine dre{ rd() };
-std::uniform_int_distribution<int> uid{ 0, 10 };
-std::uniform_int_distribution<int> uid_R{ 200, 255 };
-std::uniform_int_distribution<int> uid_GB{ 0, 255 };
-std::uniform_int_distribution<int> uid_Life{ 1, 2 };
+std::uniform_int_distribution<int> uid_0_10{ 0, 10 };
+std::uniform_int_distribution<int> uid_200_255{ 200, 255 };
+std::uniform_int_distribution<int> uid_0_255{ 0, 255 };
+std::uniform_int_distribution<int> uid_1_2{ 1, 2 };
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
