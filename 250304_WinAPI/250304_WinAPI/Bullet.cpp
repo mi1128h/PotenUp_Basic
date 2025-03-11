@@ -26,16 +26,23 @@ void Bullet::Update()
 
 	if (guided) {
 		if (target) {
-			FPOINT targetPos = target->GetPos();
-			int dx = targetPos.x - position.x;
-			int dy = targetPos.y - position.y;
-			float angle = -TODEGREE(atan2f(dy, dx));
-			while (angle < 0) angle += 360; // 0 ~ 359
-			int dAngle = angle - fireAngle;
-			while (dAngle < 0) dAngle += 360;
-			if (dAngle < 10) fireAngle = angle;
+			float targetAngle = GetAngle(position, target->GetPos());
+
+			float dAngle = targetAngle - fireAngle;
+			
+			if (abs(dAngle) < 10) fireAngle = targetAngle;
 			else {
-				fireAngle += dAngle * 0.3;
+				float angle{ dAngle };
+				float min{ abs(dAngle) };
+				if (min > abs(dAngle - 360)) {
+					min = abs(dAngle - 360);
+					angle = dAngle - 360;
+				}
+				if (min > abs(dAngle + 360)) {
+					min = abs(dAngle + 360);
+					angle = dAngle + 360;
+				}
+				fireAngle += angle * 0.3f;
 			}
 		}
 	}
