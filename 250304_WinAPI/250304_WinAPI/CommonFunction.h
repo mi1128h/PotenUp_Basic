@@ -98,3 +98,10 @@ inline float GetDistance(FPOINT a, FPOINT b)
 	int dy = a.y - b.y;
 	return sqrtf(dx * dx + dy * dy);
 }
+
+inline float GetAngle(FPOINT position, FPOINT targetPos)
+{
+	float dx = targetPos.x - position.x;
+	float dy = targetPos.y - position.y;
+	return TODEGREE(-atan2f(dy, dx));
+}
