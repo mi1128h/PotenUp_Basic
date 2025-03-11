@@ -53,6 +53,8 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case VK_ESCAPE:
+			KillTimer(hWnd, 0);
+			Release();
 			PostQuitMessage(0);
 			break;
 		case 'a': case 'A':
@@ -100,6 +102,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		break;
 	case WM_DESTROY:
 		KillTimer(hWnd, 0);
+		Release();
 		PostQuitMessage(0);
 		break;
 	}
