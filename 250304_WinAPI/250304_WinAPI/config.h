@@ -22,3 +22,4 @@ extern uniform_int_distribution<int> uid_0_10;
 extern uniform_int_distribution<int> uid_200_255;
 extern uniform_int_distribution<int> uid_0_255;
 extern uniform_int_distribution<int> uid_1_2;
+extern uniform_int_distribution<int> uid_0_WINSIZEX;

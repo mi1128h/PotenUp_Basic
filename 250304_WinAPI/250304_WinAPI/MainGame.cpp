@@ -1,11 +1,13 @@
 #include "MainGame.h"
 #include "Tank.h"
+#include "Enemy.h"
 
 /*
-	실습1. 미사일 한 발 쏘기
-	실습2. 미사일 여러발 쏘기
-	실습3. 스킬샷1 (360도 미사일) 쏘기
-	실습4. 스킬샷2 (자체 기획) 쏘기
+	실습1. 적 클래스 생성 (화면 밖, 랜덤 위치)
+	실습2. 적은 탱크를 향해 다가온다.
+	실습3. 미사일 - 적, 적 - 탱크 충돌 처리
+	실습4. 5번째 미사일마다 유도미사일 발사
+			가장 가까운 적을 따라 가서 맞춘다
 */
 
 void MainGame::Init()
@@ -20,11 +22,23 @@ void MainGame::Release()
 		tank->Release();
 		delete tank;
 	}
+	for (auto e : enemies) {
+		if (e) delete e;
+	}
 }
 
 void MainGame::Update()
 {
 	if(tank) tank->Update();
+
+	int deadNum{};
+	for (auto e : enemies) {
+		if (e) {
+			e->Update();
+			if (e->isDead()) deadNum++;
+		}
+	}
+	nDeadEnemies = deadNum;
 }
 
 void MainGame::Render(HDC hdc)
@@ -33,19 +47,48 @@ void MainGame::Render(HDC hdc)
 	TextOut(hdc, 20, 160, szText, wcslen(szText));
 
 	if(tank) tank->Render(hdc);
+	for (auto e : enemies)
+		if (e) e->Render(hdc);
+}
+
+void MainGame::CreateEnemy()
+{
+	if (nDeadEnemies > 0) {
+		for (int i = 0; i < enemies.size(); ++i) {
+			if (enemies[i]->isDead()) {
+				if(tank)
+					enemies[i]->Init(tank);
+				nDeadEnemies--;
+				break;
+			}
+		}
+	}
+	else {
+		Enemy* enemy = new Enemy;
+		if(tank)
+			enemy->Init(tank);
+		enemies.push_back(enemy);
+	}
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	switch (iMessage) {
 	case WM_CREATE:
-
-
 		hTimer = (HANDLE)SetTimer(hWnd, 0, 100, NULL);
+		hTimer2 = (HANDLE)SetTimer(hWnd, 1, 3000, NULL);
 
 		break;
 	case WM_TIMER:
-		Update();
+		switch (wParam) {
+		case 0:
+			Update();
+			break;
+
+		case 1:
+			CreateEnemy();
+			break;
+		}
 
 		InvalidateRect(g_hWnd, NULL, TRUE);
 		break;
@@ -54,6 +97,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		switch (wParam) {
 		case VK_ESCAPE:
 			KillTimer(hWnd, 0);
+			KillTimer(hWnd, 1);
 			Release();
 			PostQuitMessage(0);
 			break;
@@ -102,6 +146,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		break;
 	case WM_DESTROY:
 		KillTimer(hWnd, 0);
+		KillTimer(hWnd, 1);
 		Release();
 		PostQuitMessage(0);
 		break;

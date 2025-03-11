@@ -56,6 +56,8 @@ public:
 	void FireConfetti();
 	void RotateBarrel(float angle);
 	void Dead();
+	POINT GetPos() { return pos; }
+	int GetSize() { return size; }
 
 	int GetLoadedBulletsNum(SkillType type) { return nLoadedBullets[(int)type]; }
 	int GetCreatedBulletsNum(SkillType type);
