@@ -2,7 +2,7 @@
 #include "CommonFunction.h"
 #include "Enemy.h"
 
-void Bullet::Init(POINT pos, float angle)
+void Bullet::Init(FPOINT pos, float angle)
 {
 	isLoaded = true;
 	position = pos;
@@ -26,7 +26,7 @@ void Bullet::Update()
 
 	if (guided) {
 		if (target) {
-			POINT targetPos = target->GetPos();
+			FPOINT targetPos = target->GetPos();
 			int dx = targetPos.x - position.x;
 			int dy = targetPos.y - position.y;
 			float angle = -TODEGREE(atan2f(dy, dx));

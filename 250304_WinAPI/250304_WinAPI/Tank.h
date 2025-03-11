@@ -17,7 +17,7 @@ class Enemy;
 class Tank : public GameObject
 {
 private:
-	POINT pos;
+	FPOINT pos;
 	int size;
 	int hp;
 	float damage;
@@ -25,7 +25,7 @@ private:
 	RECT rcCollision;
 	
 	// Æ÷½Å
-	POINT barrelEnd;
+	FPOINT barrelEnd;
 	int barrelSize;
 	float barrelAngle;
 
@@ -60,11 +60,11 @@ public:
 	void FireConfetti();
 	void RotateBarrel(float angle);
 	void Dead();
-	POINT GetPos() { return pos; }
+	FPOINT GetPos() { return pos; }
 	int GetSize() { return size; }
 	void CheckCollideEnemy(Enemy* enemy);
 	void SetBulletsTarget(vector<Enemy*>& enemies);
-	Enemy* GetNearestEnemy(POINT pos, vector<Enemy*>& enemies);
+	Enemy* GetNearestEnemy(FPOINT pos, vector<Enemy*>& enemies);
 
 	void IncreaseFiredCnt() { guidedFired++; guidedFired %= 5; }
 

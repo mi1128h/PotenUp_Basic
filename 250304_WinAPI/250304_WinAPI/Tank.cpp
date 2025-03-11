@@ -268,7 +268,7 @@ void Tank::SetBulletsTarget(vector<Enemy*>& enemies)
 	}
 }
 
-Enemy* Tank::GetNearestEnemy(POINT pos, vector<Enemy*>& enemies)
+Enemy* Tank::GetNearestEnemy(FPOINT pos, vector<Enemy*>& enemies)
 {
 	float minDist = INT_MAX;
 	Enemy* target = nullptr;

@@ -17,6 +17,12 @@ extern HWND g_hWnd;
 #define TORADIAN(degree) 3.141592f / 180.0f * degree
 #define TODEGREE(radian) 180.0f / 3.141592f * radian
 
+typedef struct tagFPOINT
+{
+	float x;
+	float y;
+} FPOINT;
+
 extern random_device rd;
 extern default_random_engine dre;
 extern uniform_int_distribution<int> uid_0_10;

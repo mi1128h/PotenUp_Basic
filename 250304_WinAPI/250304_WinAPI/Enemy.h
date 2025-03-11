@@ -5,7 +5,7 @@ class Tank;
 class Enemy : public GameObject
 {
 private:
-	POINT position;
+	FPOINT position;
 	Tank* target;
 	int hp;
 	int size;
@@ -20,7 +20,7 @@ public:
 
 	void Move();
 	bool IsDead() { return hp <= 0; }
-	POINT GetPos() { return position; }
+	FPOINT GetPos() { return position; }
 	int GetSize() { return size; }
 	float GetDamage() { return damage; }
 	void AttackedByBullet(int damage) { hp -= damage; }

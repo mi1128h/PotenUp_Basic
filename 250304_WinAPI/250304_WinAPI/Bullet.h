@@ -6,7 +6,7 @@ class Bullet : public GameObject
 {
 protected:
 	bool isLoaded{};
-	POINT position{};
+	FPOINT position{};
 	float fireAngle{};
 	float speed{};
 	float damage{};
@@ -17,7 +17,7 @@ protected:
 	Enemy* target{};
 
 public:
-	void Init(POINT pos, float angle);
+	void Init(FPOINT pos, float angle);
 	void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);
@@ -25,7 +25,7 @@ public:
 	virtual void Move();
 	bool IsLoaded() { return isLoaded; }
 	void Fire() { isLoaded = false; }
-	POINT GetPos() { return position; }
+	FPOINT GetPos() { return position; }
 	bool IsGuided() { return guided; }
 	void SetGuided(bool guidOption) { guided = guidOption; }
 	Enemy* GetTarget() { return target; }

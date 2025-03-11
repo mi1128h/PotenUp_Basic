@@ -38,11 +38,11 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Move()
 {
-	POINT targetPos = target->GetPos();
+	FPOINT targetPos = target->GetPos();
 	float dx = targetPos.x - position.x;
 	float dy = targetPos.y - position.y;
-	float moveAngle = atan2f(dy, dx);
+	float moveAngle = -atan2f(dy, dx);
 
 	position.x += cosf(moveAngle) * speed;
-	position.y += sinf(moveAngle) * speed;
+	position.y -= sinf(moveAngle) * speed;
 }

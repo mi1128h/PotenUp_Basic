@@ -30,14 +30,14 @@ inline RECT GetRectAtCenter(int x, int y, int width, int height)
 	return RECT{ x - width / 2, y - height / 2, x + width / 2, y + height / 2 };
 }
 
-inline bool PointInRect(POINT ptMouse, RECT rc)
+inline bool PointInRect(FPOINT ptMouse, RECT rc)
 {
 	if (ptMouse.x < rc.left or ptMouse.x > rc.right) return false;
 	if (ptMouse.y < rc.top or ptMouse.y > rc.bottom) return false;
 	return true;
 }
 
-inline void UpdateRect(RECT& rc, POINT pt)
+inline void UpdateRect(RECT& rc, FPOINT pt)
 {
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
@@ -65,7 +65,7 @@ inline bool RectInRect(RECT rc1, RECT rc2)
 	return true;
 }
 
-inline bool IsOutOfRange(POINT pos, int size_x, int size_y)
+inline bool IsOutOfRange(FPOINT pos, int size_x, int size_y)
 {
 	if (pos.x < 0) return true;
 	if (pos.y < 0) return true;
@@ -84,7 +84,7 @@ inline int ClampInt(int val, int low, int high)
 	return retVal;
 }
 
-inline bool CircleCollideCircle(POINT position, POINT targetPos, int size, int targetSize)
+inline bool CircleCollideCircle(FPOINT position, FPOINT targetPos, int size, int targetSize)
 {
 	int dx = targetPos.x - position.x;
 	int dy = targetPos.y - position.y;
@@ -92,9 +92,9 @@ inline bool CircleCollideCircle(POINT position, POINT targetPos, int size, int t
 	return ((dx * dx + dy * dy) < (rSum * rSum));
 }
 
-inline float GetDistance(POINT a, POINT b)
+inline float GetDistance(FPOINT a, FPOINT b)
 {
 	int dx = a.x - b.x;
 	int dy = a.y - b.y;
-	return sqrt(dx * dx + dy * dy);
+	return sqrtf(dx * dx + dy * dy);
 }
