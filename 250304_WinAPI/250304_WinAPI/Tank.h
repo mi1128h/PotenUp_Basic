@@ -37,6 +37,8 @@ private:
 	vector<BounceBullet*> vBounces;
 	vector<ConfettiBullet*> vConfettis;
 
+	int guidedFired{};
+
 	int bombExplodeTime;
 	int bounceNum;
 	int confettiLife;
@@ -61,6 +63,10 @@ public:
 	POINT GetPos() { return pos; }
 	int GetSize() { return size; }
 	void CheckCollideEnemy(Enemy* enemy);
+	void SetBulletsTarget(vector<Enemy*>& enemies);
+	Enemy* GetNearestEnemy(POINT pos, vector<Enemy*>& enemies);
+
+	void IncreaseFiredCnt() { guidedFired++; guidedFired %= 5; }
 
 	int GetLoadedBulletsNum(SkillType type) { return nLoadedBullets[(int)type]; }
 	int GetCreatedBulletsNum(SkillType type);

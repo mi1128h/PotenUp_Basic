@@ -29,6 +29,8 @@ void Tank::Init()
 	bombExplodeTime = 10;
 	bounceNum = 5;
 	confettiLife = 5;
+
+	guidedFired = 1;
 }
 
 void Tank::Release()
@@ -120,6 +122,9 @@ void Tank::Fire()
 		for (int i = 0; i < vBasics.size(); ++i) {
 			if (vBasics[i]->IsLoaded()) {
 				vBasics[i]->Init(barrelEnd, barrelAngle);
+				if (!guidedFired) {
+					vBasics[i]->SetGuided(true);
+				}
 				vBasics[i]->Fire();
 				nLoadedBullets[(int)SkillType::Basic]--;
 				break;
@@ -129,10 +134,14 @@ void Tank::Fire()
 	else {
 		Bullet* bullet = new Bullet;
 		bullet->Init(barrelEnd, barrelAngle);
+		if (!guidedFired) {
+			bullet->SetGuided(true);
+		}
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBasics.push_back(bullet);
 	}
+	IncreaseFiredCnt();
 }
 
 void Tank::FireBomb()
@@ -238,6 +247,42 @@ void Tank::CheckCollideEnemy(Enemy* enemy)
 	for (auto b : vBullets) {
 		b->CheckEnemyCollision(enemy);
 	}
+}
+
+void Tank::SetBulletsTarget(vector<Enemy*>& enemies)
+{
+	for (auto b : vBullets) {
+		if (b->IsLoaded()) continue;
+		if (!b->IsGuided()) continue;
+
+		Enemy* e = b->GetTarget();
+		if (e) {
+			if (e->IsDead())
+				b->SetTarget(nullptr);
+		}
+
+		if (!b->GetTarget()) {
+			Enemy* enemy = GetNearestEnemy(b->GetPos(), enemies);
+			if (enemy) b->SetTarget(enemy);
+		}
+	}
+}
+
+Enemy* Tank::GetNearestEnemy(POINT pos, vector<Enemy*>& enemies)
+{
+	float minDist = INT_MAX;
+	Enemy* target = nullptr;
+
+	for (auto e : enemies) {
+		if (e->IsDead()) continue;
+		float dist = GetDistance(pos, e->GetPos());
+		if (dist < minDist) {
+			minDist = dist;
+			target = e;
+		}
+	}
+
+	return target;
 }
 
 int Tank::GetCreatedBulletsNum(SkillType type)

@@ -1,6 +1,7 @@
 #include "MainGame.h"
 #include "Tank.h"
 #include "Enemy.h"
+#include "CommonFunction.h"
 
 /*
 	실습1. 적 클래스 생성 (화면 밖, 랜덤 위치)
@@ -43,7 +44,7 @@ void MainGame::Update()
 	}
 	nDeadEnemies = deadNum;
 
-
+	SetGuidedBulletsTarget();
 }
 
 void MainGame::Render(HDC hdc)
@@ -74,6 +75,12 @@ void MainGame::CreateEnemy()
 			enemy->Init(tank);
 		enemies.push_back(enemy);
 	}
+}
+
+void MainGame::SetGuidedBulletsTarget()
+{
+	if (!tank) return;
+	tank->SetBulletsTarget(enemies);
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

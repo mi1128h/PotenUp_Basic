@@ -23,6 +23,7 @@ public:
 	void Render(HDC hdc);
 
 	void CreateEnemy();
+	void SetGuidedBulletsTarget();
 
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 

@@ -91,3 +91,10 @@ inline bool CircleCollideCircle(POINT position, POINT targetPos, int size, int t
 	int rSum = targetSize / 2 + size / 2;
 	return ((dx * dx + dy * dy) < (rSum * rSum));
 }
+
+inline float GetDistance(POINT a, POINT b)
+{
+	int dx = a.x - b.x;
+	int dy = a.y - b.y;
+	return sqrt(dx * dx + dy * dy);
+}

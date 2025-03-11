@@ -11,6 +11,9 @@ void Bullet::Init(POINT pos, float angle)
 	size = 10;
 	damage = 3;
 	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
+
+	guided = false;
+	target = nullptr;
 }
 
 void Bullet::Release()
@@ -20,6 +23,22 @@ void Bullet::Release()
 void Bullet::Update()
 {
 	if (isLoaded) return;
+
+	if (guided) {
+		if (target) {
+			POINT targetPos = target->GetPos();
+			int dx = targetPos.x - position.x;
+			int dy = targetPos.y - position.y;
+			float angle = -TODEGREE(atan2f(dy, dx));
+			while (angle < 0) angle += 360; // 0 ~ 359
+			int dAngle = angle - fireAngle;
+			while (dAngle < 0) dAngle += 360;
+			if (dAngle < 10) fireAngle = angle;
+			else {
+				fireAngle += dAngle * 0.3;
+			}
+		}
+	}
 
 	Move();
 	CheckWallCollision();
@@ -51,6 +70,7 @@ void Bullet::CheckEnemyCollision(Enemy* enemy)
 
 	if (CircleCollideCircle(position, enemy->GetPos(), size, enemy->GetSize())) {
 		enemy->AttackedByBullet(damage);
+		isLoaded = true;
 	}
 }
 

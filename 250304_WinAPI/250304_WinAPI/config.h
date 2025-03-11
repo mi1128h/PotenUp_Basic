@@ -15,6 +15,7 @@ extern HWND g_hWnd;
 // extern 변수나 함수가 다른 파일에 정의되어 있다는 사실을 알리는 키워드
 
 #define TORADIAN(degree) 3.141592f / 180.0f * degree
+#define TODEGREE(radian) 180.0f / 3.141592f * radian
 
 extern random_device rd;
 extern default_random_engine dre;

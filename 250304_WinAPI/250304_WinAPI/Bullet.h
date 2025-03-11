@@ -13,6 +13,9 @@ protected:
 	int size{};
 	RECT rcCollision{};
 
+	bool guided{};
+	Enemy* target{};
+
 public:
 	void Init(POINT pos, float angle);
 	void Release();
@@ -22,6 +25,11 @@ public:
 	virtual void Move();
 	bool IsLoaded() { return isLoaded; }
 	void Fire() { isLoaded = false; }
+	POINT GetPos() { return position; }
+	bool IsGuided() { return guided; }
+	void SetGuided(bool guidOption) { guided = guidOption; }
+	Enemy* GetTarget() { return target; }
+	void SetTarget(Enemy* enemy) { target = enemy; }
 	virtual void CheckWallCollision();
 	void CheckEnemyCollision(Enemy* enemy);
 
