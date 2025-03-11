@@ -26,24 +26,7 @@ void Bullet::Update()
 
 	if (guided) {
 		if (target) {
-			float targetAngle = GetAngle(position, target->GetPos());
-
-			float dAngle = targetAngle - fireAngle;
-			
-			if (abs(dAngle) < 10) fireAngle = targetAngle;
-			else {
-				float angle{ dAngle };
-				float min{ abs(dAngle) };
-				if (min > abs(dAngle - 360)) {
-					min = abs(dAngle - 360);
-					angle = dAngle - 360;
-				}
-				if (min > abs(dAngle + 360)) {
-					min = abs(dAngle + 360);
-					angle = dAngle + 360;
-				}
-				fireAngle += angle * 0.3f;
-			}
+			UpdateGuidedAngle();
 		}
 	}
 
@@ -62,6 +45,29 @@ void Bullet::Move()
 {
 	position.x += cosf(TORADIAN(fireAngle)) * speed;
 	position.y -= sinf(TORADIAN(fireAngle)) * speed;
+}
+
+void Bullet::UpdateGuidedAngle()
+{
+	if (!target) return;
+	float targetAngle = GetAngle(position, target->GetPos());
+
+	float dAngle = targetAngle - fireAngle;
+
+	if (abs(dAngle) < 10) fireAngle = targetAngle;
+	else {
+		float angle{ dAngle };
+		float min{ abs(dAngle) };
+		if (min > abs(dAngle - 360)) {
+			min = abs(dAngle - 360);
+			angle = dAngle - 360;
+		}
+		if (min > abs(dAngle + 360)) {
+			min = abs(dAngle + 360);
+			angle = dAngle + 360;
+		}
+		fireAngle += angle * 0.3f;
+	}
 }
 
 void Bullet::CheckWallCollision()

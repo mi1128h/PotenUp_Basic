@@ -26,10 +26,13 @@ public:
 	bool IsLoaded() { return isLoaded; }
 	void Fire() { isLoaded = false; }
 	FPOINT GetPos() { return position; }
+
 	bool IsGuided() { return guided; }
 	void SetGuided(bool guidOption) { guided = guidOption; }
 	Enemy* GetTarget() { return target; }
 	void SetTarget(Enemy* enemy) { target = enemy; }
+	void UpdateGuidedAngle();
+
 	virtual void CheckWallCollision();
 	void CheckEnemyCollision(Enemy* enemy);
 
