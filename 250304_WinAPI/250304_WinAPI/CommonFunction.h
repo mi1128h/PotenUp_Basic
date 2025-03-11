@@ -83,3 +83,11 @@ inline int ClampInt(int val, int low, int high)
 
 	return retVal;
 }
+
+inline bool CircleCollideCircle(POINT position, POINT targetPos, int size, int targetSize)
+{
+	int dx = targetPos.x - position.x;
+	int dy = targetPos.y - position.y;
+	int rSum = targetSize / 2 + size / 2;
+	return ((dx * dx + dy * dy) < (rSum * rSum));
+}

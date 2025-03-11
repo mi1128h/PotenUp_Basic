@@ -53,10 +53,5 @@ void Enemy::Move()
 bool Enemy::CheckTargetCollision()
 {
 	if (!target) return false;
-	POINT targetPos = target->GetPos();
-	int dx = targetPos.x - position.x;
-	int dy = targetPos.y - position.y;
-	int rSizes = target->GetSize() / 2 + size / 2;
-	if ((dx * dx + dy * dy) < (rSizes * rSizes)) return true;
-	return false;
+	return CircleCollideCircle(position, target->GetPos(), size, target->GetSize());
 }
