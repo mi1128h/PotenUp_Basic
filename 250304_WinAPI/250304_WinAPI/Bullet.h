@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+
+class Enemy;
 class Bullet : public GameObject
 {
 protected:
@@ -7,6 +9,7 @@ protected:
 	POINT position{};
 	float fireAngle{};
 	float speed{};
+	float damage{};
 	int size{};
 	RECT rcCollision{};
 
@@ -20,6 +23,7 @@ public:
 	bool IsLoaded() { return isLoaded; }
 	void Fire() { isLoaded = false; }
 	virtual void CheckWallCollision();
+	void CheckEnemyCollision(Enemy* enemy);
 
 	Bullet();
 	~Bullet();

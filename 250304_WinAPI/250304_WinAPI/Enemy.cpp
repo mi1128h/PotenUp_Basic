@@ -8,8 +8,9 @@ void Enemy::Init(Tank* tank)
 	position.y = 50;
 	target = tank;
 	hp = 1;
-	size = 10;
+	size = 20;
 	speed = 10;
+	damage = 3;
 }
 
 void Enemy::Release()
@@ -21,10 +22,6 @@ void Enemy::Update()
 	if (hp <= 0) return;
 
 	Move();
-	if (CheckTargetCollision()) {
-		hp = 0;
-		
-	}
 }
 
 void Enemy::Render(HDC hdc)
@@ -48,10 +45,4 @@ void Enemy::Move()
 
 	position.x += cosf(moveAngle) * speed;
 	position.y += sinf(moveAngle) * speed;
-}
-
-bool Enemy::CheckTargetCollision()
-{
-	if (!target) return false;
-	return CircleCollideCircle(position, target->GetPos(), size, target->GetSize());
 }

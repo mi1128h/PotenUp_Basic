@@ -35,10 +35,15 @@ void MainGame::Update()
 	for (auto e : enemies) {
 		if (e) {
 			e->Update();
-			if (e->isDead()) deadNum++;
+			if (e->IsDead()) deadNum++;
+			else {
+				tank->CheckCollideEnemy(e);
+			}
 		}
 	}
 	nDeadEnemies = deadNum;
+
+
 }
 
 void MainGame::Render(HDC hdc)
@@ -55,7 +60,7 @@ void MainGame::CreateEnemy()
 {
 	if (nDeadEnemies > 0) {
 		for (int i = 0; i < enemies.size(); ++i) {
-			if (enemies[i]->isDead()) {
+			if (enemies[i]->IsDead()) {
 				if(tank)
 					enemies[i]->Init(tank);
 				nDeadEnemies--;

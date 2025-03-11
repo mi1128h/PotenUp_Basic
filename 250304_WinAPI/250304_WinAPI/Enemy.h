@@ -10,6 +10,7 @@ private:
 	int hp;
 	int size;
 	float speed;
+	float damage;
 
 public:
 	void Init(Tank* tank);
@@ -18,7 +19,11 @@ public:
 	void Render(HDC hdc);
 
 	void Move();
-	bool CheckTargetCollision();
-	bool isDead() { return hp <= 0; }
+	bool IsDead() { return hp <= 0; }
+	POINT GetPos() { return position; }
+	int GetSize() { return size; }
+	float GetDamage() { return damage; }
+	void AttackedByBullet(int damage) { hp -= damage; }
+	void AttackedByTank() { hp = 0; }
 };
 

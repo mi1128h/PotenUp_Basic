@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "CommonFunction.h"
+#include "Enemy.h"
 
 void Bullet::Init(POINT pos, float angle)
 {
@@ -8,6 +9,7 @@ void Bullet::Init(POINT pos, float angle)
 	fireAngle = angle;
 	speed = 20.0f;
 	size = 10;
+	damage = 3;
 	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
 }
 
@@ -40,6 +42,16 @@ void Bullet::CheckWallCollision()
 {
 	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
 	if (IsOutOfRange(position, WINSIZE_X, WINSIZE_Y)) isLoaded = true;
+}
+
+void Bullet::CheckEnemyCollision(Enemy* enemy)
+{
+	if (isLoaded) return;
+	if (enemy->IsDead()) return;
+
+	if (CircleCollideCircle(position, enemy->GetPos(), size, enemy->GetSize())) {
+		enemy->AttackedByBullet(damage);
+	}
 }
 
 Bullet::Bullet()

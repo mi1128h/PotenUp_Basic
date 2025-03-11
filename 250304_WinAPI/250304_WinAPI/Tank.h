@@ -13,11 +13,13 @@ class Bullet;
 class BombBullet;
 class BounceBullet;
 class ConfettiBullet;
+class Enemy;
 class Tank : public GameObject
 {
 private:
 	POINT pos;
 	int size;
+	int hp;
 	float damage;
 	string name;
 	RECT rcCollision;
@@ -58,6 +60,7 @@ public:
 	void Dead();
 	POINT GetPos() { return pos; }
 	int GetSize() { return size; }
+	void CheckCollideEnemy(Enemy* enemy);
 
 	int GetLoadedBulletsNum(SkillType type) { return nLoadedBullets[(int)type]; }
 	int GetCreatedBulletsNum(SkillType type);

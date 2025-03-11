@@ -1,5 +1,6 @@
 #include "Tank.h"
 #include "Bullet.h"
+#include "Enemy.h"
 #include "CommonFunction.h"
 
 void Tank::Init()
@@ -7,6 +8,7 @@ void Tank::Init()
 	pos.x = WINSIZE_X / 2;
 	pos.y = WINSIZE_Y;
 	size = 100;
+	hp = 1000;
 	damage = 10;
 	name = "ÅÊÅ©";
 	rcCollision = GetRectAtCenter(pos.x, pos.y, size, size);
@@ -223,6 +225,19 @@ void Tank::RotateBarrel(float angle)
 
 void Tank::Dead()
 {
+}
+
+void Tank::CheckCollideEnemy(Enemy* enemy)
+{
+	if (!enemy) return;
+
+	if (CircleCollideCircle(pos, enemy->GetPos(), size, enemy->GetSize())) {
+		enemy->AttackedByTank();
+		hp -= enemy->GetDamage();
+	}
+	for (auto b : vBullets) {
+		b->CheckEnemyCollision(enemy);
+	}
 }
 
 int Tank::GetCreatedBulletsNum(SkillType type)
