@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 class Tank;
+class Bullet;
 class Enemy : public GameObject
 {
 private:
@@ -11,9 +12,16 @@ private:
 	int size;
 	float speed;
 	float damage;
+	int bulletsNum;
+	int fireSpeed;
+	int elapsedFireTime;
+
+	static vector<Bullet*> vBullets;
+	static int nLoadedBullets;
 
 public:
 	void Init(Tank* tank);
+	void SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed);
 	void Release();
 	void Update();
 	void Render(HDC hdc);
@@ -25,5 +33,9 @@ public:
 	float GetDamage() { return damage; }
 	void AttackedByBullet(int damage) { hp -= damage; }
 	void AttackedByTank() { hp = 0; }
+	void Fire();
+
+	static void UpdateBullets();
+	static void RenderBullets(HDC hdc);
 };
 

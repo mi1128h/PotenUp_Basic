@@ -44,6 +44,8 @@ void MainGame::Update()
 	}
 	nDeadEnemies = deadNum;
 
+	Enemy::UpdateBullets();
+
 	SetGuidedBulletsTarget();
 }
 
@@ -55,15 +57,17 @@ void MainGame::Render(HDC hdc)
 	if(tank) tank->Render(hdc);
 	for (auto e : enemies)
 		if (e) e->Render(hdc);
+	Enemy::RenderBullets(hdc);
 }
 
 void MainGame::CreateEnemy()
 {
+	if (!tank) return;
 	if (nDeadEnemies > 0) {
 		for (int i = 0; i < enemies.size(); ++i) {
 			if (enemies[i]->IsDead()) {
-				if(tank)
-					enemies[i]->Init(tank);
+				enemies[i]->Init(tank);
+				enemies[i]->SetValuesByRound(1, 10, 10, 20, 10);
 				nDeadEnemies--;
 				break;
 			}
@@ -71,8 +75,8 @@ void MainGame::CreateEnemy()
 	}
 	else {
 		Enemy* enemy = new Enemy;
-		if(tank)
-			enemy->Init(tank);
+		enemy->Init(tank);
+		enemy->SetValuesByRound(1, 10, 10, 20, 10);
 		enemies.push_back(enemy);
 	}
 }

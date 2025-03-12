@@ -1,6 +1,11 @@
 #include "Enemy.h"
 #include "CommonFunction.h"
 #include "Tank.h"
+#include "Bullet.h"
+
+
+vector<Bullet*> Enemy::vBullets = {};
+int Enemy::nLoadedBullets = 0;
 
 void Enemy::Init(Tank* tank)
 {
@@ -11,6 +16,18 @@ void Enemy::Init(Tank* tank)
 	size = 20;
 	speed = 10;
 	damage = 3;
+	bulletsNum = 0;
+	fireSpeed = 0;
+	elapsedFireTime = 0;
+}
+
+void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed)
+{
+	this->hp = hp;
+	this->bulletsNum = maxBulletNum;
+	this->speed = speed;
+	this->size = size;
+	this->fireSpeed = fireSpeed;
 }
 
 void Enemy::Release()
@@ -22,6 +39,11 @@ void Enemy::Update()
 	if (hp <= 0) return;
 
 	Move();
+	elapsedFireTime++;
+	elapsedFireTime %= fireSpeed;
+	if (elapsedFireTime == 0) {
+		Fire();
+	}
 }
 
 void Enemy::Render(HDC hdc)
@@ -42,4 +64,42 @@ void Enemy::Move()
 
 	position.x += cosf(TORADIAN(moveAngle)) * speed;
 	position.y -= sinf(TORADIAN(moveAngle)) * speed;
+}
+
+void Enemy::Fire()
+{
+	if (bulletsNum <= 0) return;
+	float angle = GetAngle(position, target->GetPos());
+	if (nLoadedBullets > 0) {
+		for (int i = 0; i < vBullets.size(); ++i) {
+			if (vBullets[i]->IsLoaded()) {
+				vBullets[i]->Init(position, angle);
+				vBullets[i]->Fire();
+				nLoadedBullets--;
+				break;
+			}
+		}
+	}
+	else {
+		Bullet* bullet = new Bullet;
+		bullet->Init(position, angle);
+		bullet->Fire();
+		vBullets.push_back(bullet);
+	}
+
+	bulletsNum--;
+}
+
+void Enemy::UpdateBullets()
+{
+	for (auto b : vBullets) {
+		b->Update();
+	}
+}
+
+void Enemy::RenderBullets(HDC hdc)
+{
+	for (auto b : vBullets) {
+		b->Render(hdc);
+	}
 }
