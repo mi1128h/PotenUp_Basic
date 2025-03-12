@@ -60,11 +60,13 @@ public:
 	void FireConfetti();
 	void RotateBarrel(float angle);
 	void Dead();
+
 	FPOINT GetPos() { return pos; }
 	int GetSize() { return size; }
 	void CheckCollideEnemy(Enemy* enemy);
 	void SetBulletsTarget(vector<Enemy*>& enemies);
 	Enemy* GetNearestEnemy(FPOINT pos, vector<Enemy*>& enemies);
+	void AttackedByBullet(int damage) { hp -= damage; }
 
 	void IncreaseFiredCnt() { guidedFired++; guidedFired %= 5; }
 

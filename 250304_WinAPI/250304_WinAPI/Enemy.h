@@ -37,5 +37,6 @@ public:
 
 	static void UpdateBullets();
 	static void RenderBullets(HDC hdc);
+	static void CheckBulletsCollision(Tank* tank);
 };
 

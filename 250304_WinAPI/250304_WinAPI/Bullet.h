@@ -26,6 +26,9 @@ public:
 	bool IsLoaded() { return isLoaded; }
 	void Fire() { isLoaded = false; }
 	FPOINT GetPos() { return position; }
+	int GetSize() { return size; }
+	void SetLoaded(bool loaded) { isLoaded = loaded; }
+	float GetDamage() { return damage; }
 
 	bool IsGuided() { return guided; }
 	void SetGuided(bool guidOption) { guided = guidOption; }

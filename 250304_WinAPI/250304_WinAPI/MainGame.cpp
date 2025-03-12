@@ -45,6 +45,7 @@ void MainGame::Update()
 	nDeadEnemies = deadNum;
 
 	Enemy::UpdateBullets();
+	if(tank) Enemy::CheckBulletsCollision(tank);
 
 	SetGuidedBulletsTarget();
 }

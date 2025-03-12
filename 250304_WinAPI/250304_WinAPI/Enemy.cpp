@@ -28,6 +28,7 @@ void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size
 	this->speed = speed;
 	this->size = size;
 	this->fireSpeed = fireSpeed;
+	this->elapsedFireTime = fireSpeed / 2;
 }
 
 void Enemy::Release()
@@ -99,7 +100,25 @@ void Enemy::UpdateBullets()
 
 void Enemy::RenderBullets(HDC hdc)
 {
+	HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));
+	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+
 	for (auto b : vBullets) {
 		b->Render(hdc);
+	}
+
+	SelectObject(hdc, hOldBrush);
+	DeleteObject(hBrush);
+}
+
+void Enemy::CheckBulletsCollision(Tank* tank)
+{
+	for (auto b : vBullets) {
+		if (b->IsLoaded()) continue;
+		bool collide = CircleCollideCircle(b->GetPos(), tank->GetPos(), b->GetSize(), tank->GetSize());
+		if (collide) {
+			b->SetLoaded(true);
+			tank->AttackedByBullet(b->GetDamage());
+		}
 	}
 }
