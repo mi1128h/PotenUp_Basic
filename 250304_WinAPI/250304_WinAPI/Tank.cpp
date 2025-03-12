@@ -8,7 +8,7 @@ void Tank::Init()
 	pos.x = WINSIZE_X / 2;
 	pos.y = WINSIZE_Y;
 	size = 100;
-	hp = 10;
+	hp = 100;
 	damage = 10;
 	name = "≈ ≈©";
 	rcCollision = GetRectAtCenter(pos.x, pos.y, size, size);

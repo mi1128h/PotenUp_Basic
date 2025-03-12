@@ -61,8 +61,7 @@ void MainGame::Update()
 
 	roundManager->GameOver(tank->GetHp());
 
-	if (nDeadEnemies == enemies.size() and 
-		roundManager->getCurrentEnemyCnt() > roundManager->getEnemy()) {
+	if (nDeadEnemies == enemies.size() and !roundManager->getEnemy()) {
 		roundManager->setIsClear(true);
 	}
 
