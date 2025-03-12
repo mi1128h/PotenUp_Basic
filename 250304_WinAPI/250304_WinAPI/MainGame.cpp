@@ -59,22 +59,22 @@ void MainGame::Update()
 
 	SetGuidedBulletsTarget();
 
-	roundManager->GameOver(tank->GetHp());
+	roundManager->CheckGameOver(tank->GetHp());
 
-	if (nDeadEnemies == enemies.size() and !roundManager->getEnemy()) {
+	if (nDeadEnemies == enemies.size() and !roundManager->canCreateEnemy()) {
 		roundManager->setIsClear(true);
 	}
 
 	bool newRound = false;
-	if (!roundManager->GameClear()) {
-		newRound = roundManager->NextTurn();
+	if (!roundManager->IsGameClear()) {
+		newRound = roundManager->IsNewRound();
 	}
 
 	if (newRound) {
 		tank->Init();
 	}
 
-	if (roundManager->GameClear()) {
+	if (roundManager->IsGameClear()) {
 		tank->Skill(SkillType::Confetti);
 	}
 }
@@ -101,7 +101,7 @@ void MainGame::RenderInfo(HDC hdc)
 		HFONT hFont = CreateFont(50, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH|FF_ROMAN, L"Arial");
 		HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
 
-		if (roundManager->GameClear()) {
+		if (roundManager->IsGameClear()) {
 			wsprintf(szText, L"Clear");
 			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2 * 25, WINSIZE_Y / 2 - 25, szText, wcslen(szText));
 		}
@@ -125,7 +125,7 @@ void MainGame::CreateEnemy()
 	if (!tank) return;
 	if (!roundManager) return;
 	if (roundManager->IsGameOver()) return;
-	if(!roundManager->getEnemy()) return;
+	if(!roundManager->canCreateEnemy()) return;
 
 	float hp = roundManager->getEnemyHp();
 	int maxBulletNum = 10;

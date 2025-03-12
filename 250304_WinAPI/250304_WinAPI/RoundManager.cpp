@@ -8,7 +8,7 @@ void RoundManager::Init()
     gameOver = false;
 }
 
-bool RoundManager::getEnemy() //적 수량 증가  ,출현수 반환
+bool RoundManager::canCreateEnemy() //적 수량 증가  ,출현수 반환
 {
     switch (currentRound)
     {
@@ -31,7 +31,7 @@ int RoundManager::getCurrentRound()
     return currentRound;
 }
 
-void RoundManager::GameOver(int hp)
+void RoundManager::CheckGameOver(int hp)
 {
     if (hp <= 0)
     {
@@ -43,7 +43,7 @@ void RoundManager::GameOver(int hp)
     }
 }
 
-bool RoundManager::NextTurn()
+bool RoundManager::IsNewRound()
 {
     if (isClear == true)
     {
@@ -91,7 +91,7 @@ float RoundManager::getEnemyHp()
     }
 }
 
-bool RoundManager::GameClear()
+bool RoundManager::IsGameClear()
 {
     if (currentRound == 4 && gameOver == false)
     {
