@@ -62,6 +62,8 @@ public:
 	void CalcBarrelEnd();
 	void Dead();
 
+	void ProccessMoveInput(WPARAM wParam);
+
 	FPOINT GetPos() { return pos; }
 	int GetSize() { return size; }
 	void CheckCollideEnemy(Enemy* enemy);
@@ -73,7 +75,7 @@ public:
 
 	int GetLoadedBulletsNum(SkillType type) { return nLoadedBullets[(int)type]; }
 	int GetCreatedBulletsNum(SkillType type);
-	void RenderBulletsNum(HDC hdc);
+	void RenderInfo(HDC hdc);
 
 	Tank();
 	~Tank();

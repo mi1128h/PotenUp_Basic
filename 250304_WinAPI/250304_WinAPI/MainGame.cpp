@@ -64,11 +64,18 @@ void MainGame::Render(HDC hdc)
 void MainGame::CreateEnemy()
 {
 	if (!tank) return;
+
+	float hp = 1;
+	int maxBulletNum = 3;
+	float enemySpeed = 10;
+	float enemySize = 20;
+	int fireSpeed= 10;
+
 	if (nDeadEnemies > 0) {
 		for (int i = 0; i < enemies.size(); ++i) {
 			if (enemies[i]->IsDead()) {
 				enemies[i]->Init(tank);
-				enemies[i]->SetValuesByRound(1, 10, 10, 20, 10);
+				enemies[i]->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed);
 				nDeadEnemies--;
 				break;
 			}
@@ -77,7 +84,7 @@ void MainGame::CreateEnemy()
 	else {
 		Enemy* enemy = new Enemy;
 		enemy->Init(tank);
-		enemy->SetValuesByRound(1, 10, 10, 20, 10);
+		enemy->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed);
 		enemies.push_back(enemy);
 	}
 }
@@ -137,12 +144,10 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			tank->Skill(SkillType::Confetti);
 			break;
 		case VK_LEFT:
-			tank->Move(-10, 0);
-			tank->CalcBarrelEnd();
-			break;
 		case VK_RIGHT:
-			tank->Move(10, 0);
-			tank->CalcBarrelEnd();
+		case VK_UP:
+		case VK_DOWN:
+			tank->ProccessMoveInput(wParam);
 			break;
 		}
 

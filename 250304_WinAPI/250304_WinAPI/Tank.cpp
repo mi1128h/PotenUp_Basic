@@ -16,7 +16,7 @@ void Tank::Init()
 	barrelSize = 90;
 	barrelEnd.x = pos.x;
 	barrelEnd.y = pos.y - barrelSize;
-	barrelAngle = 45;
+	barrelAngle = 90;
 
 	int skillNum = (int)SkillType::length;
 
@@ -85,7 +85,7 @@ void Tank::Render(HDC hdc)
 		b->Render(hdc);
 	}
 
-	RenderBulletsNum(hdc);
+	RenderInfo(hdc);
 }
 
 void Tank::Move(int dx, int dy)
@@ -245,6 +245,27 @@ void Tank::Dead()
 {
 }
 
+void Tank::ProccessMoveInput(WPARAM wParam)
+{
+	switch (wParam) {
+	case VK_LEFT:
+		Move(-10, 0);
+		break;
+	case VK_RIGHT:
+		Move(10, 0);
+		break;
+	case VK_UP:
+		Move(0, -10);
+		break;
+	case VK_DOWN:
+		Move(0, 10);
+		break;
+	}
+
+
+	CalcBarrelEnd();
+}
+
 void Tank::CheckCollideEnemy(Enemy* enemy)
 {
 	if (!enemy) return;
@@ -309,7 +330,7 @@ int Tank::GetCreatedBulletsNum(SkillType type)
 	return -1;
 }
 
-void Tank::RenderBulletsNum(HDC hdc)
+void Tank::RenderInfo(HDC hdc)
 {
 	TCHAR szText[128]{};
 	wsprintf(szText, L"Basic Bullets Num: %d/%d",
@@ -327,6 +348,9 @@ void Tank::RenderBulletsNum(HDC hdc)
 	wsprintf(szText, L"Confetti Bullets Num: %d/%d",
 		GetLoadedBulletsNum(SkillType::Confetti), GetCreatedBulletsNum(SkillType::Confetti));
 	TextOut(hdc, 20, 240, szText, wcslen(szText));
+
+	wsprintf(szText, L"Tank Hp: %d", hp);
+	TextOut(hdc, 20, 260, szText, wcslen(szText));
 }
 
 Tank::Tank()
