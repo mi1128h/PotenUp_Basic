@@ -15,6 +15,7 @@ public:
 	int getCurrentEnemyCnt() { return enemyCnt; }
 	int getCurrentRound();// 현재 턴 정보 반환
 	void GameOver(int hp); //플레이어 hp가 0이면 gameOver = true;
+	bool IsGameOver() { return gameOver; }
 	bool NextTurn();
 	//턴 진행
     float getEnemySpeed();//적 이동속도 증가 

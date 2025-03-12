@@ -36,6 +36,9 @@ void MainGame::Release()
 void MainGame::Update()
 {
 	if(tank) tank->Update();
+	if (roundManager) {
+		if (roundManager->IsGameOver()) return;
+	}
 
 	int deadNum{};
 	for (auto e : enemies) {
@@ -77,6 +80,8 @@ void MainGame::Update()
 
 void MainGame::Render(HDC hdc)
 {
+	if (roundManager)
+		if (roundManager->IsGameOver()) return;
 	wsprintf(szText, L"Mouse X: %d, Y: %d", mousePosX, mousePosY);
 	TextOut(hdc, 20, 160, szText, wcslen(szText));
 
@@ -88,9 +93,19 @@ void MainGame::Render(HDC hdc)
 
 void MainGame::RenderInfo(HDC hdc)
 {
-	wsprintf(szText, L"Round: %d", roundManager->getCurrentRound());
-	TextOut(hdc, 20, 20, szText, wcslen(szText));
+	if (roundManager) {
+		wsprintf(szText, L"Round: %d", roundManager->getCurrentRound());
+		TextOut(hdc, 20, 20, szText, wcslen(szText));
 
+		if (roundManager->GameClear()) {
+			wsprintf(szText, L"Clear");
+			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2, 20, szText, wcslen(szText));
+		}
+		else if (roundManager->IsGameOver()) {
+			wsprintf(szText, L"Game Over");
+			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2, 20, szText, wcslen(szText));
+		}
+	}
 
 	// y 180~
 	tank->RenderInfo(hdc);
@@ -100,7 +115,7 @@ void MainGame::CreateEnemy()
 {
 	if (!tank) return;
 	if (!roundManager) return;
-
+	if (roundManager->IsGameOver()) return;
 	if(!roundManager->getEnemy()) return;
 
 	float hp = roundManager->getEnemyHp();

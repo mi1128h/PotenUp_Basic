@@ -33,7 +33,7 @@ int RoundManager::getCurrentRound()
 
 void RoundManager::GameOver(int hp)
 {
-    if (hp == 0)
+    if (hp <= 0)
     {
         gameOver = true;
     }
