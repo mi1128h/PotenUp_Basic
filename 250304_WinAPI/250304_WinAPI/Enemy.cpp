@@ -10,7 +10,7 @@ int Enemy::nLoadedBullets = 0;
 void Enemy::Init(Tank* tank)
 {
 	position.x = uid_0_WINSIZEX(dre);
-	position.y = 50;
+	position.y = 5;
 	target = tank;
 	hp = 1;
 	size = 20;

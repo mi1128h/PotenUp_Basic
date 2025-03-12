@@ -108,7 +108,7 @@ float RoundManager::getEnemySpeed()
         return 10.0f;
         break;
     case 2:
-        return 30.0f;
+        return 20.0f;
         break;
     case 3:
         return 30.0f;

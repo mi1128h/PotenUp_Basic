@@ -126,6 +126,7 @@ void Tank::Fire()
 				if (!guidedFired) {
 					vBasics[i]->SetGuided(true);
 				}
+				vBasics[i]->SetDamage(damage);
 				vBasics[i]->Fire();
 				nLoadedBullets[(int)SkillType::Basic]--;
 				break;
@@ -138,6 +139,7 @@ void Tank::Fire()
 		if (!guidedFired) {
 			bullet->SetGuided(true);
 		}
+		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBasics.push_back(bullet);
@@ -154,6 +156,7 @@ void Tank::FireBomb()
 			if (!vBombs[i]->IsLoaded()) continue;
 			vBombs[i]->Init(barrelEnd, barrelAngle);
 			vBombs[i]->SetBombValues(bombExplodeTime, 10 * fireSuccess);
+			vBombs[i]->SetDamage(damage);
 			vBombs[i]->Fire();
 
 			fireSuccess++;
@@ -167,6 +170,7 @@ void Tank::FireBomb()
 		BombBullet* bullet = new BombBullet;
 		bullet->Init(barrelEnd, barrelAngle);
 		bullet->SetBombValues(bombExplodeTime, 10 * fireSuccess);
+		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBombs.push_back(bullet);
@@ -181,6 +185,7 @@ void Tank::FireBounce()
 			if (vBounces[i]->IsLoaded()) {
 				vBounces[i]->Init(barrelEnd, barrelAngle);
 				vBounces[i]->SetBounceNum(bounceNum);
+				vBounces[i]->SetDamage(damage);
 				vBounces[i]->Fire();
 				nLoadedBullets[(int)SkillType::Bounce]--;
 				break;
@@ -191,6 +196,7 @@ void Tank::FireBounce()
 		BounceBullet* bullet = new BounceBullet;
 		bullet->Init(barrelEnd, barrelAngle);
 		bullet->SetBounceNum(bounceNum);
+		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBounces.push_back(bullet);
@@ -207,6 +213,7 @@ void Tank::FireConfetti()
 			vConfettis[i]->Init(barrelEnd, barrelAngle);
 			vConfettis[i]->SetBombValues(bombExplodeTime, 6 * fireSuccess);
 			vConfettis[i]->SetConfettiValues(confettiLife);
+			vConfettis[i]->SetDamage(damage);
 			vConfettis[i]->Fire();
 
 			fireSuccess++;
@@ -221,6 +228,7 @@ void Tank::FireConfetti()
 		bullet->Init(barrelEnd, barrelAngle);
 		bullet->SetBombValues(bombExplodeTime, 6 * fireSuccess);
 		bullet->SetConfettiValues(confettiLife);
+		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vConfettis.push_back(bullet);

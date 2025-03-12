@@ -28,6 +28,7 @@ public:
 	FPOINT GetPos() { return position; }
 	int GetSize() { return size; }
 	void SetLoaded(bool loaded) { isLoaded = loaded; }
+	void SetDamage(float d) { damage = d; }
 	float GetDamage() { return damage; }
 
 	bool IsGuided() { return guided; }
