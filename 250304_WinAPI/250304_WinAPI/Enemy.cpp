@@ -91,6 +91,12 @@ void Enemy::Fire()
 	bulletsNum--;
 }
 
+void Enemy::ReleaseBullets()
+{
+	for (auto b : vBullets)
+		if (b) delete b;
+}
+
 void Enemy::UpdateBullets()
 {
 	for (auto b : vBullets) {

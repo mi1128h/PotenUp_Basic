@@ -30,6 +30,8 @@ void MainGame::Release()
 	for (auto e : enemies) {
 		if (e) delete e;
 	}
+	Enemy::ReleaseBullets();
+
 	if (roundManager) delete roundManager;
 }
 
@@ -108,7 +110,9 @@ void MainGame::RenderInfo(HDC hdc)
 	}
 
 	// y 180~
-	tank->RenderInfo(hdc);
+	if (roundManager)
+		if (!roundManager->IsGameOver())
+			tank->RenderInfo(hdc);
 }
 
 void MainGame::CreateEnemy()

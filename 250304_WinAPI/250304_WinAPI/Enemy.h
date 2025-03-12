@@ -35,6 +35,7 @@ public:
 	void AttackedByTank() { hp = 0; }
 	void Fire();
 
+	static void ReleaseBullets();
 	static void UpdateBullets();
 	static void RenderBullets(HDC hdc);
 	static void CheckBulletsCollision(Tank* tank);
