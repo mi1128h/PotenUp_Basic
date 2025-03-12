@@ -17,18 +17,19 @@ void Enemy::Init(Tank* tank)
 	speed = 10;
 	damage = 3;
 	bulletsNum = 0;
-	fireSpeed = 0;
+	fireInterval = 0;
 	elapsedFireTime = 0;
 }
 
-void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed)
+void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed, float bulletSpeed)
 {
 	this->hp = hp;
 	this->bulletsNum = maxBulletNum;
 	this->speed = speed;
 	this->size = size;
-	this->fireSpeed = fireSpeed;
+	this->fireInterval = fireSpeed;
 	this->elapsedFireTime = fireSpeed / 2;
+	this->bulletSpeed = bulletSpeed;
 }
 
 void Enemy::Release()
@@ -41,7 +42,7 @@ void Enemy::Update()
 
 	Move();
 	elapsedFireTime++;
-	elapsedFireTime %= fireSpeed;
+	elapsedFireTime %= fireInterval;
 	if (elapsedFireTime == 0) {
 		Fire();
 	}
@@ -75,6 +76,7 @@ void Enemy::Fire()
 		for (int i = 0; i < vBullets.size(); ++i) {
 			if (vBullets[i]->IsLoaded()) {
 				vBullets[i]->Init(position, angle);
+				vBullets[i]->SetSpeed(bulletSpeed);
 				vBullets[i]->Fire();
 				nLoadedBullets--;
 				break;
@@ -84,6 +86,7 @@ void Enemy::Fire()
 	else {
 		Bullet* bullet = new Bullet;
 		bullet->Init(position, angle);
+		bullet->SetSpeed(bulletSpeed);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 	}

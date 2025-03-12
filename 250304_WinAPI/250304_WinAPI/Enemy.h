@@ -13,15 +13,16 @@ private:
 	float speed;
 	float damage;
 	int bulletsNum;
-	int fireSpeed;
+	int fireInterval;
 	int elapsedFireTime;
+	float bulletSpeed;
 
 	static vector<Bullet*> vBullets;
 	static int nLoadedBullets;
 
 public:
 	void Init(Tank* tank);
-	void SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed);
+	void SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed, float bulletSpeed);
 	void Release();
 	void Update();
 	void Render(HDC hdc);

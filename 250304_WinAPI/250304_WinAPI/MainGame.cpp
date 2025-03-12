@@ -128,16 +128,17 @@ void MainGame::CreateEnemy()
 	if(!roundManager->canCreateEnemy()) return;
 
 	float hp = roundManager->getEnemyHp();
-	int maxBulletNum = 10;
+	int maxBulletNum = roundManager->getBulletNum();
 	float enemySpeed = roundManager->getEnemySpeed();
 	float enemySize = roundManager->getEnemySize();
-	int fireSpeed = 10;
+	int fireSpeed = roundManager->getFireInterval();
+	float bulletSpeed = roundManager->getBulletSpeed();
 
 	if (nDeadEnemies > 0) {
 		for (int i = 0; i < enemies.size(); ++i) {
 			if (enemies[i]->IsDead()) {
 				enemies[i]->Init(tank);
-				enemies[i]->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed);
+				enemies[i]->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed, bulletSpeed);
 				nDeadEnemies--;
 				break;
 			}
@@ -146,7 +147,7 @@ void MainGame::CreateEnemy()
 	else {
 		Enemy* enemy = new Enemy;
 		enemy->Init(tank);
-		enemy->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed);
+		enemy->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed, bulletSpeed);
 		enemies.push_back(enemy);
 	}
 

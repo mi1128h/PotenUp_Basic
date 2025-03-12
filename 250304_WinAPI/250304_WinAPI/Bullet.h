@@ -30,6 +30,7 @@ public:
 	void SetLoaded(bool loaded) { isLoaded = loaded; }
 	void SetDamage(float d) { damage = d; }
 	float GetDamage() { return damage; }
+	void SetSpeed(float s) { speed = s; }
 
 	bool IsGuided() { return guided; }
 	void SetGuided(bool guidOption) { guided = guidOption; }

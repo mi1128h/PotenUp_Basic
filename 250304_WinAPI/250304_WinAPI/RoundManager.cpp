@@ -117,3 +117,57 @@ float RoundManager::getEnemySpeed()
         break;
     }
 }
+
+float RoundManager::getFireInterval()
+{
+    switch (currentRound)
+    {
+    case 1:
+        return 20.0f;
+        break;
+    case 2:
+        return 10.0f;
+        break;
+    case 3:
+        return 10.0f; //매우빠를듯
+        break;
+    default:
+        break;
+    }
+}
+
+float RoundManager::getBulletSpeed()
+{
+    switch (currentRound)
+    {
+    case 1:
+        return 15.0f;
+        break;
+    case 2:
+        return 30.0f;
+        break;
+    case 3:
+        return 50.0f; //매우빠를듯
+        break;
+    default:
+        break;
+    }
+}
+
+int RoundManager::getBulletNum()
+{
+    switch (currentRound)
+    {
+    case 1:
+        return 3;
+        break;
+    case 2:
+        return 10;
+        break;
+    case 3:
+        return 20;
+        break;
+    default:
+        break;
+    }
+}

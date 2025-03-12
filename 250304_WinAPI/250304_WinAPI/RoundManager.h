@@ -18,7 +18,11 @@ public:
 	bool IsGameOver() { return gameOver; }
 	bool IsNewRound();
 	//턴 진행
-    float getEnemySpeed();//적 이동속도 증가 
+    float getEnemySpeed();
+	float getFireInterval();
+	float getBulletSpeed();
+	int getBulletNum();
+	//적 이동속도 증가 
 	int getEnemySize();//적 크기 감소
 	float getEnemyHp(); //적 hp 증가
 	bool IsGameClear();
