@@ -99,14 +99,20 @@ void MainGame::RenderInfo(HDC hdc)
 		wsprintf(szText, L"Round: %d", roundManager->getCurrentRound());
 		TextOut(hdc, 20, 20, szText, wcslen(szText));
 
+		HFONT hFont = CreateFont(50, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH|FF_ROMAN, L"Arial");
+		HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
+
 		if (roundManager->GameClear()) {
 			wsprintf(szText, L"Clear");
-			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2, 20, szText, wcslen(szText));
+			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2 * 25, WINSIZE_Y / 2 - 25, szText, wcslen(szText));
 		}
 		else if (roundManager->IsGameOver()) {
 			wsprintf(szText, L"Game Over");
-			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2, 20, szText, wcslen(szText));
+			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2 * 25, WINSIZE_Y / 2 - 25, szText, wcslen(szText));
 		}
+
+		SelectObject(hdc, oldFont);
+		DeleteObject(hFont);
 	}
 
 	// y 180~
