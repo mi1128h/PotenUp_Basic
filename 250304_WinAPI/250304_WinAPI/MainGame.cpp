@@ -1,6 +1,7 @@
 #include "MainGame.h"
 #include "Tank.h"
 #include "Enemy.h"
+#include "RoundManager.h"
 #include "CommonFunction.h"
 
 /*
@@ -15,6 +16,9 @@ void MainGame::Init()
 {
 	tank = new Tank();
 	tank->Init();
+
+	roundManager = new RoundManager();
+	roundManager->Init();
 }
 
 void MainGame::Release()
@@ -26,6 +30,7 @@ void MainGame::Release()
 	for (auto e : enemies) {
 		if (e) delete e;
 	}
+	if (roundManager) delete roundManager;
 }
 
 void MainGame::Update()
@@ -48,6 +53,26 @@ void MainGame::Update()
 	if(tank) Enemy::CheckBulletsCollision(tank);
 
 	SetGuidedBulletsTarget();
+
+	roundManager->GameOver(tank->GetHp());
+
+	if (nDeadEnemies == enemies.size() and 
+		roundManager->getCurrentEnemyCnt() > roundManager->getEnemy()) {
+		roundManager->setIsClear(true);
+	}
+
+	bool newRound = false;
+	if (!roundManager->GameClear()) {
+		newRound = roundManager->NextTurn();
+	}
+
+	if (newRound) {
+		tank->Init();
+	}
+
+	if (roundManager->GameClear()) {
+		tank->Skill(SkillType::Confetti);
+	}
 }
 
 void MainGame::Render(HDC hdc)
@@ -61,15 +86,28 @@ void MainGame::Render(HDC hdc)
 	Enemy::RenderBullets(hdc);
 }
 
+void MainGame::RenderInfo(HDC hdc)
+{
+	wsprintf(szText, L"Round: %d", roundManager->getCurrentRound());
+	TextOut(hdc, 20, 20, szText, wcslen(szText));
+
+
+	// y 180~
+	tank->RenderInfo(hdc);
+}
+
 void MainGame::CreateEnemy()
 {
 	if (!tank) return;
+	if (!roundManager) return;
 
-	float hp = 1;
-	int maxBulletNum = 3;
-	float enemySpeed = 10;
-	float enemySize = 20;
-	int fireSpeed= 10;
+	if(!roundManager->getEnemy()) return;
+
+	float hp = roundManager->getEnemyHp();
+	int maxBulletNum = 10;
+	float enemySpeed = roundManager->getEnemySpeed();
+	float enemySize = roundManager->getEnemySize();
+	int fireSpeed = 10;
 
 	if (nDeadEnemies > 0) {
 		for (int i = 0; i < enemies.size(); ++i) {
@@ -87,6 +125,8 @@ void MainGame::CreateEnemy()
 		enemy->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed);
 		enemies.push_back(enemy);
 	}
+
+	roundManager->IncEnemyCnt();
 }
 
 void MainGame::SetGuidedBulletsTarget()
@@ -171,6 +211,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		hdc = BeginPaint(g_hWnd, &ps);
 
 		Render(hdc);
+		RenderInfo(hdc);
 
 		EndPaint(g_hWnd, &ps);
 		break;

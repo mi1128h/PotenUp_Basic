@@ -64,6 +64,7 @@ public:
 
 	void ProccessMoveInput(WPARAM wParam);
 
+	int GetHp() { return hp; }
 	FPOINT GetPos() { return pos; }
 	int GetSize() { return size; }
 	void CheckCollideEnemy(Enemy* enemy);

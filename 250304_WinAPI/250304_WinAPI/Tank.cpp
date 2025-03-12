@@ -84,8 +84,6 @@ void Tank::Render(HDC hdc)
 	for (auto b : vBullets) {
 		b->Render(hdc);
 	}
-
-	RenderInfo(hdc);
 }
 
 void Tank::Move(int dx, int dy)

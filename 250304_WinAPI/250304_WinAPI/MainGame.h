@@ -3,6 +3,7 @@
 
 class Tank;
 class Enemy;
+class RoundManager;
 class MainGame : public GameObject
 {
 private:
@@ -16,11 +17,14 @@ private:
 	vector<Enemy*> enemies;
 	int nDeadEnemies;
 
+	RoundManager* roundManager;
+
 public:
 	void Init();
 	void Release();
 	void Update();
 	void Render(HDC hdc);
+	void RenderInfo(HDC hdc);
 
 	void CreateEnemy();
 	void SetGuidedBulletsTarget();
