@@ -52,13 +52,14 @@ public:
 	void Update();
 	void Render(HDC hdc);
 
-	void Move();
+	void Move(int dx, int dy);
 	void Skill(SkillType type);
 	void Fire();
 	void FireBomb();
 	void FireBounce();
 	void FireConfetti();
 	void RotateBarrel(float angle);
+	void CalcBarrelEnd();
 	void Dead();
 
 	FPOINT GetPos() { return pos; }

@@ -136,6 +136,14 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		case 'q': case 'Q':
 			tank->Skill(SkillType::Confetti);
 			break;
+		case VK_LEFT:
+			tank->Move(-10, 0);
+			tank->CalcBarrelEnd();
+			break;
+		case VK_RIGHT:
+			tank->Move(10, 0);
+			tank->CalcBarrelEnd();
+			break;
 		}
 
 

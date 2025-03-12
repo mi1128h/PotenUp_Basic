@@ -42,8 +42,7 @@ void Tank::Release()
 
 void Tank::Update()
 {
-	barrelEnd.x = pos.x + barrelSize * cosf(TORADIAN(barrelAngle));
-	barrelEnd.y = pos.y - barrelSize * sinf(TORADIAN(barrelAngle));
+	CalcBarrelEnd();
 
 	for (int i = 0; i < (int)SkillType::length; ++i) {
 		skillsCooldownTime[i]--;
@@ -89,8 +88,12 @@ void Tank::Render(HDC hdc)
 	RenderBulletsNum(hdc);
 }
 
-void Tank::Move()
+void Tank::Move(int dx, int dy)
 {
+	pos.x += dx;
+	pos.y += dy;
+	pos.x = ClampInt(pos.x, 0, WINSIZE_X);
+	pos.y = ClampInt(pos.y, 0, WINSIZE_Y);
 }
 
 void Tank::Skill(SkillType type)
@@ -230,6 +233,12 @@ void Tank::FireConfetti()
 void Tank::RotateBarrel(float angle)
 {
 	barrelAngle += angle;
+}
+
+void Tank::CalcBarrelEnd()
+{
+	barrelEnd.x = pos.x + barrelSize * cosf(TORADIAN(barrelAngle));
+	barrelEnd.y = pos.y - barrelSize * sinf(TORADIAN(barrelAngle));
 }
 
 void Tank::Dead()
