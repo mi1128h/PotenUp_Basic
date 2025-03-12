@@ -12,10 +12,10 @@ void Enemy::Init(Tank* tank)
 	position.x = uid_0_WINSIZEX(dre);
 	position.y = 5;
 	target = tank;
-	hp = 1;
+	hp = 0;
 	size = 20;
 	speed = 10;
-	damage = 3;
+	damage = 10;
 	bulletsNum = 0;
 	fireInterval = 0;
 	elapsedFireTime = 0;
@@ -55,7 +55,7 @@ void Enemy::Render(HDC hdc)
 	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 
 	RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
-	
+
 	SelectObject(hdc, hOldBrush);
 	DeleteObject(hBrush);
 }
@@ -129,5 +129,13 @@ void Enemy::CheckBulletsCollision(Tank* tank)
 			b->SetLoaded(true);
 			tank->AttackedByBullet(b->GetDamage());
 		}
+	}
+}
+
+void Enemy::InitLoadedBullets()
+{
+	for (auto b : vBullets)
+	{
+		b->SetLoaded(true);
 	}
 }

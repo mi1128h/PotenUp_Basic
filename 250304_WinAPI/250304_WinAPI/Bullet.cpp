@@ -103,7 +103,7 @@ void BombBullet::SetBombValues(int time, float angle)
 
 void BombBullet::Update()
 {
-	if(countDown) countDown--;
+	if (countDown) countDown--;
 	Bullet::Update();
 }
 

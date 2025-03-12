@@ -23,7 +23,7 @@ private:
 	float damage;
 	string name;
 	RECT rcCollision;
-	
+
 	// Æ÷½Å
 	FPOINT barrelEnd;
 	int barrelSize;

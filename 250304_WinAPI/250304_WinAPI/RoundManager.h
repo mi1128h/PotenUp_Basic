@@ -5,7 +5,7 @@ class RoundManager
 	int enemyCnt;//라운드별 최대 적수량
 	bool isClear; //라운드 클리어 했는지
 	bool gameOver; //게임이 끝났는지
-	
+
 public:
 
 	void Init();
@@ -18,7 +18,7 @@ public:
 	bool IsGameOver() { return gameOver; }
 	bool IsNewRound();
 	//턴 진행
-    float getEnemySpeed();
+	float getEnemySpeed();
 	float getFireInterval();
 	float getBulletSpeed();
 	int getBulletNum();

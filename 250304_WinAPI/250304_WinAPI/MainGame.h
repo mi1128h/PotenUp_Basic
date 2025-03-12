@@ -28,7 +28,7 @@ public:
 
 	void CreateEnemy();
 	void SetGuidedBulletsTarget();
-
+	void RestartGame();
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
 	MainGame();

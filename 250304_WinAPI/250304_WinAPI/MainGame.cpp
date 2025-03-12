@@ -37,10 +37,10 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
-	if(tank) tank->Update();
 	if (roundManager) {
 		if (roundManager->IsGameOver()) return;
 	}
+	if (tank) tank->Update();
 
 	int deadNum{};
 	for (auto e : enemies) {
@@ -55,7 +55,7 @@ void MainGame::Update()
 	nDeadEnemies = deadNum;
 
 	Enemy::UpdateBullets();
-	if(tank) Enemy::CheckBulletsCollision(tank);
+	if (tank) Enemy::CheckBulletsCollision(tank);
 
 	SetGuidedBulletsTarget();
 
@@ -86,7 +86,7 @@ void MainGame::Render(HDC hdc)
 	wsprintf(szText, L"Mouse X: %d, Y: %d", mousePosX, mousePosY);
 	TextOut(hdc, 20, 160, szText, wcslen(szText));
 
-	if(tank) tank->Render(hdc);
+	if (tank) tank->Render(hdc);
 	for (auto e : enemies)
 		if (e) e->Render(hdc);
 	Enemy::RenderBullets(hdc);
@@ -94,11 +94,12 @@ void MainGame::Render(HDC hdc)
 
 void MainGame::RenderInfo(HDC hdc)
 {
+	SetBkMode(hdc, TRANSPARENT);
 	if (roundManager) {
 		wsprintf(szText, L"Round: %d", roundManager->getCurrentRound());
 		TextOut(hdc, 20, 20, szText, wcslen(szText));
 
-		HFONT hFont = CreateFont(50, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH|FF_ROMAN, L"Arial");
+		HFONT hFont = CreateFont(50, 0, 0, 0, 0, 0, 0, 0, HANGEUL_CHARSET, 0, 0, 0, VARIABLE_PITCH | FF_ROMAN, L"Arial");
 		HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
 
 		if (roundManager->IsGameClear()) {
@@ -108,6 +109,14 @@ void MainGame::RenderInfo(HDC hdc)
 		else if (roundManager->IsGameOver()) {
 			wsprintf(szText, L"Game Over");
 			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2 * 25, WINSIZE_Y / 2 - 25, szText, wcslen(szText));
+		}
+
+		if (roundManager->IsGameClear() or roundManager->IsGameOver())
+		{
+			wsprintf(szText, L"Press enter to restart");
+			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2 * 25 + 50, WINSIZE_Y / 2 + 100, szText, wcslen(szText));
+			wsprintf(szText, L"Press esc to quit");
+			TextOut(hdc, WINSIZE_X / 2 - wcslen(szText) / 2 * 25 + 30, WINSIZE_Y / 2 + 150, szText, wcslen(szText));
 		}
 
 		SelectObject(hdc, oldFont);
@@ -125,7 +134,7 @@ void MainGame::CreateEnemy()
 	if (!tank) return;
 	if (!roundManager) return;
 	if (roundManager->IsGameOver()) return;
-	if(!roundManager->canCreateEnemy()) return;
+	if (!roundManager->canCreateEnemy()) return;
 
 	float hp = roundManager->getEnemyHp();
 	int maxBulletNum = roundManager->getBulletNum();
@@ -160,6 +169,17 @@ void MainGame::SetGuidedBulletsTarget()
 	tank->SetBulletsTarget(enemies);
 }
 
+void MainGame::RestartGame()
+{
+	tank->Init();
+	for (auto e : enemies)
+	{
+		e->Init(tank);
+	}
+	Enemy::InitLoadedBullets();
+	roundManager->Init();
+}
+
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	switch (iMessage) {
@@ -185,10 +205,13 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case VK_ESCAPE:
-			KillTimer(hWnd, 0);
-			KillTimer(hWnd, 1);
-			Release();
-			PostQuitMessage(0);
+			if (roundManager->IsGameOver() or roundManager->IsGameClear())
+			{
+				KillTimer(hWnd, 0);
+				KillTimer(hWnd, 1);
+				Release();
+				PostQuitMessage(0);
+			}
 			break;
 		case 'a': case 'A':
 			tank->RotateBarrel(5);
@@ -205,18 +228,19 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		case 'e': case 'E':
 			tank->Skill(SkillType::Bounce);
 			break;
-		case 'q': case 'Q':
-			tank->Skill(SkillType::Confetti);
-			break;
 		case VK_LEFT:
 		case VK_RIGHT:
 		case VK_UP:
 		case VK_DOWN:
 			tank->ProccessMoveInput(wParam);
 			break;
+		case VK_RETURN:
+			if (roundManager->IsGameOver() or roundManager->IsGameClear())
+			{
+				RestartGame();
+			}
+			break;
 		}
-
-
 		InvalidateRect(g_hWnd, NULL, TRUE);
 		break;
 

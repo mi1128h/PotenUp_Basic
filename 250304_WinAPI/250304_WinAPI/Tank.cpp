@@ -31,6 +31,12 @@ void Tank::Init()
 	confettiLife = 5;
 
 	guidedFired = 1;
+
+	for (auto b : vBullets)
+	{
+		b->SetLoaded(true);
+	}
+
 }
 
 void Tank::Release()
@@ -49,7 +55,7 @@ void Tank::Update()
 	}
 
 	for (auto b : vBullets) {
- 		b->Update();
+		b->Update();
 	}
 
 	int loadedNum{};
@@ -166,7 +172,7 @@ void Tank::FireBomb()
 		}
 	}
 
-	while(fireSuccess < 36 ) {
+	while (fireSuccess < 36) {
 		BombBullet* bullet = new BombBullet;
 		bullet->Init(barrelEnd, barrelAngle);
 		bullet->SetBombValues(bombExplodeTime, 10 * fireSuccess);
