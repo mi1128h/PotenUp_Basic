@@ -43,12 +43,12 @@ void AnimCharacter::Update()
 void AnimCharacter::Animate()
 {
 	frameIdx++;
-	int size = vImages[curState].size();
-	if (size > 0) {
-		if (size != 1) {
-			frameIdx %= size;
+	int imagesNum = vImages[curState].size();
+	if (imagesNum > 0) {
+		if (imagesNum != 1) {
+			frameIdx %= imagesNum;
 		}
-		else if (size == 1) {
+		else if (imagesNum == 1) {
 			int sn = vImages[curState][0]->GetSpritesNumX() * vImages[curState][0]->GetSpritesNumY();
 			frameIdx %= sn;
 		}
