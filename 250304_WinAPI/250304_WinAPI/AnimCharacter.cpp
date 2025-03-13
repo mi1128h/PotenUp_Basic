@@ -63,6 +63,9 @@ void AnimCharacter::Render(HDC hdc)
 	if (imagesNum == 1) {
 		vImages[curState][0]->Render(hdc, position.x, position.y, size[0], size[1], frameIdx, flip);
 	}
+	else {
+		vImages[curState][frameIdx]->Render(hdc, position.x, position.y, size[0], size[1], 0, flip);
+	}
 }
 
 void AnimCharacter::Move(int dx, int dy)
