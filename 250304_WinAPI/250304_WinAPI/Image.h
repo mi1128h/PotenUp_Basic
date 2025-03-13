@@ -49,12 +49,14 @@ public:
 
 	// 화면에 출력
 	void Render(HDC hdc, int destX = 0, int destY = 0, bool flip = false);
-	void Render(HDC hdc, int destX, int destY, int frameIndex, bool flip = false);
+	void Render(HDC hdc, int destX, int destY, int destWidth, int destHeight, int frameIndex, bool flip = false);
 	
 	// 메모리 해제
 	void Release();
 
 	inline HDC GetMemDC() { if (imageInfo) return imageInfo->hMemDC; else return NULL; }
+	inline int GetWidth() { if (imageInfo) return imageInfo->width; else return -1; }
+	inline int GetHeight() { if (imageInfo) return imageInfo->height; else return -1; }
 	inline int GetSpritesNumX() { if (imageInfo) return imageInfo->spritesNum[0]; else return -1; }
 	inline int GetSpritesNumY() { if (imageInfo) return imageInfo->spritesNum[1]; else return -1; }
 };

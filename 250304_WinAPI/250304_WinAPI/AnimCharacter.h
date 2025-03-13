@@ -14,6 +14,7 @@ class AnimCharacter : public GameObject
 private:
 	FPOINT position;
 	float speed;
+	int size[2];
 
 	vector<Image*> vImages[State::Statelength];
 	State curState;

@@ -60,18 +60,48 @@ void Image::Render(HDC hdc, int destX, int destY, bool flip)
 		SRCCOPY);			// 복사 옵션
 }
 
-void Image::Render(HDC hdc, int destX, int destY, int frameIndex, bool flip)
+void Image::Render(HDC hdc, int destX, int destY, int destWidth, int destHeight, int frameIndex, bool flip)
 {
 	int x = frameIndex % imageInfo->spritesNum[0];
 	int y = frameIndex / imageInfo->spritesNum[0];
-	BitBlt(
+	//BitBlt(
+	//	hdc,
+	//	destX, destY,
+	//	imageInfo->width / imageInfo->spritesNum[0],
+	//	imageInfo->height / imageInfo->spritesNum[1],
+	//	imageInfo->hMemDC,
+	//	imageInfo->width / imageInfo->spritesNum[0] * x, imageInfo->height / imageInfo->spritesNum[1] * y,
+	//	SRCCOPY);
+
+	int srcX{}, srcY{};
+	int srcWidth{}, srcHeight{};
+	srcX = imageInfo->width / imageInfo->spritesNum[0] * x;
+	srcY = imageInfo->height / imageInfo->spritesNum[1] * y;
+	srcWidth = imageInfo->width / imageInfo->spritesNum[0];
+	srcHeight = imageInfo->height / imageInfo->spritesNum[1];
+	if (flip) {
+		srcX += srcWidth;
+		srcWidth *= -1;
+	}
+
+	StretchBlt(
 		hdc,
 		destX, destY,
-		imageInfo->width / imageInfo->spritesNum[0],
-		imageInfo->height / imageInfo->spritesNum[1],
+		destWidth, destHeight,
 		imageInfo->hMemDC,
-		imageInfo->width / imageInfo->spritesNum[0] * x, imageInfo->height / imageInfo->spritesNum[1] * y,
+		srcX, srcY,
+		srcWidth, srcHeight,
 		SRCCOPY);
+
+	//TransparentBlt(
+	//	hdc,
+	//	destX, destY,
+	//	imageInfo->width / imageInfo->spritesNum[0],
+	//	imageInfo->height / imageInfo->spritesNum[1],
+	//	imageInfo->hMemDC,
+	//	srcX, srcY,
+	//	srcWidth, srcHeight,
+	//	RGB(255,0,255));
 }
 
 void Image::Release()

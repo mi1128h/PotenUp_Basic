@@ -55,5 +55,5 @@ void AnimBackground::Render(HDC hdc)
 	if (frameIdx == -1) return;
 	int size = vImages[curStage].size();
 	if (size == 1)
-		vImages[curStage][0]->Render(hdc, position.x, position.y, frameIdx);
+		vImages[curStage][0]->Render(hdc, position.x, position.y, WINSIZE_X, WINSIZE_Y, frameIdx);
 }
