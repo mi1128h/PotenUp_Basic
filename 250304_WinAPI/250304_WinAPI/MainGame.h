@@ -20,6 +20,7 @@ private:
 
 	RoundManager* roundManager;
 
+	Image* backBuffer;
 	Image* iori;
 	int idx;
 

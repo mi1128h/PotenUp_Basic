@@ -15,6 +15,11 @@
 
 void MainGame::Init()
 {
+	backBuffer = new Image();
+	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y))) {
+		MessageBox(g_hWnd, L"backBuffer 생성 실패", L"경고", MB_OK);
+	}
+
 	tank = new Tank();
 	tank->Init();
 
@@ -23,7 +28,7 @@ void MainGame::Init()
 
 	iori = new Image();
 	if (FAILED(iori->Init(L"Image/iori_walk.bmp", 612, 104))) {
-		MessageBox(g_hWnd, L"파일 로드에 실패", L"경고", MB_OK);
+		MessageBox(g_hWnd, L"iori_walk 파일 로드에 실패", L"경고", MB_OK);
 	}
 }
 
@@ -44,6 +49,12 @@ void MainGame::Release()
 		iori->Release();
 		delete iori;
 		iori = NULL;
+	}
+
+	if (backBuffer) {
+		backBuffer->Release();
+		delete backBuffer;
+		backBuffer = NULL;
 	}
 }
 
@@ -96,19 +107,26 @@ void MainGame::Update()
 
 void MainGame::Render(HDC hdc)
 {
+	// 백버퍼에 복사
+	HDC hBackBufferDC = backBuffer->GetMemDC();
+	BitBlt(hBackBufferDC, 0, 0, WINSIZE_X, WINSIZE_Y, hdc, 0, 0, WHITENESS);
+
 	if (roundManager)
 		if (roundManager->IsGameOver()) return;
 	wsprintf(szText, L"Mouse X: %d, Y: %d", mousePosX, mousePosY);
-	TextOut(hdc, 20, 160, szText, wcslen(szText));
+	TextOut(hBackBufferDC, 20, 160, szText, wcslen(szText));
 
-	if (tank) tank->Render(hdc);
+	if (tank) tank->Render(hBackBufferDC);
 	for (auto e : enemies)
-		if (e) e->Render(hdc);
-	Enemy::RenderBullets(hdc);
+		if (e) e->Render(hBackBufferDC);
+	Enemy::RenderBullets(hBackBufferDC);
 	
 	if (iori) {
-		iori->Render(hdc, 100, 100, idx);
+		iori->Render(hBackBufferDC, 100, 100, idx);
 	}
+
+	// 백버퍼에 있는 내용을 메인 hdc에 복사
+	backBuffer->Render(hdc);
 }
 
 void MainGame::RenderInfo(HDC hdc)
@@ -218,7 +236,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			break;
 		}
 
-		InvalidateRect(g_hWnd, NULL, TRUE);
+		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 
 	case WM_KEYDOWN:
@@ -260,19 +278,19 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			}
 			break;
 		}
-		InvalidateRect(g_hWnd, NULL, TRUE);
+		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 
 	case WM_MOUSEMOVE:
 		mousePosX = LOWORD(lParam);
 		mousePosY = HIWORD(lParam);
 
-		InvalidateRect(g_hWnd, NULL, TRUE);
+		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 
 	case WM_LBUTTONDOWN:
 
-		InvalidateRect(g_hWnd, NULL, TRUE);
+		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 
 	case WM_PAINT:

@@ -51,6 +51,6 @@ public:
 	// 메모리 해제
 	void Release();
 
-
+	inline HDC GetMemDC() { if (imageInfo) return imageInfo->hMemDC; else return NULL; }
 };
 
