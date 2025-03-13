@@ -60,9 +60,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	g_hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, g_lpszClassName, g_lpszClassName,
 		WS_OVERLAPPEDWINDOW, 50, 50, rcWindowSize.right - rcWindowSize.left, rcWindowSize.bottom - rcWindowSize.top, NULL, NULL, g_hInstance, NULL);
 
-	ShowWindow(g_hWnd, nCmdShow);
-
 	g_mainGame.Init();
+
+	ShowWindow(g_hWnd, nCmdShow);
 
 	MSG message;
 	while (GetMessage(&message, 0, 0, 0)) {

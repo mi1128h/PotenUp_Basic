@@ -117,6 +117,7 @@ void MainGame::Update()
 
 void MainGame::Render(HDC hdc)
 {
+	if (!backBuffer) return;
 	// 백버퍼에 복사
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 	BitBlt(hBackBufferDC, 0, 0, WINSIZE_X, WINSIZE_Y, hdc, 0, 0, WHITENESS);
