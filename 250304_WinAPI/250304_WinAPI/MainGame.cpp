@@ -6,11 +6,8 @@
 #include "Image.h"
 
 /*
-	실습1. 적 클래스 생성 (화면 밖, 랜덤 위치)
-	실습2. 적은 탱크를 향해 다가온다.
-	실습3. 미사일 - 적, 적 - 탱크 충돌 처리
-	실습4. 5번째 미사일마다 유도미사일 발사
-			가장 가까운 적을 따라 가서 맞춘다
+	실습1. 이오리 집에 보내기
+	실습2. 배경 바꾸기 (킹오파 애니메이션 배경)
 */
 
 void MainGame::Init()
@@ -19,32 +16,22 @@ void MainGame::Init()
 	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y))) {
 		MessageBox(g_hWnd, L"backBuffer 생성 실패", L"경고", MB_OK);
 	}
+	iori = new Image();
+	if (FAILED(iori->Init(L"Image/iori_walk.bmp", 612, 104))) {
+		MessageBox(g_hWnd, L"iori_walk 파일 로드에 실패", L"경고", MB_OK);
+	}
 
+#ifdef TANKGAME
 	tank = new Tank();
 	tank->Init();
 
 	roundManager = new RoundManager();
 	roundManager->Init();
-
-	iori = new Image();
-	if (FAILED(iori->Init(L"Image/iori_walk.bmp", 612, 104))) {
-		MessageBox(g_hWnd, L"iori_walk 파일 로드에 실패", L"경고", MB_OK);
-	}
+#endif
 }
 
 void MainGame::Release()
 {
-	if (tank) {
-		tank->Release();
-		delete tank;
-	}
-	for (auto e : enemies) {
-		if (e) delete e;
-	}
-	Enemy::ReleaseBullets();
-
-	if (roundManager) delete roundManager;
-
 	if (iori) {
 		iori->Release();
 		delete iori;
@@ -56,10 +43,27 @@ void MainGame::Release()
 		delete backBuffer;
 		backBuffer = NULL;
 	}
+
+#ifdef TANKGAME
+	if (tank) {
+		tank->Release();
+		delete tank;
+	}
+	for (auto e : enemies) {
+		if (e) delete e;
+	}
+	Enemy::ReleaseBullets();
+
+	if (roundManager) delete roundManager;
+#endif
 }
 
 void MainGame::Update()
 {
+	idx++;
+	idx %= 9;
+
+#ifdef TANKGAME
 	if (roundManager) {
 		if (roundManager->IsGameOver()) return;
 	}
@@ -100,9 +104,7 @@ void MainGame::Update()
 	if (roundManager->IsGameClear()) {
 		tank->Skill(SkillType::Confetti);
 	}
-
-	idx++;
-	idx %= 9;
+#endif
 }
 
 void MainGame::Render(HDC hdc)
@@ -111,6 +113,11 @@ void MainGame::Render(HDC hdc)
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 	BitBlt(hBackBufferDC, 0, 0, WINSIZE_X, WINSIZE_Y, hdc, 0, 0, WHITENESS);
 
+	if (iori) {
+		iori->Render(hBackBufferDC, 100, 100, idx);
+	}
+
+#ifdef TANKGAME
 	if (roundManager)
 		if (roundManager->IsGameOver()) return;
 	wsprintf(szText, L"Mouse X: %d, Y: %d", mousePosX, mousePosY);
@@ -120,10 +127,9 @@ void MainGame::Render(HDC hdc)
 	for (auto e : enemies)
 		if (e) e->Render(hBackBufferDC);
 	Enemy::RenderBullets(hBackBufferDC);
-	
-	if (iori) {
-		iori->Render(hBackBufferDC, 100, 100, idx);
-	}
+
+	RenderInfo(hBackBufferDC);
+#endif
 
 	// 백버퍼에 있는 내용을 메인 hdc에 복사
 	backBuffer->Render(hdc);
@@ -222,24 +228,27 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	switch (iMessage) {
 	case WM_CREATE:
 		hTimer = (HANDLE)SetTimer(hWnd, 0, 100, NULL);
+#ifdef TANKGAME
 		hTimer2 = (HANDLE)SetTimer(hWnd, 1, 3000, NULL);
-
+#endif
 		break;
 	case WM_TIMER:
 		switch (wParam) {
 		case 0:
 			Update();
 			break;
-
+#ifdef TANKGAME
 		case 1:
 			CreateEnemy();
 			break;
+#endif
 		}
 
 		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 
 	case WM_KEYDOWN:
+#ifdef TANKGAME
 		switch (wParam) {
 		case VK_ESCAPE:
 			if (roundManager->IsGameOver() or roundManager->IsGameClear())
@@ -278,6 +287,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			}
 			break;
 		}
+#endif
 		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 
@@ -297,13 +307,14 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		hdc = BeginPaint(g_hWnd, &ps);
 
 		Render(hdc);
-		RenderInfo(hdc);
 
 		EndPaint(g_hWnd, &ps);
 		break;
 	case WM_DESTROY:
 		KillTimer(hWnd, 0);
+#ifdef TANKGAME
 		KillTimer(hWnd, 1);
+#endif
 		Release();
 		PostQuitMessage(0);
 		break;
