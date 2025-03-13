@@ -84,24 +84,30 @@ void Image::Render(HDC hdc, int destX, int destY, int destWidth, int destHeight,
 		srcWidth *= -1;
 	}
 
+	HDC hTempDC = CreateCompatibleDC(hdc);
+	HBITMAP hTempBit = CreateCompatibleBitmap(hdc, destWidth, destHeight);
+	HBITMAP hOldBit = (HBITMAP)SelectObject(hTempDC, hTempBit);
+	
 	StretchBlt(
-		hdc,
-		destX, destY,
+		hTempDC,
+		0, 0,
 		destWidth, destHeight,
 		imageInfo->hMemDC,
 		srcX, srcY,
 		srcWidth, srcHeight,
 		SRCCOPY);
 
-	//TransparentBlt(
-	//	hdc,
-	//	destX, destY,
-	//	imageInfo->width / imageInfo->spritesNum[0],
-	//	imageInfo->height / imageInfo->spritesNum[1],
-	//	imageInfo->hMemDC,
-	//	srcX, srcY,
-	//	srcWidth, srcHeight,
-	//	RGB(255,0,255));
+	TransparentBlt(
+		hdc,
+		destX, destY,
+		destWidth, destHeight,
+		hTempDC,
+		0, 0,
+		destWidth, destHeight,
+		RGB(255,0,255));
+
+	SelectObject(hTempDC, hOldBit);
+	DeleteDC(hTempDC);
 }
 
 void Image::Release()
