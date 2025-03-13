@@ -13,54 +13,66 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="MainGame">
+      <UniqueIdentifier>{30a4acda-a37b-4e89-9be8-1d9ebd90b05c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D Framework">
+      <UniqueIdentifier>{c340a777-a67c-4ce7-8c9f-6765f2c97d59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Tank.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>2D Framework</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="RoundManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>2D Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>2D Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="MainGame.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="RoundManager.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Tank.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonFunction.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="RoundManager.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Image.h">
+      <Filter>2D Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

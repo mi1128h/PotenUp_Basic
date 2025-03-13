@@ -4,6 +4,7 @@
 class Tank;
 class Enemy;
 class RoundManager;
+class Image;
 class MainGame : public GameObject
 {
 private:
@@ -18,6 +19,9 @@ private:
 	int nDeadEnemies;
 
 	RoundManager* roundManager;
+
+	Image* iori;
+	int idx;
 
 public:
 	void Init();

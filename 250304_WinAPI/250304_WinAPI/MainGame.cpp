@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "RoundManager.h"
 #include "CommonFunction.h"
+#include "Image.h"
 
 /*
 	실습1. 적 클래스 생성 (화면 밖, 랜덤 위치)
@@ -19,6 +20,11 @@ void MainGame::Init()
 
 	roundManager = new RoundManager();
 	roundManager->Init();
+
+	iori = new Image();
+	if (FAILED(iori->Init(L"Image/iori_walk.bmp", 612, 104))) {
+		MessageBox(g_hWnd, L"파일 로드에 실패", L"경고", MB_OK);
+	}
 }
 
 void MainGame::Release()
@@ -33,6 +39,12 @@ void MainGame::Release()
 	Enemy::ReleaseBullets();
 
 	if (roundManager) delete roundManager;
+
+	if (iori) {
+		iori->Release();
+		delete iori;
+		iori = NULL;
+	}
 }
 
 void MainGame::Update()
@@ -77,6 +89,9 @@ void MainGame::Update()
 	if (roundManager->IsGameClear()) {
 		tank->Skill(SkillType::Confetti);
 	}
+
+	idx++;
+	idx %= 9;
 }
 
 void MainGame::Render(HDC hdc)
@@ -90,6 +105,10 @@ void MainGame::Render(HDC hdc)
 	for (auto e : enemies)
 		if (e) e->Render(hdc);
 	Enemy::RenderBullets(hdc);
+	
+	if (iori) {
+		iori->Render(hdc, 100, 100, idx);
+	}
 }
 
 void MainGame::RenderInfo(HDC hdc)

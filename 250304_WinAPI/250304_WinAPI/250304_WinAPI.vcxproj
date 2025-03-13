@@ -130,6 +130,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -143,6 +144,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="RoundManager.h" />
     <ClInclude Include="Tank.h" />
