@@ -4,6 +4,8 @@
 #include "RoundManager.h"
 #include "CommonFunction.h"
 #include "Image.h"
+#include "AnimCharacter.h"
+#include "AnimBackground.h"
 
 /*
 	실습1. 이오리 집에 보내기
@@ -16,10 +18,11 @@ void MainGame::Init()
 	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y))) {
 		MessageBox(g_hWnd, L"backBuffer 생성 실패", L"경고", MB_OK);
 	}
-	iori = new Image();
-	if (FAILED(iori->Init(L"Image/iori_walk.bmp", 612, 104))) {
-		MessageBox(g_hWnd, L"iori_walk 파일 로드에 실패", L"경고", MB_OK);
-	}
+	iori = new AnimCharacter();
+	iori->Init();
+
+	background = new AnimBackground();
+	background->Init();
 
 #ifdef TANKGAME
 	tank = new Tank();
@@ -34,6 +37,11 @@ void MainGame::Release()
 {
 	if (iori) {
 		iori->Release();
+		delete iori;
+		iori = NULL;
+	}
+	if (background) {
+		background->Release();
 		delete iori;
 		iori = NULL;
 	}
@@ -60,8 +68,8 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
-	idx++;
-	idx %= 9;
+	if (iori) iori->Update();
+	if (background) background->Update();
 
 #ifdef TANKGAME
 	if (roundManager) {
@@ -113,8 +121,11 @@ void MainGame::Render(HDC hdc)
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 	BitBlt(hBackBufferDC, 0, 0, WINSIZE_X, WINSIZE_Y, hdc, 0, 0, WHITENESS);
 
+	if (background) {
+		background->Render(hBackBufferDC);
+	}
 	if (iori) {
-		iori->Render(hBackBufferDC, 100, 100, idx);
+		iori->Render(hBackBufferDC);
 	}
 
 #ifdef TANKGAME
@@ -248,6 +259,19 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		break;
 
 	case WM_KEYDOWN:
+		switch (wParam) {
+		case 'a': case 'A':
+			iori->Move(-10, 0);
+			break;
+		case 'd': case 'D':
+			iori->Move(10, 0);
+			break;
+		case 'w': case 'W':
+			iori->Move(0, -10);
+			break;
+		case 's': case 'S':
+			iori->Move(0, 10);
+		}
 #ifdef TANKGAME
 		switch (wParam) {
 		case VK_ESCAPE:

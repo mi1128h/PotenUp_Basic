@@ -11,6 +11,8 @@ HRESULT Image::Init(int width, int height)
 	imageInfo->width = width;
 	imageInfo->height = height;
 	imageInfo->loadType = IMAGE_LOAD_TYPE::Empty;
+	imageInfo->spritesNum[0] = 1;
+	imageInfo->spritesNum[1] = 1;
 	
 	ReleaseDC(g_hWnd, hdc);
 
@@ -22,7 +24,7 @@ HRESULT Image::Init(int width, int height)
 	return S_OK;
 }
 
-HRESULT Image::Init(const wchar_t* filePath, int width, int height)
+HRESULT Image::Init(const wchar_t* filePath, int width, int height, int spritesNumX, int spritesNumY)
 {
 	HDC hdc = GetDC(g_hWnd);
 	imageInfo = new IMAGE_INFO();
@@ -33,6 +35,8 @@ HRESULT Image::Init(const wchar_t* filePath, int width, int height)
 	imageInfo->width = width;
 	imageInfo->height = height;
 	imageInfo->loadType = IMAGE_LOAD_TYPE::File;
+	imageInfo->spritesNum[0] = spritesNumX;
+	imageInfo->spritesNum[1] = spritesNumY;
 
 	ReleaseDC(g_hWnd, hdc);
 
@@ -44,7 +48,7 @@ HRESULT Image::Init(const wchar_t* filePath, int width, int height)
 	return S_OK;
 }
 
-void Image::Render(HDC hdc, int destX, int destY)
+void Image::Render(HDC hdc, int destX, int destY, bool flip)
 {
 	BitBlt(
 		hdc,				// 복사 목적지 DC
@@ -56,15 +60,17 @@ void Image::Render(HDC hdc, int destX, int destY)
 		SRCCOPY);			// 복사 옵션
 }
 
-void Image::Render(HDC hdc, int destX, int destY, int frameIndex)
+void Image::Render(HDC hdc, int destX, int destY, int frameIndex, bool flip)
 {
+	int x = frameIndex % imageInfo->spritesNum[0];
+	int y = frameIndex / imageInfo->spritesNum[0];
 	BitBlt(
 		hdc,
 		destX, destY,
-		imageInfo->width / 9,
-		imageInfo->height,
+		imageInfo->width / imageInfo->spritesNum[0],
+		imageInfo->height / imageInfo->spritesNum[1],
 		imageInfo->hMemDC,
-		imageInfo->width / 9 * frameIndex, 0,
+		imageInfo->width / imageInfo->spritesNum[0] * x, imageInfo->height / imageInfo->spritesNum[1] * y,
 		SRCCOPY);
 }
 

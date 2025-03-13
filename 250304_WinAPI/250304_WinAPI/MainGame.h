@@ -5,6 +5,8 @@ class Tank;
 class Enemy;
 class RoundManager;
 class Image;
+class AnimCharacter;
+class AnimBackground;
 class MainGame : public GameObject
 {
 private:
@@ -21,8 +23,8 @@ private:
 	RoundManager* roundManager;
 
 	Image* backBuffer;
-	Image* iori;
-	int idx;
+	AnimCharacter* iori;
+	AnimBackground* background;
 
 public:
 	void Init();

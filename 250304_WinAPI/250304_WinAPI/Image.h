@@ -21,6 +21,7 @@ public :
 		int width;			// 이미지 가로 크기
 		int height;			// 이미지 세로 크기
 		BYTE loadType;		// 로드 타입
+		int spritesNum[2];	// 가로 세로 스프라이트 개수
 
 		tagImageInfo()
 		{
@@ -31,6 +32,8 @@ public :
 			width = 0;
 			height = 0;
 			loadType = IMAGE_LOAD_TYPE::Empty;
+			spritesNum[0] = 1;
+			spritesNum[1] = 1;
 		}
 	} IMAGE_INFO, * LPIMAGE_INFO;
 
@@ -42,15 +45,17 @@ public:
 	HRESULT Init(int width, int height);
 
 	// 파일로부터 이미지를 로드하는 함수
-	HRESULT Init(const wchar_t* filePath, int width, int height);
+	HRESULT Init(const wchar_t* filePath, int width, int height, int spritesNumX = 1, int spritesNumY = 1);
 
 	// 화면에 출력
-	void Render(HDC hdc, int destX = 0, int destY = 0);
-	void Render(HDC hdc, int destX, int destY, int frameIndex);
+	void Render(HDC hdc, int destX = 0, int destY = 0, bool flip = false);
+	void Render(HDC hdc, int destX, int destY, int frameIndex, bool flip = false);
 	
 	// 메모리 해제
 	void Release();
 
 	inline HDC GetMemDC() { if (imageInfo) return imageInfo->hMemDC; else return NULL; }
+	inline int GetSpritesNumX() { if (imageInfo) return imageInfo->spritesNum[0]; else return -1; }
+	inline int GetSpritesNumY() { if (imageInfo) return imageInfo->spritesNum[1]; else return -1; }
 };
 
