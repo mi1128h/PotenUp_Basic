@@ -80,7 +80,7 @@ void Image::Render(HDC hdc, int destX, int destY, int destWidth, int destHeight,
 	srcWidth = imageInfo->width / imageInfo->spritesNum[0];
 	srcHeight = imageInfo->height / imageInfo->spritesNum[1];
 	if (flip) {
-		srcX += srcWidth;
+		srcX += srcWidth - 1;
 		srcWidth *= -1;
 	}
 
