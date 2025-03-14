@@ -262,16 +262,17 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case 'a': case 'A':
-			iori->Move(-10, 0);
+			iori->SetDelta(-10, 0);
 			break;
 		case 'd': case 'D':
-			iori->Move(10, 0);
+			iori->SetDelta(10, 0);
 			break;
 		case 'w': case 'W':
-			iori->Move(0, -10);
+			iori->SetDelta(0, -10);
 			break;
 		case 's': case 'S':
-			iori->Move(0, 10);
+			iori->SetDelta(0, 10);
+			break;
 		}
 #ifdef TANKGAME
 		switch (wParam) {
@@ -313,6 +314,25 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			break;
 		}
 #endif
+		InvalidateRect(g_hWnd, NULL, FALSE);
+		break;
+
+	case WM_KEYUP:
+		switch (wParam) {
+		case 'a': case 'A':
+			iori->SetDelta(0, 0);
+			break;
+		case 'd': case 'D':
+			iori->SetDelta(0, 0);
+			break;
+		case 'w': case 'W':
+			iori->SetDelta(0, 0);
+			break;
+		case 's': case 'S':
+			iori->SetDelta(0, 0);
+			break;
+		}
+
 		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 

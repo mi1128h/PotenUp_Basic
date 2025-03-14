@@ -13,6 +13,7 @@ class AnimCharacter : public GameObject
 {
 private:
 	FPOINT position;
+	float dx, dy;
 	float speed;
 	int size[2];
 
@@ -28,10 +29,11 @@ public:
 	void Animate();
 	void Render(HDC hdc);
 
-	void Move(int dx, int dy);
+	void Move();
+	void SetDelta(int dx, int dy) { this->dx = dx; this->dy = dy; }
 
 	FPOINT GetPos() { return position; }
 	State GetState() { return curState; }
-	void SetState(State state) { curState = state; }
+	void SetState(State state) { if (state == curState) return; curState = state; frameIdx = 0; }
 };
 
