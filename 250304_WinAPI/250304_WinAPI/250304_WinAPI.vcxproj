@@ -133,6 +133,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
@@ -149,8 +150,10 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="RoundManager.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Tank.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

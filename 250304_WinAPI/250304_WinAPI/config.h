@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 #include <random>
+#include <bitset>
+
+#include "KeyManager.h"
 
 using namespace std;
 
