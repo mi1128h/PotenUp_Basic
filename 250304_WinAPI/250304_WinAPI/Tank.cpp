@@ -96,8 +96,8 @@ void Tank::Move(int dx, int dy)
 {
 	pos.x += dx;
 	pos.y += dy;
-	pos.x = ClampInt(pos.x, 0, WINSIZE_X);
-	pos.y = ClampInt(pos.y, 0, WINSIZE_Y);
+	pos.x = ClampVal(pos.x, 0.0f, (float)WINSIZE_X);
+	pos.y = ClampVal(pos.y, 0.0f, (float)WINSIZE_Y);
 }
 
 void Tank::Skill(SkillType type)

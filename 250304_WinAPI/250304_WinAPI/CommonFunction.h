@@ -74,9 +74,10 @@ inline bool IsOutOfRange(FPOINT pos, int size_x, int size_y)
 	return false;
 }
 
-inline int ClampInt(int val, int low, int high)
+template<typename T>
+inline T ClampVal(T val, T low, T high)
 {
-	int retVal;
+	T retVal;
 	if (val < low) retVal = low;
 	else if (val > high) retVal = high;
 	else retVal = val;

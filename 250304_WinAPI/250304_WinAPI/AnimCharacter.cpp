@@ -86,7 +86,7 @@ void AnimCharacter::Move()
 {
 	position.x += dx;
 	position.y += dy;
-	position.y = ClampInt(position.y, 0, WINSIZE_Y);
+	position.y = ClampVal(position.y, 0.0f, (float)WINSIZE_Y);
 	if (dx > 0) flip = false;
 	if (dx < 0) flip = true;
 }

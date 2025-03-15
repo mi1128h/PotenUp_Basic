@@ -130,8 +130,8 @@ void BounceBullet::CheckWallCollision()
 			bounceNum--;
 			bool isUpsideDown = IsOutOfRange({ WINSIZE_X / 2, position.y }, WINSIZE_X, WINSIZE_Y);
 			fireAngle = 180 * (isUpsideDown ? 2 : 1) - fireAngle;
-			position.x = ClampInt(position.x, 0, WINSIZE_X);
-			position.y = ClampInt(position.y, 0, WINSIZE_Y);
+			position.x = ClampVal(position.x, 0.0f, (float)WINSIZE_X);
+			position.y = ClampVal(position.y, 0.0f, (float)WINSIZE_Y);
 		}
 	}
 }
