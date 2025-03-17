@@ -24,6 +24,9 @@ void MainGame::Init()
 	background = new AnimBackground();
 	background->Init();
 
+	KeyManager* km = KeyManager::GetInstance();
+	km->Init();
+
 #ifdef TANKGAME
 	tank = new Tank();
 	tank->Init();
@@ -51,6 +54,9 @@ void MainGame::Release()
 		delete backBuffer;
 		backBuffer = NULL;
 	}
+
+	KeyManager* km = KeyManager::GetInstance();
+	if (km) km->Release();
 
 #ifdef TANKGAME
 	if (tank) {
@@ -261,18 +267,18 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 	case WM_KEYDOWN:
 		switch (wParam) {
-		case 'a': case 'A':
-			iori->SetDelta(-10, 0);
-			break;
-		case 'd': case 'D':
-			iori->SetDelta(10, 0);
-			break;
-		case 'w': case 'W':
-			iori->SetDelta(0, -10);
-			break;
-		case 's': case 'S':
-			iori->SetDelta(0, 10);
-			break;
+		//case 'a': case 'A':
+		//	iori->SetDelta(-10, 0);
+		//	break;
+		//case 'd': case 'D':
+		//	iori->SetDelta(10, 0);
+		//	break;
+		//case 'w': case 'W':
+		//	iori->SetDelta(0, -10);
+		//	break;
+		//case 's': case 'S':
+		//	iori->SetDelta(0, 10);
+		//	break;
 		}
 #ifdef TANKGAME
 		switch (wParam) {

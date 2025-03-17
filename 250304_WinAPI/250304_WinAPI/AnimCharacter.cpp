@@ -47,11 +47,43 @@ void AnimCharacter::Update()
 {
 	Move();
 
+	ProcessInput();
+
 	if (dx != 0.0f or dy != 0.0f)
 		SetState(State::Walk);
 	else if (dx == 0.0f and dy == 0.0f)
 		SetState(State::Idle);
 	Animate();
+}
+
+void AnimCharacter::ProcessInput()
+{
+	KeyManager* km = KeyManager::GetInstance();
+	int deltaX{}, deltaY{};
+	switch (curState) {
+	case State::Idle:
+		if (km->IsOnceKeyDown('a') or km->IsOnceKeyDown('A')) {
+			deltaX -= 10;
+		}
+		if (km->IsOnceKeyDown('d') or km->IsOnceKeyDown('D')) {
+			deltaX += 10;
+		}
+		if (deltaX != 0) SetState(State::Walk);
+		break;
+	case State::Walk:
+		if (km->IsStayKeyDown('a') or km->IsStayKeyDown('A')) {
+			deltaX -= 10;
+		}
+		if (km->IsStayKeyDown('d') or km->IsStayKeyDown('D')) {
+			deltaX += 10;
+		}
+		if (deltaX == 0) SetState(State::Idle);
+		break;
+	case State::Dead:
+		break;
+	}
+
+	SetDelta(deltaX, deltaY);
 }
 
 void AnimCharacter::Animate()

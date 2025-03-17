@@ -26,6 +26,7 @@ public:
 	void Init();
 	void Release();
 	void Update();
+	void ProcessInput();
 	void Animate();
 	void Render(HDC hdc);
 
