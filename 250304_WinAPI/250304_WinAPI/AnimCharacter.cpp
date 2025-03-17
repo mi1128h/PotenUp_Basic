@@ -49,10 +49,6 @@ void AnimCharacter::Update()
 
 	ProcessInput();
 
-	if (dx != 0.0f or dy != 0.0f)
-		SetState(State::Walk);
-	else if (dx == 0.0f and dy == 0.0f)
-		SetState(State::Idle);
 	Animate();
 }
 
@@ -63,19 +59,19 @@ void AnimCharacter::ProcessInput()
 	switch (curState) {
 	case State::Idle:
 		if (km->IsOnceKeyDown('a') or km->IsOnceKeyDown('A')) {
-			deltaX -= 10;
+			deltaX -= 1;
 		}
 		if (km->IsOnceKeyDown('d') or km->IsOnceKeyDown('D')) {
-			deltaX += 10;
+			deltaX += 1;
 		}
 		if (deltaX != 0) SetState(State::Walk);
 		break;
 	case State::Walk:
 		if (km->IsStayKeyDown('a') or km->IsStayKeyDown('A')) {
-			deltaX -= 10;
+			deltaX -= 1;
 		}
 		if (km->IsStayKeyDown('d') or km->IsStayKeyDown('D')) {
-			deltaX += 10;
+			deltaX += 1;
 		}
 		if (deltaX == 0) SetState(State::Idle);
 		break;
@@ -116,8 +112,8 @@ void AnimCharacter::Render(HDC hdc)
 
 void AnimCharacter::Move()
 {
-	position.x += dx;
-	position.y += dy;
+	position.x += dx * speed;
+	position.y += dy * speed;
 	position.y = ClampVal(position.y, 0.0f, (float)WINSIZE_Y);
 	if (dx > 0) flip = false;
 	if (dx < 0) flip = true;
