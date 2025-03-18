@@ -39,13 +39,16 @@ public :
 
 private:
 	IMAGE_INFO* imageInfo;	// LPIMAGE_INFO imageInfo
+	bool isTransparent;
+	COLORREF tansColor;
 
 public:
 	// 빈 비트맵 이미지를 만드는 함수
 	HRESULT Init(int width, int height);
 
 	// 파일로부터 이미지를 로드하는 함수
-	HRESULT Init(const wchar_t* filePath, int width, int height, int spritesNumX = 1, int spritesNumY = 1);
+	HRESULT Init(const wchar_t* filePath, int width, int height,
+		int spritesNumX = 1, int spritesNumY = 1, bool isTransparent = FALSE, COLORREF transColor = FALSE);
 
 	// 화면에 출력
 	void Render(HDC hdc, int destX = 0, int destY = 0, bool flip = false);

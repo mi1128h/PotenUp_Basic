@@ -12,13 +12,13 @@ void AnimCharacter::Init()
 	for (int i = 0; i < State::Statelength; ++i) vImages[i] = {};
 
 	Image* idleImages = new Image();
-	if (FAILED(idleImages->Init(L"Image/iori_idle.bmp", 684, 104, 9, 1))) {
+	if (FAILED(idleImages->Init(L"Image/iori_idle.bmp", 684, 104, 9, 1, true, RGB(255, 0, 255)))) {
 		MessageBox(g_hWnd, L"iori_idle 파일 로드에 실패", L"경고", MB_OK);
 	}
 	vImages[State::Idle].push_back(idleImages);
 
 	Image* walkImages = new Image();
-	if (FAILED(walkImages->Init(L"Image/iori_walk.bmp", 612, 104, 9, 1))) {
+	if (FAILED(walkImages->Init(L"Image/iori_walk.bmp", 612, 104, 9, 1, true, RGB(255, 0, 255)))) {
 		MessageBox(g_hWnd, L"iori_walk 파일 로드에 실패", L"경고", MB_OK);
 	}
 	vImages[State::Walk].push_back(walkImages);
