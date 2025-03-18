@@ -18,6 +18,9 @@ public :
 		HDC hMemDC;			// 그리기를 주관하는 객체 핸들
 		HBITMAP hBitmap;	// 이미지 정보
 		HBITMAP hOldBit;	// 기존 이미지 정보
+		HDC hTempDC;
+		HBITMAP hTempBit;
+		HBITMAP hOldTemp;
 		int width;			// 이미지 가로 크기
 		int height;			// 이미지 세로 크기
 		BYTE loadType;		// 로드 타입
@@ -29,6 +32,9 @@ public :
 			hMemDC = NULL;
 			hBitmap = NULL;
 			hOldBit = NULL;
+			hTempDC = NULL;
+			hTempBit = NULL;
+			hOldTemp = NULL;
 			width = 0;
 			height = 0;
 			loadType = IMAGE_LOAD_TYPE::Empty;

@@ -8,6 +8,11 @@ HRESULT Image::Init(int width, int height)
 	imageInfo->hMemDC = CreateCompatibleDC(hdc);
 	imageInfo->hBitmap = CreateCompatibleBitmap(hdc, width, height);
 	imageInfo->hOldBit = (HBITMAP)SelectObject(imageInfo->hMemDC, imageInfo->hBitmap);
+
+	imageInfo->hTempDC = CreateCompatibleDC(hdc);
+	imageInfo->hTempBit = CreateCompatibleBitmap(hdc, width, height);
+	imageInfo->hOldTemp = (HBITMAP)SelectObject(imageInfo->hTempDC, imageInfo->hTempBit);
+
 	imageInfo->width = width;
 	imageInfo->height = height;
 	imageInfo->loadType = IMAGE_LOAD_TYPE::Empty;
@@ -33,6 +38,11 @@ HRESULT Image::Init(const wchar_t* filePath, int width, int height,
 	imageInfo->hMemDC = CreateCompatibleDC(hdc);
 	imageInfo->hBitmap = (HBITMAP)LoadImage(g_hInstance, filePath, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
 	imageInfo->hOldBit = (HBITMAP)SelectObject(imageInfo->hMemDC, imageInfo->hBitmap);
+
+	imageInfo->hTempDC = CreateCompatibleDC(hdc);
+	imageInfo->hTempBit = (HBITMAP)LoadImage(g_hInstance, filePath, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+	imageInfo->hOldTemp = (HBITMAP)SelectObject(imageInfo->hTempDC, imageInfo->hTempBit);
+
 	imageInfo->width = width;
 	imageInfo->height = height;
 	imageInfo->loadType = IMAGE_LOAD_TYPE::File;
@@ -80,15 +90,13 @@ void Image::Render(HDC hdc, int destX, int destY, int destWidth, int destHeight,
 		srcWidth *= -1;
 	}
 
-	HDC hTempDC = CreateCompatibleDC(hdc);
-	HBITMAP hTempBit = CreateCompatibleBitmap(hdc, destWidth, destHeight);
-	HBITMAP hOldBit = (HBITMAP)SelectObject(hTempDC, hTempBit);
+	imageInfo->hOldTemp = (HBITMAP)SelectObject(imageInfo->hTempDC, imageInfo->hTempBit);
 	
 	if (isTransparent) {
 		StretchBlt(
-			hTempDC,
+			imageInfo->hTempDC,
 			0, 0,
-			destWidth, destHeight,
+			abs(srcWidth), abs(srcHeight),
 			imageInfo->hMemDC,
 			srcX, srcY,
 			srcWidth, srcHeight,
@@ -98,9 +106,9 @@ void Image::Render(HDC hdc, int destX, int destY, int destWidth, int destHeight,
 			hdc,
 			destX, destY,
 			destWidth, destHeight,
-			hTempDC,
+			imageInfo->hTempDC,
 			0, 0,
-			destWidth, destHeight,
+			abs(srcWidth), abs(srcHeight),
 			tansColor);
 	}
 	else {
@@ -114,16 +122,7 @@ void Image::Render(HDC hdc, int destX, int destY, int destWidth, int destHeight,
 			SRCCOPY);
 	}
 
-	//GdiTransparentBlt(hdc,
-	//	destX, destY,
-	//	imageInfo->width, imageInfo->height,
-	//	imageInfo->hMemDC,
-	//	0, 0,
-	//	imageInfo->width, imageInfo->height,
-	//	tansColor);
-
-	SelectObject(hTempDC, hOldBit);
-	DeleteDC(hTempDC);
+	SelectObject(imageInfo->hTempDC, imageInfo->hOldTemp);
 }
 
 void Image::Release()
@@ -132,6 +131,10 @@ void Image::Release()
 		SelectObject(imageInfo->hMemDC, imageInfo->hOldBit);
 		DeleteObject(imageInfo->hBitmap);
 		DeleteDC(imageInfo->hMemDC);
+
+		SelectObject(imageInfo->hTempDC, imageInfo->hOldTemp);
+		DeleteObject(imageInfo->hTempBit);
+		DeleteDC(imageInfo->hTempDC);
 
 		delete imageInfo;
 		imageInfo = NULL;
