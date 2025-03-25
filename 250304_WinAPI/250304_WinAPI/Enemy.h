@@ -8,6 +8,8 @@ class Enemy : public GameObject
 {
 private:
 	FPOINT position;
+	float dx, dy;
+	int moveCnt;
 	Tank* target;
 	int hp;
 	int size;
@@ -25,12 +27,13 @@ private:
 	static int nLoadedBullets;
 
 public:
-	void Init(Tank* tank);
+	void Init(float x, float y, Tank* tank=NULL);
 	void SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed, float bulletSpeed);
 	void Release();
 	void Update();
 	void Render(HDC hdc);
 
+	void HorizontalMove();
 	void Move();
 	bool IsDead() { return hp <= 0; }
 	FPOINT GetPos() { return position; }

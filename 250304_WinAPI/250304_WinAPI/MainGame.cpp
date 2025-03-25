@@ -195,36 +195,36 @@ void MainGame::RenderInfo(HDC hdc)
 
 void MainGame::CreateEnemy()
 {
-	if (!tank) return;
-	if (!roundManager) return;
-	if (roundManager->IsGameOver()) return;
-	if (!roundManager->canCreateEnemy()) return;
+	//if (!tank) return;
+	//if (!roundManager) return;
+	//if (roundManager->IsGameOver()) return;
+	//if (!roundManager->canCreateEnemy()) return;
 
-	float hp = roundManager->getEnemyHp();
-	int maxBulletNum = roundManager->getBulletNum();
-	float enemySpeed = roundManager->getEnemySpeed();
-	float enemySize = roundManager->getEnemySize();
-	int fireSpeed = roundManager->getFireInterval();
-	float bulletSpeed = roundManager->getBulletSpeed();
+	//float hp = roundManager->getEnemyHp();
+	//int maxBulletNum = roundManager->getBulletNum();
+	//float enemySpeed = roundManager->getEnemySpeed();
+	//float enemySize = roundManager->getEnemySize();
+	//int fireSpeed = roundManager->getFireInterval();
+	//float bulletSpeed = roundManager->getBulletSpeed();
 
-	if (nDeadEnemies > 0) {
-		for (int i = 0; i < enemies.size(); ++i) {
-			if (enemies[i]->IsDead()) {
-				enemies[i]->Init(tank);
-				enemies[i]->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed, bulletSpeed);
-				nDeadEnemies--;
-				break;
-			}
-		}
-	}
-	else {
-		Enemy* enemy = new Enemy;
-		enemy->Init(tank);
-		enemy->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed, bulletSpeed);
-		enemies.push_back(enemy);
-	}
+	//if (nDeadEnemies > 0) {
+	//	for (int i = 0; i < enemies.size(); ++i) {
+	//		if (enemies[i]->IsDead()) {
+	//			enemies[i]->Init(tank);
+	//			enemies[i]->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed, bulletSpeed);
+	//			nDeadEnemies--;
+	//			break;
+	//		}
+	//	}
+	//}
+	//else {
+	//	Enemy* enemy = new Enemy;
+	//	enemy->Init(tank);
+	//	enemy->SetValuesByRound(hp, maxBulletNum, enemySpeed, enemySize, fireSpeed, bulletSpeed);
+	//	enemies.push_back(enemy);
+	//}
 
-	roundManager->IncEnemyCnt();
+	//roundManager->IncEnemyCnt();
 }
 
 void MainGame::SetGuidedBulletsTarget()
@@ -235,13 +235,13 @@ void MainGame::SetGuidedBulletsTarget()
 
 void MainGame::RestartGame()
 {
-	tank->Init();
-	for (auto e : enemies)
-	{
-		e->Init(tank);
-	}
-	Enemy::InitLoadedBullets();
-	roundManager->Init();
+	//tank->Init();
+	//for (auto e : enemies)
+	//{
+	//	e->Init(tank);
+	//}
+	//Enemy::InitLoadedBullets();
+	//roundManager->Init();
 }
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

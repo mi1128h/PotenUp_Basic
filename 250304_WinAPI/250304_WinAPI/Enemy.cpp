@@ -18,10 +18,12 @@
 vector<Bullet*> Enemy::vBullets = {};
 int Enemy::nLoadedBullets = 0;
 
-void Enemy::Init(Tank* tank)
+void Enemy::Init(float x, float y, Tank* tank)
 {
-	position.x = uid_0_WINSIZEX(dre);
-	position.y = 50;
+	position = { x, y };
+	dx = 0;
+	dy = 0;
+	moveCnt = 5;
 	target = tank;
 	hp = 10;
 	size = 20;
@@ -61,6 +63,7 @@ void Enemy::Update()
 {
 	if (hp <= 0) return;
 
+	HorizontalMove();
 	Move();
 	elapsedFireTime++;
 	elapsedFireTime %= fireInterval;
@@ -94,14 +97,41 @@ void Enemy::Render(HDC hdc)
 	RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
 }
 
+void Enemy::HorizontalMove()
+{
+	if (moveCnt > 0) {
+		dx = 1;
+		moveCnt--;
+	}
+	else if (moveCnt < 0) {
+		dx = -1;
+		moveCnt++;
+	}
+
+	if (moveCnt == 0) {
+		moveCnt = dx > 0 ? -5 : 5;
+	}
+}
+
 void Enemy::Move()
 {
-	float moveAngle = 270;
-	if (target)
-		moveAngle = GetAngle(position, target->GetPos());
+	//float moveAngle = 270;
+	//if (target)
+	//	moveAngle = GetAngle(position, target->GetPos());
 
 	//position.x += cosf(TORADIAN(moveAngle)) * speed;
 	//position.y -= sinf(TORADIAN(moveAngle)) * speed;
+
+	position.x += dx * speed;
+	position.y += dy * speed;
+	int width{}, height{};
+	if (image) {
+		width = image->GetWidth() / image->GetSpritesNumX();
+		height = image->GetHeight() / image->GetSpritesNumY();
+	}
+	position.x = ClampVal(position.x, 0.0f + width / 2, (float)WINSIZE_X - width / 2);
+	position.y = ClampVal(position.y, 0.0f + height / 2, (float)WINSIZE_Y - height / 2);
+
 }
 
 void Enemy::Fire()
