@@ -1,6 +1,7 @@
 #include "EnemyManager.h"
 #include "Enemy.h"
 #include "BulletManager.h"
+#include "CommonFunction.h"
 
 /*
 	1. WinSizeX, Y 를 사막배경에 맞춰서 변경
@@ -66,7 +67,8 @@ void EnemyManager::Update()
 
 		if (e->GetRushElapsedTime() > 2.0f and !e->GetFireBullet()) {
 			if (bulletManager) {
-				bulletManager->Fire(BulletType::Basic, e->GetPos(), 270, e->GetDamage());
+				float angle = GetAngle(e->GetPos(), targetPoint);
+				bulletManager->Fire(BulletType::Basic, e->GetPos(), angle, e->GetDamage());
 				e->SetFireBullet(true);
 			}
 		}

@@ -80,7 +80,10 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
-	if (enemyManager) enemyManager->Update();
+	if (enemyManager) {
+		enemyManager->Update();
+		enemyManager->SetTargetPoint(rocket->GetPos());
+	}
 	if (rocket) rocket->Update();
 	if (background) background->Update();
 
