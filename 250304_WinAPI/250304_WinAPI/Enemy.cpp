@@ -2,6 +2,7 @@
 #include "CommonFunction.h"
 #include "Tank.h"
 #include "Bullet.h"
+#include "Image.h"
 
 /*
 	STL (Standard Template Library)
@@ -29,6 +30,11 @@ void Enemy::Init(Tank* tank)
 	bulletsNum = 0;
 	fireInterval = 1;
 	elapsedFireTime = 0;
+
+	animationFrame = 0;
+	elapsedFrame = 0;
+	image = new Image();
+	image->Init(L"Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
 }
 
 void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed, float bulletSpeed)
@@ -44,6 +50,11 @@ void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size
 
 void Enemy::Release()
 {
+	if (image) {
+		image->Release();
+		delete image;
+		image = NULL;
+	}
 }
 
 void Enemy::Update()
@@ -56,18 +67,29 @@ void Enemy::Update()
 	if (elapsedFireTime == 0) {
 		Fire();
 	}
+
+	elapsedFrame++;
+	if (elapsedFrame > 1) {
+		animationFrame++;
+		elapsedFrame = 0;
+		animationFrame %= image->GetSpritesNumX() * image->GetSpritesNumY();
+	}
 }
 
 void Enemy::Render(HDC hdc)
 {
 	if (hp <= 0) return;
-	HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
-	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+	//HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
+	//HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 
-	RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
+	//RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
 
-	SelectObject(hdc, hOldBrush);
-	DeleteObject(hBrush);
+	//SelectObject(hdc, hOldBrush);
+	//DeleteObject(hBrush);
+
+	image->Render(hdc, position.x, position.y,
+		image->GetWidth() / image->GetSpritesNumX(), image->GetHeight() / image->GetSpritesNumY(),
+		animationFrame, false);
 }
 
 void Enemy::Move()
@@ -76,8 +98,8 @@ void Enemy::Move()
 	if (target)
 		moveAngle = GetAngle(position, target->GetPos());
 
-	position.x += cosf(TORADIAN(moveAngle)) * speed;
-	position.y -= sinf(TORADIAN(moveAngle)) * speed;
+	//position.x += cosf(TORADIAN(moveAngle)) * speed;
+	//position.y -= sinf(TORADIAN(moveAngle)) * speed;
 }
 
 void Enemy::Fire()

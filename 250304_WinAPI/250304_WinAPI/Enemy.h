@@ -3,6 +3,7 @@
 
 class Tank;
 class Bullet;
+class Image;
 class Enemy : public GameObject
 {
 private:
@@ -16,6 +17,9 @@ private:
 	int fireInterval;
 	int elapsedFireTime;
 	float bulletSpeed;
+	Image* image;
+	int animationFrame;
+	int elapsedFrame;
 
 	static vector<Bullet*> vBullets;
 	static int nLoadedBullets;
