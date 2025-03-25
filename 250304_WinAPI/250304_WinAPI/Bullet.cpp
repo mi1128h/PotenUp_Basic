@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "CommonFunction.h"
 #include "Enemy.h"
+#include "Image.h"
 #include "ImageManager.h"
 
 void Bullet::Init(FPOINT pos, float angle)
@@ -43,7 +44,10 @@ void Bullet::Render(HDC hdc)
 {
 	if (isLoaded) return;
 
-	RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
+	//RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
+	if (image) {
+		image->RenderCenter(hdc, position.x, position.y, 1, 1, 0, false);
+	}
 }
 
 void Bullet::Move()

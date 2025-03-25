@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "CommonFunction.h"
 #include "ImageManager.h"
+#include "BulletManager.h"
 
 void Rocket::Init()
 {
@@ -9,14 +10,23 @@ void Rocket::Init()
 	dx = 0;
 	dy = 0;
 	speed = 10;
+	damage = 3;
 
 	ImageManager* im = ImageManager::GetInstance();
 	im->LoadImageAtManager(L"Image/rocket.bmp", 52, 64, 1, 1, true, RGB(255, 0, 255));
 	image = im->GetImage(L"Image/rocket.bmp");
+
+	bulletManager = new BulletManager;
+	bulletManager->Init();
 }
 
 void Rocket::Release()
 {
+	if (bulletManager) {
+		bulletManager->Release();
+		delete bulletManager;
+		bulletManager = NULL;
+	}
 }
 
 void Rocket::Update()
@@ -26,6 +36,9 @@ void Rocket::Update()
 	Animate();
 
 	ProcessInput();
+
+	if (bulletManager)
+		bulletManager->Update();
 }
 
 void Rocket::ProcessInput()
@@ -46,6 +59,12 @@ void Rocket::ProcessInput()
 	}
 	dx = deltaX;
 	dy = deltaY;
+
+	if (km->IsOnceKeyDown(VK_SPACE)) {
+		if (bulletManager) {
+			bulletManager->Fire(BulletType::Basic, position, damage);
+		}
+	}
 }
 
 void Rocket::Animate()
@@ -54,8 +73,11 @@ void Rocket::Animate()
 
 void Rocket::Render(HDC hdc)
 {
-	if (!image) return;
-	image->RenderCenter(hdc, position.x, position.y, 1, 1, 0, false);
+	if (image)
+		image->RenderCenter(hdc, position.x, position.y, 1, 1, 0, false);
+
+	if (bulletManager)
+		bulletManager->Render(hdc);
 }
 
 void Rocket::Move()

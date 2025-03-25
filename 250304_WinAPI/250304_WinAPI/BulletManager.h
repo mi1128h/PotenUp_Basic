@@ -22,10 +22,14 @@ public:
 	void Update();
 	void Render(HDC hdc);
 
+	void Fire(BulletType type, FPOINT position, float damage);
+	Bullet* GetBasicBullet();
+	BombBullet* GetBombBullet();
+	BounceBullet* GetBounceBullet();
+	ConfettiBullet* GetConfettiBullet();
+
 private:
 	vector<Bullet*> vBullets;
-	int nLoadedBullets[(int)BulletType::length];
-	Image* imageList[(int)BulletType::length];
 
 	vector<Bullet*> vBasics;
 	vector<BombBullet*> vBombs;

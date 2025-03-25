@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 class Image;
+class BulletManager;
 class Rocket : public GameObject
 {
 public:
@@ -21,8 +22,10 @@ private:
 	FPOINT position;
 	float dx, dy;
 	float speed;
+	float damage;
 
 	Image* image;
 
+	BulletManager* bulletManager;
 };
 
