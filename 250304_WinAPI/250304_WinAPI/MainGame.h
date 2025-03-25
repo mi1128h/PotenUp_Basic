@@ -7,6 +7,7 @@ class RoundManager;
 class Image;
 class AnimCharacter;
 class AnimBackground;
+class EnemyManager;
 class MainGame : public GameObject
 {
 private:
@@ -23,8 +24,8 @@ private:
 	RoundManager* roundManager;
 
 	Image* backBuffer;
-	AnimCharacter* iori;
 	AnimBackground* background;
+	EnemyManager* enemyManager;
 
 public:
 	void Init();

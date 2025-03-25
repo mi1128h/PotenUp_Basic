@@ -6,6 +6,7 @@
 #include "Image.h"
 #include "AnimCharacter.h"
 #include "AnimBackground.h"
+#include "EnemyManager.h"
 
 /*
 	실습1. 이오리 집에 보내기
@@ -18,14 +19,15 @@ void MainGame::Init()
 	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y))) {
 		MessageBox(g_hWnd, L"backBuffer 생성 실패", L"경고", MB_OK);
 	}
-	iori = new AnimCharacter();
-	iori->Init();
 
 	background = new AnimBackground();
 	background->Init();
 
 	KeyManager* km = KeyManager::GetInstance();
 	km->Init();
+
+	enemyManager = new EnemyManager;
+	enemyManager->Init();
 
 #ifdef TANKGAME
 	tank = new Tank();
@@ -38,15 +40,10 @@ void MainGame::Init()
 
 void MainGame::Release()
 {
-	if (iori) {
-		iori->Release();
-		delete iori;
-		iori = NULL;
-	}
-	if (background) {
-		background->Release();
-		delete iori;
-		iori = NULL;
+	if (enemyManager) {
+		enemyManager->Release();
+		delete enemyManager;
+		enemyManager = NULL;
 	}
 
 	if (backBuffer) {
@@ -74,7 +71,7 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
-	if (iori) iori->Update();
+	if (enemyManager) enemyManager->Update();
 	if (background) background->Update();
 
 #ifdef TANKGAME
@@ -131,9 +128,8 @@ void MainGame::Render(HDC hdc)
 	if (background) {
 		background->Render(hBackBufferDC);
 	}
-	if (iori) {
-		iori->Render(hBackBufferDC);
-	}
+
+	if (enemyManager) enemyManager->Render(hBackBufferDC);
 
 #ifdef TANKGAME
 	if (roundManager)
@@ -320,25 +316,6 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			break;
 		}
 #endif
-		InvalidateRect(g_hWnd, NULL, FALSE);
-		break;
-
-	case WM_KEYUP:
-		switch (wParam) {
-		case 'a': case 'A':
-			iori->SetDelta(0, 0);
-			break;
-		case 'd': case 'D':
-			iori->SetDelta(0, 0);
-			break;
-		case 'w': case 'W':
-			iori->SetDelta(0, 0);
-			break;
-		case 's': case 'S':
-			iori->SetDelta(0, 0);
-			break;
-		}
-
 		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 

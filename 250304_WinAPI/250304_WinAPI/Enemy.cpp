@@ -3,6 +3,16 @@
 #include "Tank.h"
 #include "Bullet.h"
 
+/*
+	STL (Standard Template Library)
+	Vector
+	동적 배열을 제공하는 표준 템플릿 라이브러리 컨테이너
+	배열과 흡사하지만 크기가 자동으로 조절된다
+
+	장점: 임의 접근;인덱스를 사용해서 O(1) 시간복잡도로 원소에 접근이 가능하다
+	단점: 배열과 같다. 중간에 원소를 삽입, 삭제 할 때 시간복잡도 O(n)
+*/
+
 
 vector<Bullet*> Enemy::vBullets = {};
 int Enemy::nLoadedBullets = 0;
@@ -12,12 +22,12 @@ void Enemy::Init(Tank* tank)
 	position.x = uid_0_WINSIZEX(dre);
 	position.y = 5;
 	target = tank;
-	hp = 0;
+	hp = 10;
 	size = 20;
 	speed = 10;
 	damage = 10;
 	bulletsNum = 0;
-	fireInterval = 0;
+	fireInterval = 1;
 	elapsedFireTime = 0;
 }
 
@@ -62,7 +72,9 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::Move()
 {
-	float moveAngle = GetAngle(position, target->GetPos());
+	float moveAngle = 270;
+	if (target)
+		moveAngle = GetAngle(position, target->GetPos());
 
 	position.x += cosf(TORADIAN(moveAngle)) * speed;
 	position.y -= sinf(TORADIAN(moveAngle)) * speed;
