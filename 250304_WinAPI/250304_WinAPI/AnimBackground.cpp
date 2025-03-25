@@ -9,8 +9,8 @@ void AnimBackground::Init()
 	for (int i = 0; i < Stage::Stagelength; ++i) vImages[i] = {};
 
 	Image* background = new Image();
-	if (FAILED(background->Init(L"Image/backGroundAnimation.bmp", 800, 5376, 1, 16, FALSE, FALSE))) {
-		MessageBox(g_hWnd, L"backGroundAnimation 파일 로드에 실패", L"경고", MB_OK);
+	if (FAILED(background->Init(L"Image/background.bmp", 600, 800, 1, 1, FALSE, FALSE))) {
+		MessageBox(g_hWnd, L"background 파일 로드에 실패", L"경고", MB_OK);
 	}
 
 	vImages[Stage::Stage1].push_back(background);

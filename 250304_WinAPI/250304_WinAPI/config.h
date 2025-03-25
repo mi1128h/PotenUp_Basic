@@ -11,8 +11,8 @@
 using namespace std;
 
 // 컴파일러에서 해당 코드를 뒤에 정의된 코드로 변경한다
-#define WINSIZE_X 1080
-#define WINSIZE_Y 500
+#define WINSIZE_X 600
+#define WINSIZE_Y 800
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
