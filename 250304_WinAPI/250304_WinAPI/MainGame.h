@@ -8,6 +8,7 @@ class Image;
 class AnimCharacter;
 class AnimBackground;
 class EnemyManager;
+class Rocket;
 class MainGame : public GameObject
 {
 private:
@@ -26,6 +27,8 @@ private:
 	Image* backBuffer;
 	AnimBackground* background;
 	EnemyManager* enemyManager;
+
+	Rocket* rocket;
 
 public:
 	void Init();

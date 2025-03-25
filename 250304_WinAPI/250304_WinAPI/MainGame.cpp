@@ -7,11 +7,7 @@
 #include "AnimCharacter.h"
 #include "AnimBackground.h"
 #include "EnemyManager.h"
-
-/*
-	실습1. 이오리 집에 보내기
-	실습2. 배경 바꾸기 (킹오파 애니메이션 배경)
-*/
+#include "Rocket.h"
 
 void MainGame::Init()
 {
@@ -29,6 +25,9 @@ void MainGame::Init()
 	enemyManager = new EnemyManager;
 	enemyManager->Init();
 
+	rocket = new Rocket;
+	rocket->Init();
+
 #ifdef TANKGAME
 	tank = new Tank();
 	tank->Init();
@@ -44,6 +43,12 @@ void MainGame::Release()
 		enemyManager->Release();
 		delete enemyManager;
 		enemyManager = NULL;
+	}
+
+	if (rocket) {
+		rocket->Release();
+		delete rocket;
+		rocket = NULL;
 	}
 
 	if (backBuffer) {
@@ -72,6 +77,7 @@ void MainGame::Release()
 void MainGame::Update()
 {
 	if (enemyManager) enemyManager->Update();
+	if (rocket) rocket->Update();
 	if (background) background->Update();
 
 #ifdef TANKGAME
@@ -130,6 +136,7 @@ void MainGame::Render(HDC hdc)
 	}
 
 	if (enemyManager) enemyManager->Render(hBackBufferDC);
+	if (rocket) rocket->Render(hBackBufferDC);
 
 #ifdef TANKGAME
 	if (roundManager)
