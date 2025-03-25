@@ -29,7 +29,8 @@ void EnemyManager::Init()
 void EnemyManager::Release()
 {
 	for (Enemy* e : enemyList) {
-		if(e) delete e;
+		e->Release();
+		delete e;
 	}
 	enemyList.clear();	// capacity´Â À¯Áö
 }
