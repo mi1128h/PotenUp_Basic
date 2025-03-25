@@ -70,6 +70,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float angle, float da
 			ConfettiBullet* confettiBullet = GetConfettiBullet();
 			confettiBullet->Init(position, angle);
 			confettiBullet->SetDamage(damage);
+			confettiBullet->SetBombValues(10, 6 * fireSuccess);
 			confettiBullet->SetConfettiValues(5);
 			confettiBullet->Fire();
 			fireSuccess++;

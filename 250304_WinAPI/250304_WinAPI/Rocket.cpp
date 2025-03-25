@@ -65,6 +65,12 @@ void Rocket::ProcessInput()
 			bulletManager->Fire(BulletType::Basic, position, 90, damage);
 		}
 	}
+
+	if(km->IsOnceKeyDown('I')) {
+		if (bulletManager) {
+			bulletManager->Fire(BulletType::Confetti, position, 90, damage);
+		}
+	}
 }
 
 void Rocket::Animate()
