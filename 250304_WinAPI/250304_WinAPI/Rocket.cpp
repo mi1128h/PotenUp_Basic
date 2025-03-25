@@ -68,8 +68,8 @@ void Rocket::Move()
 
 	int width{}, height{};
 	if (image) {
-		width = image->GetWidth();
-		height = image->GetHeight();
+		width = image->GetWidth() / image->GetSpritesNumX();
+		height = image->GetHeight() / image->GetSpritesNumY();
 	}
 	
 	position.x = ClampVal(position.x, 0.0f + width / 2, (float)WINSIZE_X - width / 2);
