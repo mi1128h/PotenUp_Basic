@@ -56,6 +56,8 @@ public:
 	void AttackedByBullet(int damage) { hp -= damage; }
 	void AttackedByTank() { hp = 0; }
 
+	void CheckWallCollision();
+
 	static void ReleaseBullets();
 	static void UpdateBullets();
 	static void RenderBullets(HDC hdc);

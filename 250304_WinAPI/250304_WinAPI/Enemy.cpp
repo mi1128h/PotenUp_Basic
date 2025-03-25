@@ -71,8 +71,8 @@ void Enemy::Update()
 	else {
 		rushElapsedTime++;
 		dx = 0;
-		dy += 1;
-		dy = ClampVal(dy, 1.0f, 10.0f);
+		dy += 0.2f;
+		dy = ClampVal(dy, 1.0f, 3.0f);
 	}
 	Move();
 
@@ -82,24 +82,16 @@ void Enemy::Update()
 		elapsedFrame = 0;
 		animationFrame %= image->GetSpritesNumX() * image->GetSpritesNumY();
 	}
+
+	CheckWallCollision();
 }
 
 void Enemy::Render(HDC hdc)
 {
 	if (hp <= 0) return;
-	//HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
-	//HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 
-	//RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
-
-	//SelectObject(hdc, hOldBrush);
-	//DeleteObject(hBrush);
-
-	//image->Render(hdc, position.x, position.y,
-	//	image->GetWidth() / image->GetSpritesNumX(), image->GetHeight() / image->GetSpritesNumY(),
-	//	animationFrame, false);
 	image->RenderCenter(hdc, position.x, position.y, 1, 1, animationFrame, false);
-	RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
+	//RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
 }
 
 void Enemy::HorizontalMove()
@@ -135,8 +127,6 @@ void Enemy::Move()
 		height = image->GetHeight() / image->GetSpritesNumY();
 	}
 	position.x = ClampVal(position.x, 0.0f + width / 2, (float)WINSIZE_X - width / 2);
-	position.y = ClampVal(position.y, 0.0f + height / 2, (float)WINSIZE_Y - height / 2);
-
 }
 
 void Enemy::Fire()
@@ -209,4 +199,9 @@ void Enemy::InitLoadedBullets()
 	{
 		b->SetLoaded(true);
 	}
+}
+
+void Enemy::CheckWallCollision()
+{
+	if (IsOutOfRange(position, WINSIZE_X, WINSIZE_Y)) hp = 0;
 }
