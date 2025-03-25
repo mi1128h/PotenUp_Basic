@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "Bullet.h"
 #include "Image.h"
+#include "ImageManager.h"
 
 /*
 	STL (Standard Template Library)
@@ -35,8 +36,10 @@ void Enemy::Init(float x, float y, Tank* tank)
 
 	animationFrame = 0;
 	elapsedFrame = 0;
-	image = new Image();
-	image->Init(L"Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
+
+	ImageManager* im = ImageManager::GetInstance();
+	im->LoadImageAtManager(L"Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
+	image = im->GetImage(L"Image/ufo.bmp");
 }
 
 void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size, int fireSpeed, float bulletSpeed)
@@ -52,11 +55,6 @@ void Enemy::SetValuesByRound(float hp, int maxBulletNum, float speed, float size
 
 void Enemy::Release()
 {
-	if (image) {
-		image->Release();
-		delete image;
-		image = NULL;
-	}
 }
 
 void Enemy::Update()

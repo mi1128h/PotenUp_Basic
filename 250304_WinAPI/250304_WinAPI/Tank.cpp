@@ -18,7 +18,7 @@ void Tank::Init()
 	barrelEnd.y = pos.y - barrelSize;
 	barrelAngle = 90;
 
-	int skillNum = (int)SkillType::length;
+	int skillNum = (int)BulletType::length;
 
 	for (int i = 0; i < skillNum; ++i) {
 		nLoadedBullets[i] = 0;
@@ -50,7 +50,7 @@ void Tank::Update()
 {
 	CalcBarrelEnd();
 
-	for (int i = 0; i < (int)SkillType::length; ++i) {
+	for (int i = 0; i < (int)BulletType::length; ++i) {
 		skillsCooldownTime[i]--;
 	}
 
@@ -62,22 +62,22 @@ void Tank::Update()
 	for (auto b : vBasics) {
 		if (b->IsLoaded()) loadedNum++;
 	}
-	nLoadedBullets[(int)SkillType::Basic] = loadedNum;
+	nLoadedBullets[(int)BulletType::Basic] = loadedNum;
 	loadedNum = 0;
 	for (auto b : vBombs) {
 		if (b->IsLoaded()) loadedNum++;
 	}
-	nLoadedBullets[(int)SkillType::Bomb] = loadedNum;
+	nLoadedBullets[(int)BulletType::Bomb] = loadedNum;
 	loadedNum = 0;
 	for (auto b : vBounces) {
 		if (b->IsLoaded()) loadedNum++;
 	}
-	nLoadedBullets[(int)SkillType::Bounce] = loadedNum;
+	nLoadedBullets[(int)BulletType::Bounce] = loadedNum;
 	loadedNum = 0;
 	for (auto b : vConfettis) {
 		if (b->IsLoaded()) loadedNum++;
 	}
-	nLoadedBullets[(int)SkillType::Confetti] = loadedNum;
+	nLoadedBullets[(int)BulletType::Confetti] = loadedNum;
 }
 
 void Tank::Render(HDC hdc)
@@ -100,24 +100,24 @@ void Tank::Move(int dx, int dy)
 	pos.y = ClampVal(pos.y, 0.0f, (float)WINSIZE_Y);
 }
 
-void Tank::Skill(SkillType type)
+void Tank::Skill(BulletType type)
 {
-	if (type < SkillType::Basic) return;
-	if (type >= SkillType::length) return;
+	if (type < BulletType::Basic) return;
+	if (type >= BulletType::length) return;
 	if (skillsCooldownTime[(int)type] > 0) return;
 	skillsCooldownTime[(int)type] = skillsCooldownMaxTime[(int)type];
 
 	switch (type) {
-	case SkillType::Basic:
+	case BulletType::Basic:
 		Fire();
 		break;
-	case SkillType::Bomb:
+	case BulletType::Bomb:
 		FireBomb();
 		break;
-	case SkillType::Bounce:
+	case BulletType::Bounce:
 		FireBounce();
 		break;
-	case SkillType::Confetti:
+	case BulletType::Confetti:
 		FireConfetti();
 		break;
 	}
@@ -125,7 +125,7 @@ void Tank::Skill(SkillType type)
 
 void Tank::Fire()
 {
-	if (nLoadedBullets[(int)SkillType::Basic] > 0) {
+	if (nLoadedBullets[(int)BulletType::Basic] > 0) {
 		for (int i = 0; i < vBasics.size(); ++i) {
 			if (vBasics[i]->IsLoaded()) {
 				vBasics[i]->Init(barrelEnd, barrelAngle);
@@ -134,7 +134,7 @@ void Tank::Fire()
 				}
 				vBasics[i]->SetDamage(damage);
 				vBasics[i]->Fire();
-				nLoadedBullets[(int)SkillType::Basic]--;
+				nLoadedBullets[(int)BulletType::Basic]--;
 				break;
 			}
 		}
@@ -157,7 +157,7 @@ void Tank::FireBomb()
 {
 	int fireSuccess{};
 
-	if (nLoadedBullets[(int)SkillType::Bomb] > 0) {
+	if (nLoadedBullets[(int)BulletType::Bomb] > 0) {
 		for (int i = 0; i < vBombs.size(); ++i) {
 			if (!vBombs[i]->IsLoaded()) continue;
 			vBombs[i]->Init(barrelEnd, barrelAngle);
@@ -166,7 +166,7 @@ void Tank::FireBomb()
 			vBombs[i]->Fire();
 
 			fireSuccess++;
-			nLoadedBullets[(int)SkillType::Bomb]--;
+			nLoadedBullets[(int)BulletType::Bomb]--;
 
 			if (fireSuccess >= 36) break;
 		}
@@ -186,14 +186,14 @@ void Tank::FireBomb()
 
 void Tank::FireBounce()
 {
-	if (nLoadedBullets[(int)SkillType::Bounce] > 0) {
+	if (nLoadedBullets[(int)BulletType::Bounce] > 0) {
 		for (int i = 0; i < vBounces.size(); ++i) {
 			if (vBounces[i]->IsLoaded()) {
 				vBounces[i]->Init(barrelEnd, barrelAngle);
 				vBounces[i]->SetBounceNum(bounceNum);
 				vBounces[i]->SetDamage(damage);
 				vBounces[i]->Fire();
-				nLoadedBullets[(int)SkillType::Bounce]--;
+				nLoadedBullets[(int)BulletType::Bounce]--;
 				break;
 			}
 		}
@@ -213,7 +213,7 @@ void Tank::FireConfetti()
 {
 	int fireSuccess{};
 
-	if (nLoadedBullets[(int)SkillType::Confetti] > 0) {
+	if (nLoadedBullets[(int)BulletType::Confetti] > 0) {
 		for (int i = 0; i < vConfettis.size(); ++i) {
 			if (!vConfettis[i]->IsLoaded()) continue;
 			vConfettis[i]->Init(barrelEnd, barrelAngle);
@@ -223,7 +223,7 @@ void Tank::FireConfetti()
 			vConfettis[i]->Fire();
 
 			fireSuccess++;
-			nLoadedBullets[(int)SkillType::Confetti]--;
+			nLoadedBullets[(int)BulletType::Confetti]--;
 
 			if (fireSuccess >= 60) break;
 		}
@@ -327,16 +327,16 @@ Enemy* Tank::GetNearestEnemy(FPOINT pos, vector<Enemy*>& enemies)
 	return target;
 }
 
-int Tank::GetCreatedBulletsNum(SkillType type)
+int Tank::GetCreatedBulletsNum(BulletType type)
 {
 	switch (type) {
-	case SkillType::Basic:
+	case BulletType::Basic:
 		return vBasics.size();
-	case SkillType::Bomb:
+	case BulletType::Bomb:
 		return vBombs.size();
-	case SkillType::Bounce:
+	case BulletType::Bounce:
 		return vBounces.size();
-	case SkillType::Confetti:
+	case BulletType::Confetti:
 		return vConfettis.size();
 	}
 	return -1;
@@ -346,19 +346,19 @@ void Tank::RenderInfo(HDC hdc)
 {
 	TCHAR szText[128]{};
 	wsprintf(szText, L"Basic Bullets Num: %d/%d",
-		GetLoadedBulletsNum(SkillType::Basic), GetCreatedBulletsNum(SkillType::Basic));
+		GetLoadedBulletsNum(BulletType::Basic), GetCreatedBulletsNum(BulletType::Basic));
 	TextOut(hdc, 20, 180, szText, wcslen(szText));
 
 	wsprintf(szText, L"Bomb Bullets Num: %d/%d",
-		GetLoadedBulletsNum(SkillType::Bomb), GetCreatedBulletsNum(SkillType::Bomb));
+		GetLoadedBulletsNum(BulletType::Bomb), GetCreatedBulletsNum(BulletType::Bomb));
 	TextOut(hdc, 20, 200, szText, wcslen(szText));
 
 	wsprintf(szText, L"Bounce Bullets Num: %d/%d",
-		GetLoadedBulletsNum(SkillType::Bounce), GetCreatedBulletsNum(SkillType::Bounce));
+		GetLoadedBulletsNum(BulletType::Bounce), GetCreatedBulletsNum(BulletType::Bounce));
 	TextOut(hdc, 20, 220, szText, wcslen(szText));
 
 	wsprintf(szText, L"Confetti Bullets Num: %d/%d",
-		GetLoadedBulletsNum(SkillType::Confetti), GetCreatedBulletsNum(SkillType::Confetti));
+		GetLoadedBulletsNum(BulletType::Confetti), GetCreatedBulletsNum(BulletType::Confetti));
 	TextOut(hdc, 20, 240, szText, wcslen(szText));
 
 	wsprintf(szText, L"Tank Hp: %d", hp);

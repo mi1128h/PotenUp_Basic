@@ -1,5 +1,6 @@
 #include "AnimBackground.h"
 #include "Image.h"
+#include "ImageManager.h"
 
 void AnimBackground::Init()
 {
@@ -8,10 +9,9 @@ void AnimBackground::Init()
 
 	for (int i = 0; i < Stage::Stagelength; ++i) vImages[i] = {};
 
-	Image* background = new Image();
-	if (FAILED(background->Init(L"Image/background.bmp", 600, 800, 1, 1, FALSE, FALSE))) {
-		MessageBox(g_hWnd, L"background 파일 로드에 실패", L"경고", MB_OK);
-	}
+	ImageManager* im = ImageManager::GetInstance();
+	im->LoadImageAtManager(L"Image/background.bmp", 600, 800, 1, 1, FALSE, FALSE);
+	Image* background = im->GetImage(L"Image/background.bmp");
 
 	vImages[Stage::Stage1].push_back(background);
 	curStage = Stage::Stage1;
@@ -20,13 +20,6 @@ void AnimBackground::Init()
 
 void AnimBackground::Release()
 {
-	for (auto images : vImages) {
-		for (auto i : images) {
-			i->Release();
-			delete i;
-			i = NULL;
-		}
-	}
 }
 
 void AnimBackground::Update()

@@ -8,6 +8,7 @@
 #include "AnimBackground.h"
 #include "EnemyManager.h"
 #include "Rocket.h"
+#include "ImageManager.h"
 
 void MainGame::Init()
 {
@@ -59,6 +60,9 @@ void MainGame::Release()
 
 	KeyManager* km = KeyManager::GetInstance();
 	if (km) km->Release();
+
+	ImageManager* im = ImageManager::GetInstance();
+	if (im) im->Release();
 
 #ifdef TANKGAME
 	if (tank) {

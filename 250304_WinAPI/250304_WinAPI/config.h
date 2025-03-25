@@ -5,6 +5,8 @@
 #include <iostream>
 #include <random>
 #include <bitset>
+#include <vector>
+#include <map>
 
 #include "KeyManager.h"
 

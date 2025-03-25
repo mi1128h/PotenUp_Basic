@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-enum class SkillType {
+enum class BulletType {
 	Basic,
 	Bounce,
 	Bomb,
@@ -31,7 +31,7 @@ private:
 
 	// πÃªÁ¿œ
 	vector<Bullet*> vBullets;
-	int nLoadedBullets[(int)SkillType::length];
+	int nLoadedBullets[(int)BulletType::length];
 	vector<Bullet*> vBasics;
 	vector<BombBullet*> vBombs;
 	vector<BounceBullet*> vBounces;
@@ -43,8 +43,8 @@ private:
 	int bounceNum;
 	int confettiLife;
 
-	int skillsCooldownTime[(int)SkillType::length];
-	int skillsCooldownMaxTime[(int)SkillType::length];
+	int skillsCooldownTime[(int)BulletType::length];
+	int skillsCooldownMaxTime[(int)BulletType::length];
 
 public:
 	void Init();
@@ -53,7 +53,7 @@ public:
 	void Render(HDC hdc);
 
 	void Move(int dx, int dy);
-	void Skill(SkillType type);
+	void Skill(BulletType type);
 	void Fire();
 	void FireBomb();
 	void FireBounce();
@@ -74,8 +74,8 @@ public:
 
 	void IncreaseFiredCnt() { guidedFired++; guidedFired %= 5; }
 
-	int GetLoadedBulletsNum(SkillType type) { return nLoadedBullets[(int)type]; }
-	int GetCreatedBulletsNum(SkillType type);
+	int GetLoadedBulletsNum(BulletType type) { return nLoadedBullets[(int)type]; }
+	int GetCreatedBulletsNum(BulletType type);
 	void RenderInfo(HDC hdc);
 
 	Tank();

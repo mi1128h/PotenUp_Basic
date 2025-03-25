@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 class Enemy;
+class Image;
 class Bullet : public GameObject
 {
 protected:
@@ -15,6 +16,8 @@ protected:
 
 	bool guided{};
 	Enemy* target{};
+
+	Image* image;
 
 public:
 	void Init(FPOINT pos, float angle);
@@ -42,7 +45,7 @@ public:
 	void CheckEnemyCollision(Enemy* enemy);
 
 	Bullet();
-	~Bullet();
+	virtual ~Bullet();
 };
 
 class BombBullet : public Bullet

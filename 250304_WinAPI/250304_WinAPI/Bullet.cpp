@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "CommonFunction.h"
 #include "Enemy.h"
+#include "ImageManager.h"
 
 void Bullet::Init(FPOINT pos, float angle)
 {
@@ -14,6 +15,10 @@ void Bullet::Init(FPOINT pos, float angle)
 
 	guided = false;
 	target = nullptr;
+
+	ImageManager* im = ImageManager::GetInstance();
+	im->LoadImageAtManager(L"Image/bullet.bmp", 21, 21, 1, 1, true, RGB(255, 0, 255));
+	image = im->GetImage(L"Image/bullet.bmp");
 }
 
 void Bullet::Release()

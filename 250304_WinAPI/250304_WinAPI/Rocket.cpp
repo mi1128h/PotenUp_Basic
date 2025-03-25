@@ -1,6 +1,7 @@
 #include "Rocket.h"
 #include "Image.h"
 #include "CommonFunction.h"
+#include "ImageManager.h"
 
 void Rocket::Init()
 {
@@ -9,17 +10,13 @@ void Rocket::Init()
 	dy = 0;
 	speed = 10;
 
-	image = new Image();
-	image->Init(L"Image/rocket.bmp", 52, 64, 1, 1, true, RGB(255, 0, 255));
+	ImageManager* im = ImageManager::GetInstance();
+	im->LoadImageAtManager(L"Image/rocket.bmp", 52, 64, 1, 1, true, RGB(255, 0, 255));
+	image = im->GetImage(L"Image/rocket.bmp");
 }
 
 void Rocket::Release()
 {
-	if (image) {
-		image->Release();
-		delete image;
-		image = NULL;
-	}
 }
 
 void Rocket::Update()
