@@ -38,6 +38,8 @@ void Enemy::Init(float x, float y, Tank* tank)
 	elapsedFrame = 0;
 	
 	rush = false;
+	rushElapsedTime = 0;
+	fireBullet = false;
 
 	ImageManager* im = ImageManager::GetInstance();
 	im->LoadImageAtManager(L"Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
@@ -67,16 +69,12 @@ void Enemy::Update()
 		HorizontalMove();
 	}
 	else {
+		rushElapsedTime++;
 		dx = 0;
 		dy += 1;
 		dy = ClampVal(dy, 1.0f, 10.0f);
 	}
 	Move();
-	elapsedFireTime++;
-	elapsedFireTime %= fireInterval;
-	if (elapsedFireTime == 0) {
-		Fire();
-	}
 
 	elapsedFrame++;
 	if (elapsedFrame > 1) {

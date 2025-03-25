@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 class Enemy;
+class BulletManager;
 class EnemyManager : public GameObject
 {
 public:
@@ -19,5 +20,7 @@ private:
 
 	float rushTime;
 	float rushCoolTime;
+
+	BulletManager* bulletManager;
 };
 

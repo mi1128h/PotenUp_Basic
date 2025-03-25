@@ -9,7 +9,7 @@ void Rocket::Init()
 	position = { WINSIZE_X / 2, WINSIZE_Y - 100 };
 	dx = 0;
 	dy = 0;
-	speed = 10;
+	speed = 20;
 	damage = 3;
 
 	ImageManager* im = ImageManager::GetInstance();
@@ -62,7 +62,7 @@ void Rocket::ProcessInput()
 
 	if (km->IsOnceKeyDown(VK_SPACE)) {
 		if (bulletManager) {
-			bulletManager->Fire(BulletType::Basic, position, damage);
+			bulletManager->Fire(BulletType::Basic, position, 90, damage);
 		}
 	}
 }

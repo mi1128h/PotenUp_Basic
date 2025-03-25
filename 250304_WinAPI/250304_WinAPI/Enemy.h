@@ -22,6 +22,8 @@ private:
 	float bulletSpeed;
 
 	bool rush;
+	float rushElapsedTime;
+	bool fireBullet;
 
 	Image* image;
 	int animationFrame;
@@ -39,15 +41,20 @@ public:
 
 	void HorizontalMove();
 	void Move();
+	void Fire();
+
 	void SetRush(bool rush) { this->rush = rush; }
 	bool GetRush() { return rush; }
+	float GetRushElapsedTime() { return rushElapsedTime; }
+	void SetFireBullet(bool fire) { fireBullet = fire; }
+	bool GetFireBullet() { return fireBullet; }
+
 	bool IsDead() { return hp <= 0; }
 	FPOINT GetPos() { return position; }
 	int GetSize() { return size; }
 	float GetDamage() { return damage; }
 	void AttackedByBullet(int damage) { hp -= damage; }
 	void AttackedByTank() { hp = 0; }
-	void Fire();
 
 	static void ReleaseBullets();
 	static void UpdateBullets();

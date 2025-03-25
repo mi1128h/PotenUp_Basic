@@ -29,14 +29,14 @@ void BulletManager::Render(HDC hdc)
 	}
 }
 
-void BulletManager::Fire(BulletType type, FPOINT position, float damage)
+void BulletManager::Fire(BulletType type, FPOINT position, float angle, float damage)
 {
 	int fireSuccess{};
 	switch (type) {
 	case BulletType::Basic:
 	{
 		Bullet* bullet = GetBasicBullet();
-		bullet->Init(position, 90);
+		bullet->Init(position, angle);
 		bullet->SetDamage(damage);
 		bullet->Fire();
 		break;
@@ -46,7 +46,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float damage)
 		while (fireSuccess < 36)
 		{
 			BombBullet* bombBullet = GetBombBullet();
-			bombBullet->Init(position, 90);
+			bombBullet->Init(position, angle);
 			bombBullet->SetDamage(damage);
 			bombBullet->SetBombValues(10, 10 * fireSuccess);
 			bombBullet->Fire();
@@ -57,7 +57,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float damage)
 	case BulletType::Bounce:
 	{
 		BounceBullet* bounceBullet = GetBounceBullet();
-		bounceBullet->Init(position, 90);
+		bounceBullet->Init(position, angle);
 		bounceBullet->SetDamage(damage);
 		bounceBullet->SetBounceNum(5);
 		bounceBullet->Fire();
@@ -68,7 +68,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float damage)
 		while (fireSuccess < 60)
 		{
 			ConfettiBullet* confettiBullet = GetConfettiBullet();
-			confettiBullet->Init(position, 90);
+			confettiBullet->Init(position, angle);
 			confettiBullet->SetDamage(damage);
 			confettiBullet->SetConfettiValues(5);
 			confettiBullet->Fire();

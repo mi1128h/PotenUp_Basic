@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 #include "Enemy.h"
+#include "BulletManager.h"
 
 /*
 	1. WinSizeX, Y 를 사막배경에 맞춰서 변경
@@ -33,6 +34,9 @@ void EnemyManager::Init()
 	}
 
 	rushTime = rushCoolTime = 10.0f;
+
+	bulletManager = new BulletManager;
+	bulletManager->Init();
 }
 
 void EnemyManager::Release()
@@ -42,6 +46,12 @@ void EnemyManager::Release()
 		delete e;
 	}
 	enemyList.clear();	// capacity는 유지
+
+	if (bulletManager) {
+		bulletManager->Release();
+		delete bulletManager;
+		bulletManager = NULL;
+	}
 }
 
 void EnemyManager::Update()
@@ -53,7 +63,17 @@ void EnemyManager::Update()
 			e->SetRush(true);
 			rushTime = rushCoolTime;
 		}
+
+		if (e->GetRushElapsedTime() > 2.0f and !e->GetFireBullet()) {
+			if (bulletManager) {
+				bulletManager->Fire(BulletType::Basic, e->GetPos(), 270, e->GetDamage());
+				e->SetFireBullet(true);
+			}
+		}
 	}
+
+	if (bulletManager)
+		bulletManager->Update();
 }
 
 void EnemyManager::Render(HDC hdc)
@@ -61,6 +81,9 @@ void EnemyManager::Render(HDC hdc)
 	for (Enemy* e : enemyList) {
 		e->Render(hdc);
 	}
+
+	if (bulletManager)
+		bulletManager->Render(hdc);
 }
 
 void EnemyManager::AddEnemy(int size)

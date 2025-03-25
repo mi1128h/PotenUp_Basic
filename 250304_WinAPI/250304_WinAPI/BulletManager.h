@@ -22,7 +22,7 @@ public:
 	void Update();
 	void Render(HDC hdc);
 
-	void Fire(BulletType type, FPOINT position, float damage);
+	void Fire(BulletType type, FPOINT position, float angle, float damage);
 	Bullet* GetBasicBullet();
 	BombBullet* GetBombBullet();
 	BounceBullet* GetBounceBullet();
