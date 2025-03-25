@@ -15,10 +15,14 @@ private:
 	int size;
 	float speed;
 	float damage;
+
 	int bulletsNum;
 	int fireInterval;
 	int elapsedFireTime;
 	float bulletSpeed;
+
+	bool rush;
+
 	Image* image;
 	int animationFrame;
 	int elapsedFrame;
@@ -35,6 +39,8 @@ public:
 
 	void HorizontalMove();
 	void Move();
+	void SetRush(bool rush) { this->rush = rush; }
+	bool GetRush() { return rush; }
 	bool IsDead() { return hp <= 0; }
 	FPOINT GetPos() { return position; }
 	int GetSize() { return size; }

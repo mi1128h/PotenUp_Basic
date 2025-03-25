@@ -16,5 +16,8 @@ private:
 	Enemy* enemies;
 	vector<Enemy*> enemyList;
 	wchar_t szText[128];
+
+	float rushTime;
+	float rushCoolTime;
 };
 

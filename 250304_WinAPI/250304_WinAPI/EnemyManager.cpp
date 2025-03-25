@@ -31,6 +31,8 @@ void EnemyManager::Init()
 		enemyList[i] = new Enemy();
 		enemyList[i]->Init(150.0f + 80.0f * (i % 5), 200.0f + 80.0f * (i / 5));
 	}
+
+	rushTime = rushCoolTime = 10.0f;
 }
 
 void EnemyManager::Release()
@@ -44,8 +46,13 @@ void EnemyManager::Release()
 
 void EnemyManager::Update()
 {
+	rushTime -= 1;
 	for (Enemy* e : enemyList) {
 		e->Update();
+		if (rushTime <= 0 and !e->GetRush()) {
+			e->SetRush(true);
+			rushTime = rushCoolTime;
+		}
 	}
 }
 

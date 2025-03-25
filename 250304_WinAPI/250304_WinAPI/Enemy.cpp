@@ -36,6 +36,8 @@ void Enemy::Init(float x, float y, Tank* tank)
 
 	animationFrame = 0;
 	elapsedFrame = 0;
+	
+	rush = false;
 
 	ImageManager* im = ImageManager::GetInstance();
 	im->LoadImageAtManager(L"Image/ufo.bmp", 530, 32, 10, 1, true, RGB(255, 0, 255));
@@ -60,8 +62,15 @@ void Enemy::Release()
 void Enemy::Update()
 {
 	if (hp <= 0) return;
-
-	HorizontalMove();
+	
+	if (!rush) {
+		HorizontalMove();
+	}
+	else {
+		dx = 0;
+		dy += 1;
+		dy = ClampVal(dy, 1.0f, 10.0f);
+	}
 	Move();
 	elapsedFireTime++;
 	elapsedFireTime %= fireInterval;
