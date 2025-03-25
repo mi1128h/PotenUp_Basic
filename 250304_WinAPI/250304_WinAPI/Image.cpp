@@ -125,6 +125,64 @@ void Image::Render(HDC hdc, int destX, int destY, int destWidth, int destHeight,
 	SelectObject(imageInfo->hTempDC, imageInfo->hOldTemp);
 }
 
+void Image::RenderCenter(HDC hdc, int destX, int destY, int sizeX, int sizeY, int frameIndex, bool flip)
+{
+	int idxX = frameIndex % imageInfo->spritesNum[0];
+	int idxY = frameIndex / imageInfo->spritesNum[0];
+
+	int srcX{}, srcY{};
+	int srcWidth{}, srcHeight{};
+	srcX = imageInfo->width / imageInfo->spritesNum[0] * idxX;
+	srcY = imageInfo->height / imageInfo->spritesNum[1] * idxY;
+	srcWidth = imageInfo->width / imageInfo->spritesNum[0];
+	srcHeight = imageInfo->height / imageInfo->spritesNum[1];
+
+	int destWidth = srcWidth;
+	int destHeight = srcHeight;
+
+	if (sizeX > 0) destWidth *= sizeX;
+	if (sizeY > 0) destHeight *= sizeY;
+
+	if (flip) {
+		srcX += srcWidth - 1;
+		srcWidth *= -1;
+	}
+
+	imageInfo->hOldTemp = (HBITMAP)SelectObject(imageInfo->hTempDC, imageInfo->hTempBit);
+
+	if (isTransparent) {
+		StretchBlt(
+			imageInfo->hTempDC,
+			0, 0,
+			abs(srcWidth), abs(srcHeight),
+			imageInfo->hMemDC,
+			srcX, srcY,
+			srcWidth, srcHeight,
+			SRCCOPY);
+
+		TransparentBlt(
+			hdc,
+			destX - abs(destWidth) / 2, destY - abs(destHeight) / 2,
+			destWidth, destHeight,
+			imageInfo->hTempDC,
+			0, 0,
+			abs(srcWidth), abs(srcHeight),
+			tansColor);
+	}
+	else {
+		StretchBlt(
+			hdc,
+			destX - abs(destWidth) / 2, destY - abs(destHeight) / 2,
+			destWidth, destHeight,
+			imageInfo->hMemDC,
+			srcX, srcY,
+			srcWidth, srcHeight,
+			SRCCOPY);
+	}
+
+	SelectObject(imageInfo->hTempDC, imageInfo->hOldTemp);
+}
+
 void Image::Release()
 {
 	if (imageInfo) {

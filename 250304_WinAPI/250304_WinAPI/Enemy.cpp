@@ -21,7 +21,7 @@ int Enemy::nLoadedBullets = 0;
 void Enemy::Init(Tank* tank)
 {
 	position.x = uid_0_WINSIZEX(dre);
-	position.y = 5;
+	position.y = 50;
 	target = tank;
 	hp = 10;
 	size = 20;
@@ -87,9 +87,11 @@ void Enemy::Render(HDC hdc)
 	//SelectObject(hdc, hOldBrush);
 	//DeleteObject(hBrush);
 
-	image->Render(hdc, position.x, position.y,
-		image->GetWidth() / image->GetSpritesNumX(), image->GetHeight() / image->GetSpritesNumY(),
-		animationFrame, false);
+	//image->Render(hdc, position.x, position.y,
+	//	image->GetWidth() / image->GetSpritesNumX(), image->GetHeight() / image->GetSpritesNumY(),
+	//	animationFrame, false);
+	image->RenderCenter(hdc, position.x, position.y, 1, 1, animationFrame, false);
+	RenderEllipseAtCenter(hdc, position.x, position.y, size, size);
 }
 
 void Enemy::Move()
