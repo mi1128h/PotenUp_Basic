@@ -59,7 +59,7 @@ public:
 	// 화면에 출력
 	void Render(HDC hdc, int destX = 0, int destY = 0, bool flip = false);
 	void Render(HDC hdc, int destX, int destY, int destWidth, int destHeight, int frameIndex, bool flip = false);
-	void RenderCenter(HDC hdc, int destX, int destY, int destWidth, int destHeight, int frameIndex, bool flip = false);
+	void RenderCenter(HDC hdc, int destX, int destY, int sizeX, int sizeY, int frameIndex, bool flip = false);
 	
 
 	// 메모리 해제
