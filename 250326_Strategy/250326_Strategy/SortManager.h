@@ -1,11 +1,12 @@
 #pragma once
 #include "Sort.h"
+#include <memory>
 
 class SortManager
 {
 public:
 	SortManager() : sort(nullptr) {}
-	~SortManager() { if (sort) delete sort; sort = nullptr; }
+	~SortManager() {}
 
 	void DoSort(int* arr)
 	{
@@ -15,13 +16,12 @@ public:
 		}
 	}
 
-	void ChangeSort(ISort* newSort)
+	void ChangeSort(std::unique_ptr<ISort> newSort)
 	{
-		if (sort) delete sort;
-		sort = newSort;
+		sort = move(newSort);
 	}
 
 private:
-	ISort* sort;
+	std::unique_ptr<ISort> sort;
 };
 
