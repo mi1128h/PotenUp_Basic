@@ -6,7 +6,7 @@ class BulletFactory
 {
 public:
 	BulletFactory() {}
-	virtual ~BulletFactory() {}
+	virtual ~BulletFactory();
 
 	void AddBullet();
 
@@ -19,7 +19,7 @@ class NormalBulletFactory : public BulletFactory
 {
 public:
 	NormalBulletFactory() {}
-	virtual ~NormalBulletFactory() {}
+	virtual ~NormalBulletFactory();
 
 private:
 	virtual Bullet* CreateBullet() override;
@@ -29,7 +29,7 @@ class SignBulletFactory : public BulletFactory
 {
 public:
 	SignBulletFactory() {}
-	virtual ~SignBulletFactory() {}
+	virtual ~SignBulletFactory();
 
 private:
 	virtual Bullet* CreateBullet() override;
@@ -39,7 +39,7 @@ class LazerBulletFactory : public BulletFactory
 {
 public:
 	LazerBulletFactory() {}
-	virtual ~LazerBulletFactory() {}
+	virtual ~LazerBulletFactory();
 
 private:
 	virtual Bullet* CreateBullet() override;

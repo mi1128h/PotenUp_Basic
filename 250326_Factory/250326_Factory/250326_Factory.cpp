@@ -11,4 +11,8 @@ int main()
 	for (int i = 0; i < 3; ++i) {
 		bulletFactoryList[i]->AddBullet();
 	}
+
+	for (int i = 0; i < 3; ++i) {
+		delete bulletFactoryList[i];
+	}
 }
