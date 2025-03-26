@@ -1,5 +1,4 @@
 #include "BulletFactory.h"
-#include "Bullet.h"
 
 BulletFactory::~BulletFactory()
 {
@@ -8,9 +7,9 @@ BulletFactory::~BulletFactory()
 
 void BulletFactory::AddBullet()
 {
-	Bullet* bullet = CreateBullet();
-	bulletList.push_back(bullet);
+	std::unique_ptr<Bullet> bullet = CreateBullet();
 	bullet->Notice();
+	bulletList.push_back(move(bullet));
 }
 
 NormalBulletFactory::~NormalBulletFactory()
@@ -18,9 +17,9 @@ NormalBulletFactory::~NormalBulletFactory()
 	std::cout << "일반 불릿 팩토리가 메모리 해제된다!!" << std::endl;
 }
 
-Bullet* NormalBulletFactory::CreateBullet()
+std::unique_ptr<Bullet> NormalBulletFactory::CreateBullet()
 {
-	return new NormalBullet();
+	return std::make_unique<NormalBullet>();
 }
 
 SignBulletFactory::~SignBulletFactory()
@@ -28,9 +27,9 @@ SignBulletFactory::~SignBulletFactory()
 	std::cout << "사인 불릿 팩토리가 메모리 해제된다!!" << std::endl;
 }
 
-Bullet* SignBulletFactory::CreateBullet()
+std::unique_ptr<Bullet> SignBulletFactory::CreateBullet()
 {
-	return new SignBullet();
+	return std::make_unique<SignBullet>();
 }
 
 LazerBulletFactory::~LazerBulletFactory()
@@ -38,7 +37,7 @@ LazerBulletFactory::~LazerBulletFactory()
 	std::cout << "레이저 불릿 팩토리가 메모리 해제된다!!" << std::endl;
 }
 
-Bullet* LazerBulletFactory::CreateBullet()
+std::unique_ptr<Bullet> LazerBulletFactory::CreateBullet()
 {
-	return new LazerBullet();
+	return std::make_unique<LazerBullet>();
 }

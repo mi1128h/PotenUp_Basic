@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="250326_Factory.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletFactory.cpp" />
   </ItemGroup>
   <ItemGroup>

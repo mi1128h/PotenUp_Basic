@@ -1,7 +1,8 @@
 #pragma once
+#include "Bullet.h"
 #include <vector>
 
-class Bullet;
+
 class BulletFactory
 {
 public:
@@ -11,8 +12,8 @@ public:
 	void AddBullet();
 
 private:
-	std::vector<Bullet*> bulletList;
-	virtual Bullet* CreateBullet() = 0;
+	std::vector<std::unique_ptr<Bullet>> bulletList;
+	virtual std::unique_ptr<Bullet> CreateBullet() = 0;
 };
 
 class NormalBulletFactory : public BulletFactory
@@ -22,7 +23,7 @@ public:
 	virtual ~NormalBulletFactory();
 
 private:
-	virtual Bullet* CreateBullet() override;
+	virtual std::unique_ptr<Bullet> CreateBullet() override;
 };
 
 class SignBulletFactory : public BulletFactory
@@ -32,7 +33,7 @@ public:
 	virtual ~SignBulletFactory();
 
 private:
-	virtual Bullet* CreateBullet() override;
+	virtual std::unique_ptr<Bullet> CreateBullet() override;
 };
 
 class LazerBulletFactory : public BulletFactory
@@ -42,5 +43,5 @@ public:
 	virtual ~LazerBulletFactory();
 
 private:
-	virtual Bullet* CreateBullet() override;
+	virtual std::unique_ptr<Bullet> CreateBullet() override;
 };
