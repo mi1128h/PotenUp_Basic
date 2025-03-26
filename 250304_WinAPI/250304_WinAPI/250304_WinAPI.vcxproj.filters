@@ -22,6 +22,12 @@
     <Filter Include="MainGame\KOF_Character">
       <UniqueIdentifier>{f94a7019-7865-4ac8-99a9-2fe506e425cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Bullet">
+      <UniqueIdentifier>{38333c94-3976-441b-bb56-de0a48b45fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Enemy">
+      <UniqueIdentifier>{911acd6f-953a-4af8-abb4-c28685495bab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,12 +35,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>2D Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>MainGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="MainGame.cpp">
       <Filter>MainGame</Filter>
@@ -57,16 +57,28 @@
     <ClCompile Include="KeyManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletManager.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>MainGame\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>2D Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Rocket.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
       <Filter>2D Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>MainGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="MainGame.h">
       <Filter>MainGame</Filter>
@@ -97,6 +109,24 @@
     </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>2D Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletManager.h">
+      <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>MainGame\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>2D Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Rocket.h">
+      <Filter>MainGame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
