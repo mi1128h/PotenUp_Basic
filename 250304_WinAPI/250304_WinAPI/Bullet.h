@@ -20,7 +20,8 @@ protected:
 	Image* image;
 
 public:
-	void Init(FPOINT pos, float angle);
+	void Init(FPOINT pos, float angle, float damage);
+	virtual void SpecialInit();
 	void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);

@@ -136,7 +136,7 @@ void Enemy::Fire()
 	if (nLoadedBullets > 0) {
 		for (int i = 0; i < vBullets.size(); ++i) {
 			if (vBullets[i]->IsLoaded()) {
-				vBullets[i]->Init(position, angle);
+				vBullets[i]->Init(position, angle, damage);
 				vBullets[i]->SetSpeed(bulletSpeed);
 				vBullets[i]->Fire();
 				nLoadedBullets--;
@@ -146,7 +146,7 @@ void Enemy::Fire()
 	}
 	else {
 		Bullet* bullet = new Bullet;
-		bullet->Init(position, angle);
+		bullet->Init(position, angle, damage);
 		bullet->SetSpeed(bulletSpeed);
 		bullet->Fire();
 		vBullets.push_back(bullet);

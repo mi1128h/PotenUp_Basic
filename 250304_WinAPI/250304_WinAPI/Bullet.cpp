@@ -4,14 +4,14 @@
 #include "Image.h"
 #include "ImageManager.h"
 
-void Bullet::Init(FPOINT pos, float angle)
+void Bullet::Init(FPOINT pos, float angle, float dmg)
 {
 	isLoaded = true;
 	position = pos;
 	fireAngle = angle;
 	speed = 20.0f;
 	size = 10;
-	damage = 3;
+	damage = dmg;
 	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
 
 	guided = false;
@@ -20,6 +20,10 @@ void Bullet::Init(FPOINT pos, float angle)
 	ImageManager* im = ImageManager::GetInstance();
 	im->LoadImageAtManager(L"Image/bullet.bmp", 21, 21, 1, 1, true, RGB(255, 0, 255));
 	image = im->GetImage(L"Image/bullet.bmp");
+}
+
+void Bullet::SpecialInit()
+{
 }
 
 void Bullet::Release()

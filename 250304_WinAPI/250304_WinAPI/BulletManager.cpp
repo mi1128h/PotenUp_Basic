@@ -36,8 +36,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float angle, float da
 	case BulletType::Basic:
 	{
 		Bullet* bullet = GetBasicBullet();
-		bullet->Init(position, angle);
-		bullet->SetDamage(damage);
+		bullet->Init(position, angle, damage);
 		bullet->Fire();
 		break;
 	}
@@ -46,8 +45,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float angle, float da
 		while (fireSuccess < 36)
 		{
 			BombBullet* bombBullet = GetBombBullet();
-			bombBullet->Init(position, angle);
-			bombBullet->SetDamage(damage);
+			bombBullet->Init(position, angle, damage);
 			bombBullet->SetBombValues(10, 10 * fireSuccess);
 			bombBullet->Fire();
 			fireSuccess++;
@@ -57,8 +55,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float angle, float da
 	case BulletType::Bounce:
 	{
 		BounceBullet* bounceBullet = GetBounceBullet();
-		bounceBullet->Init(position, angle);
-		bounceBullet->SetDamage(damage);
+		bounceBullet->Init(position, angle, damage);
 		bounceBullet->SetBounceNum(5);
 		bounceBullet->Fire();
 		break;
@@ -68,8 +65,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float angle, float da
 		while (fireSuccess < 60)
 		{
 			ConfettiBullet* confettiBullet = GetConfettiBullet();
-			confettiBullet->Init(position, angle);
-			confettiBullet->SetDamage(damage);
+			confettiBullet->Init(position, angle, damage);
 			confettiBullet->SetBombValues(10, 6 * fireSuccess);
 			confettiBullet->SetConfettiValues(5);
 			confettiBullet->Fire();

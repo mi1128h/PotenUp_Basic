@@ -128,11 +128,10 @@ void Tank::Fire()
 	if (nLoadedBullets[(int)BulletType::Basic] > 0) {
 		for (int i = 0; i < vBasics.size(); ++i) {
 			if (vBasics[i]->IsLoaded()) {
-				vBasics[i]->Init(barrelEnd, barrelAngle);
+				vBasics[i]->Init(barrelEnd, barrelAngle, damage);
 				if (!guidedFired) {
 					vBasics[i]->SetGuided(true);
 				}
-				vBasics[i]->SetDamage(damage);
 				vBasics[i]->Fire();
 				nLoadedBullets[(int)BulletType::Basic]--;
 				break;
@@ -141,11 +140,10 @@ void Tank::Fire()
 	}
 	else {
 		Bullet* bullet = new Bullet;
-		bullet->Init(barrelEnd, barrelAngle);
+		bullet->Init(barrelEnd, barrelAngle, damage);
 		if (!guidedFired) {
 			bullet->SetGuided(true);
 		}
-		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBasics.push_back(bullet);
@@ -160,9 +158,8 @@ void Tank::FireBomb()
 	if (nLoadedBullets[(int)BulletType::Bomb] > 0) {
 		for (int i = 0; i < vBombs.size(); ++i) {
 			if (!vBombs[i]->IsLoaded()) continue;
-			vBombs[i]->Init(barrelEnd, barrelAngle);
+			vBombs[i]->Init(barrelEnd, barrelAngle, damage);
 			vBombs[i]->SetBombValues(bombExplodeTime, 10 * fireSuccess);
-			vBombs[i]->SetDamage(damage);
 			vBombs[i]->Fire();
 
 			fireSuccess++;
@@ -174,9 +171,8 @@ void Tank::FireBomb()
 
 	while (fireSuccess < 36) {
 		BombBullet* bullet = new BombBullet;
-		bullet->Init(barrelEnd, barrelAngle);
+		bullet->Init(barrelEnd, barrelAngle, damage);
 		bullet->SetBombValues(bombExplodeTime, 10 * fireSuccess);
-		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBombs.push_back(bullet);
@@ -189,9 +185,8 @@ void Tank::FireBounce()
 	if (nLoadedBullets[(int)BulletType::Bounce] > 0) {
 		for (int i = 0; i < vBounces.size(); ++i) {
 			if (vBounces[i]->IsLoaded()) {
-				vBounces[i]->Init(barrelEnd, barrelAngle);
+				vBounces[i]->Init(barrelEnd, barrelAngle, damage);
 				vBounces[i]->SetBounceNum(bounceNum);
-				vBounces[i]->SetDamage(damage);
 				vBounces[i]->Fire();
 				nLoadedBullets[(int)BulletType::Bounce]--;
 				break;
@@ -200,9 +195,8 @@ void Tank::FireBounce()
 	}
 	else {
 		BounceBullet* bullet = new BounceBullet;
-		bullet->Init(barrelEnd, barrelAngle);
+		bullet->Init(barrelEnd, barrelAngle, damage);
 		bullet->SetBounceNum(bounceNum);
-		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBounces.push_back(bullet);
@@ -216,10 +210,9 @@ void Tank::FireConfetti()
 	if (nLoadedBullets[(int)BulletType::Confetti] > 0) {
 		for (int i = 0; i < vConfettis.size(); ++i) {
 			if (!vConfettis[i]->IsLoaded()) continue;
-			vConfettis[i]->Init(barrelEnd, barrelAngle);
+			vConfettis[i]->Init(barrelEnd, barrelAngle, damage);
 			vConfettis[i]->SetBombValues(bombExplodeTime, 6 * fireSuccess);
 			vConfettis[i]->SetConfettiValues(confettiLife);
-			vConfettis[i]->SetDamage(damage);
 			vConfettis[i]->Fire();
 
 			fireSuccess++;
@@ -231,10 +224,9 @@ void Tank::FireConfetti()
 
 	while (fireSuccess < 60) {
 		ConfettiBullet* bullet = new ConfettiBullet;
-		bullet->Init(barrelEnd, barrelAngle);
+		bullet->Init(barrelEnd, barrelAngle, damage);
 		bullet->SetBombValues(bombExplodeTime, 6 * fireSuccess);
 		bullet->SetConfettiValues(confettiLife);
-		bullet->SetDamage(damage);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vConfettis.push_back(bullet);
