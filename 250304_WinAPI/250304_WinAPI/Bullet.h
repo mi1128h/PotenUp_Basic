@@ -21,7 +21,7 @@ protected:
 
 public:
 	void Init(FPOINT pos, float angle, float damage);
-	virtual void SpecialInit();
+	virtual void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife);
 	void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);
@@ -52,10 +52,11 @@ public:
 class BombBullet : public Bullet
 {
 protected:
-	int countDown{};	// one direction(fireAngle) while countdown
+	float countDown{};	// one direction(fireAngle) while countdown
 	float angle_360{};	// new direction after countdown
 
 public:
+	void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetBombValues(int time, float angle);
 	void Update() override;
 	void Move() override;
@@ -67,7 +68,8 @@ private:
 	int bounceNum{};
 
 public:
-	void SetBounceNum(int cnt);
+	void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife) override;
+	void SetBounceValues(int cnt);
 	void CheckWallCollision() override;
 };
 
@@ -75,9 +77,10 @@ class ConfettiBullet : public BombBullet
 {
 private:
 	int colors[3];
-	int lifeTime;
+	float lifeTime;
 
 public:
+	void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetConfettiValues(int life);
 	void Update() override;
 	void Render(HDC hdc) override;

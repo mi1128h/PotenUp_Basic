@@ -56,7 +56,7 @@ void BulletManager::Fire(BulletType type, FPOINT position, float angle, float da
 	{
 		BounceBullet* bounceBullet = GetBounceBullet();
 		bounceBullet->Init(position, angle, damage);
-		bounceBullet->SetBounceNum(5);
+		bounceBullet->SetBounceValues(5);
 		bounceBullet->Fire();
 		break;
 	}

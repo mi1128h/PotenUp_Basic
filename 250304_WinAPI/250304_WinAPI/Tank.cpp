@@ -186,7 +186,7 @@ void Tank::FireBounce()
 		for (int i = 0; i < vBounces.size(); ++i) {
 			if (vBounces[i]->IsLoaded()) {
 				vBounces[i]->Init(barrelEnd, barrelAngle, damage);
-				vBounces[i]->SetBounceNum(bounceNum);
+				vBounces[i]->SetBounceValues(bounceNum);
 				vBounces[i]->Fire();
 				nLoadedBullets[(int)BulletType::Bounce]--;
 				break;
@@ -196,7 +196,7 @@ void Tank::FireBounce()
 	else {
 		BounceBullet* bullet = new BounceBullet;
 		bullet->Init(barrelEnd, barrelAngle, damage);
-		bullet->SetBounceNum(bounceNum);
+		bullet->SetBounceValues(bounceNum);
 		bullet->Fire();
 		vBullets.push_back(bullet);
 		vBounces.push_back(bullet);
