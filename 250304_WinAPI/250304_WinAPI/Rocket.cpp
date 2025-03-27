@@ -18,6 +18,7 @@ void Rocket::Init()
 
 	bulletManager = new BulletManager;
 	bulletManager->Init();
+	bulletManager->SetBulletValues(90, damage, 10, 5, 5);
 }
 
 void Rocket::Release()
@@ -62,13 +63,13 @@ void Rocket::ProcessInput()
 
 	if (km->IsOnceKeyDown(VK_SPACE)) {
 		if (bulletManager) {
-			bulletManager->Fire(BulletType::Basic, position, 90, damage);
+			bulletManager->Fire(BulletType::Basic, position);
 		}
 	}
 
 	if(km->IsOnceKeyDown('I')) {
 		if (bulletManager) {
-			bulletManager->Fire(BulletType::Confetti, position, 90, damage);
+			bulletManager->Fire(BulletType::Confetti, position);
 		}
 	}
 }

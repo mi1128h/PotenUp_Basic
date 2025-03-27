@@ -24,13 +24,27 @@ std::unique_ptr<Bullet>& BulletFactory::GetBullet()
 
     std::unique_ptr<Bullet> newBullet = CreateBullet();
     bulletList.push_back(move(newBullet));
-    return newBullet;
+    return bulletList.back();
 }
 
 void BulletFactory::SetSpecialValues(float angle, float damage, float explodeTime, int bounceNum, float confettiLife)
 {
     this->angle = angle;
     this->damage = damage;
+}
+
+void BulletFactory::Update()
+{
+    for (auto& bullet : bulletList) {
+        bullet->Update();
+    }
+}
+
+void BulletFactory::Render(HDC hdc)
+{
+    for (auto& bullet : bulletList) {
+        bullet->Render(hdc);
+    }
 }
 
 BasicBulletFactory::~BasicBulletFactory()
@@ -110,12 +124,13 @@ std::unique_ptr<Bullet> ConfettiBulletFactory::CreateBullet()
 void ConfettiBulletFactory::InitBullet(std::unique_ptr<Bullet>& bullet, int cnt, int totalCnt)
 {
     bullet->Init(position, angle, damage);
-    bullet->SetValues(0, 360 / totalCnt * cnt, 0, confettiLife);
+    bullet->SetValues(explodeTime, 360 / totalCnt * cnt, 0, confettiLife);
     bullet->Fire();
 }
 
 void ConfettiBulletFactory::SetSpecialValues(float angle, float damage, float explodeTime, int bounceNum, float confettiLife)
 {
     BulletFactory::SetSpecialValues(angle, damage, explodeTime, bounceNum, confettiLife);
+    this->explodeTime = explodeTime;
     this->confettiLife = confettiLife;
 }

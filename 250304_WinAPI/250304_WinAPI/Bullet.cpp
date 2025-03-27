@@ -161,6 +161,7 @@ void BounceBullet::CheckWallCollision()
 
 void ConfettiBullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)
 {
+	BombBullet::SetBombValues(explodeTime, newAngle);
 	SetConfettiValues(confettiLife);
 }
 

@@ -38,6 +38,7 @@ void EnemyManager::Init()
 
 	bulletManager = new BulletManager;
 	bulletManager->Init();
+	bulletManager->SetBulletValues(270, 2, 10, 5, 5);
 }
 
 void EnemyManager::Release()
@@ -68,7 +69,8 @@ void EnemyManager::Update()
 		if (e->GetRushElapsedTime() > 2.0f and !e->GetFireBullet()) {
 			if (bulletManager) {
 				float angle = GetAngle(e->GetPos(), targetPoint);
-				bulletManager->Fire(BulletType::Basic, e->GetPos(), angle, e->GetDamage());
+				bulletManager->SetBulletValues(angle, 2, 10, 5, 5);
+				bulletManager->Fire(BulletType::Basic, e->GetPos());
 				e->SetFireBullet(true);
 			}
 		}

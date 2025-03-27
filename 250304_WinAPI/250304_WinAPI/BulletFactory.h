@@ -16,6 +16,9 @@ public:
 	virtual void SetSpecialValues(float angle, float damage,
 		float explodeTime, int bounceNum, float confettiLife);
 
+	void Update();
+	void Render(HDC hdc);
+
 protected:
 	FPOINT position{};
 	float angle{};
@@ -80,5 +83,6 @@ private:
 	void SetSpecialValues(float angle, float damage,
 		float explodeTime, int bounceNum, float confettiLife);
 
+	float explodeTime{};
 	float confettiLife{};
 };

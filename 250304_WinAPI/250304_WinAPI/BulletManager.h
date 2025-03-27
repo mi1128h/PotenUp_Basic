@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "BulletFactory.h"
 
 enum class BulletType {
 	Basic,
@@ -9,34 +10,24 @@ enum class BulletType {
 	length
 };
 
-class Bullet;
-class BombBullet;
-class BounceBullet;
-class ConfettiBullet;
-class Image;
+class BulletFactory;
 class BulletManager : public GameObject
 {
 public:
+	BulletManager() {}
+	~BulletManager();
+
 	void Init();
 	void Release();
 	void Update();
 	void Render(HDC hdc);
 
-	void Fire(BulletType type, FPOINT position, float angle, float damage);
-	Bullet* GetBasicBullet();
-	BombBullet* GetBombBullet();
-	BounceBullet* GetBounceBullet();
-	ConfettiBullet* GetConfettiBullet();
+	void SetBulletValues(float angle, float damage,
+		float explodeTime, int bounceNum, float confettiLife);
+	void Fire(BulletType type, FPOINT position);
 
 private:
-	vector<Bullet*> vBullets;
-
-	vector<Bullet*> vBasics;
-	vector<BombBullet*> vBombs;
-	vector<BounceBullet*> vBounces;
-	vector<ConfettiBullet*> vConfettis;
-
-
+	std::unique_ptr<BulletFactory> bulletFactoryList[(int)BulletType::length];
 
 };
 

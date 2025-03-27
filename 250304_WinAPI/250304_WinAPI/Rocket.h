@@ -6,6 +6,9 @@ class BulletManager;
 class Rocket : public GameObject
 {
 public:
+	Rocket() {}
+	~Rocket() {}
+
 	void Init();
 	void Release();
 	void Update();

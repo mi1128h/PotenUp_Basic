@@ -9,9 +9,9 @@
 #include <map>
 #include <memory>
 
-#include "KeyManager.h"
-
 using namespace std;
+
+#include "KeyManager.h"
 
 // 컴파일러에서 해당 코드를 뒤에 정의된 코드로 변경한다
 #define WINSIZE_X 600

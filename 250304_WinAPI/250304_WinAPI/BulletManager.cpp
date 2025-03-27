@@ -1,141 +1,66 @@
 #include "BulletManager.h"
-#include "Bullet.h"
+
+BulletManager::~BulletManager()
+{
+}
 
 void BulletManager::Init()
 {
-
+	bulletFactoryList[(int)BulletType::Basic] = std::make_unique<BasicBulletFactory>();
+	bulletFactoryList[(int)BulletType::Bomb] = std::make_unique<BombBulletFactory>();
+	bulletFactoryList[(int)BulletType::Bounce] = std::make_unique<BounceBulletFactory>();
+	bulletFactoryList[(int)BulletType::Confetti] = std::make_unique<ConfettiBulletFactory>();
 }
 
 void BulletManager::Release()
 {
-	for (int i = 0; i < vBullets.size(); ++i) {
-		vBullets[i]->Release();
-		delete vBullets[i];
-		vBullets[i] = NULL;
-	}
 }
 
 void BulletManager::Update()
 {
-	for (auto b : vBullets) {
-		b->Update();
+	for (auto& bf : bulletFactoryList) {
+		bf->Update();
 	}
 }
 
 void BulletManager::Render(HDC hdc)
 {
-	for (auto b : vBullets) {
-		b->Render(hdc);
+	for (auto& bf : bulletFactoryList) {
+		bf->Render(hdc);
 	}
 }
 
-void BulletManager::Fire(BulletType type, FPOINT position, float angle, float damage)
+void BulletManager::SetBulletValues(float angle, float damage, float explodeTime, int bounceNum, float confettiLife)
 {
-	int fireSuccess{};
+	for (auto& bf : bulletFactoryList) {
+		bf->SetSpecialValues(angle, damage, explodeTime, bounceNum, confettiLife);
+	}
+}
+
+void BulletManager::Fire(BulletType type, FPOINT position)
+{
+	bulletFactoryList[(int)type]->UpdateFirePosition(position);
+
 	switch (type) {
 	case BulletType::Basic:
 	{
-		Bullet* bullet = GetBasicBullet();
-		bullet->Init(position, angle, damage);
-		bullet->Fire();
+		bulletFactoryList[(int)type]->AddBullet(1);
 		break;
 	}
 	case BulletType::Bomb:
 	{
-		while (fireSuccess < 36)
-		{
-			BombBullet* bombBullet = GetBombBullet();
-			bombBullet->Init(position, angle, damage);
-			bombBullet->SetBombValues(10, 10 * fireSuccess);
-			bombBullet->Fire();
-			fireSuccess++;
-		}
+		bulletFactoryList[(int)type]->AddBullet(36);
 		break;
 	}
 	case BulletType::Bounce:
 	{
-		BounceBullet* bounceBullet = GetBounceBullet();
-		bounceBullet->Init(position, angle, damage);
-		bounceBullet->SetBounceValues(5);
-		bounceBullet->Fire();
+		bulletFactoryList[(int)type]->AddBullet(1);
 		break;
 	}
 	case BulletType::Confetti:
 	{
-		while (fireSuccess < 60)
-		{
-			ConfettiBullet* confettiBullet = GetConfettiBullet();
-			confettiBullet->Init(position, angle, damage);
-			confettiBullet->SetBombValues(10, 6 * fireSuccess);
-			confettiBullet->SetConfettiValues(5);
-			confettiBullet->Fire();
-			fireSuccess++;
-		}
-	}
+		bulletFactoryList[(int)type]->AddBullet(60);
 		break;
 	}
-}
-
-Bullet* BulletManager::GetBasicBullet()
-{
-	for (int i = 0; i < vBasics.size(); ++i) {
-		if (vBasics[i]->IsLoaded()) {
-			return vBasics[i];
-		}
 	}
-
-	Bullet* bullet = new Bullet;
-	vBullets.push_back(bullet);
-	vBasics.push_back(bullet);
-
-	return bullet;
-}
-
-BombBullet* BulletManager::GetBombBullet()
-{
-	for (int i = 0; i < vBombs.size(); ++i) {
-		if (vBombs[i]->IsLoaded()) {
-			return vBombs[i];
-		}
-	}
-
-	BombBullet* bullet = new BombBullet;
-	vBullets.reserve(vBullets.size() + 36);
-	vBombs.reserve(vBombs.size() + 36);
-	vBullets.push_back(bullet);
-	vBombs.push_back(bullet);
-
-	return bullet;
-}
-
-BounceBullet* BulletManager::GetBounceBullet()
-{
-	for (int i = 0; i < vBounces.size(); ++i) {
-		if (vBounces[i]->IsLoaded()) {
-			return vBounces[i];
-		}
-	}
-
-	BounceBullet* bullet = new BounceBullet;
-	vBullets.push_back(bullet);
-	vBounces.push_back(bullet);
-
-	return bullet;
-}
-
-ConfettiBullet* BulletManager::GetConfettiBullet()
-{
-	for (int i = 0; i < vConfettis.size(); ++i) {
-		if (vConfettis[i]->IsLoaded()) {
-			return vConfettis[i];
-		}
-	}
-
-	ConfettiBullet* bullet = new ConfettiBullet;
-	vBullets.reserve(vBullets.size() + 60);
-	vConfettis.reserve(vConfettis.size() + 60);
-	vBullets.push_back(bullet);
-	vConfettis.push_back(bullet);
-
-	return bullet;
 }
