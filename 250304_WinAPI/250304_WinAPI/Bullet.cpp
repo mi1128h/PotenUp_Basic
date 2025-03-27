@@ -190,17 +190,20 @@ void ConfettiBullet::SetValues(float explodeTime, float newAngle, int bounceNum,
 
 void ConfettiBullet::SetConfettiValues(int life)
 {
-	colors[0] = uid_200_255(dre);
+	//colors[0] = uid_200_255(dre);
+	colors[0] = (float)uid_0_255(dre) / 255.0f * 55.0f + 200;
 	colors[1] = uid_0_255(dre);
 	colors[2] = uid_0_255(dre);
-	lifeTime = life * uid_1_2(dre);
+	//lifeTime = life * uid_1_2(dre);
+	lifeTime = life * ((float)uid_0_255(dre) / 255.0f + 1.0f);
 }
 
 void ConfettiBullet::Update()
 {
 	BombBullet::Update();
 	if (countDown <= 0) {
-		speed = uid_0_10(dre);
+		//speed = uid_0_10(dre);
+		speed = (float)uid_0_255(dre) / 255.0f * 10.0f;
 		lifeTime--;
 	}
 	if (lifeTime <= 0) isLoaded = true;
