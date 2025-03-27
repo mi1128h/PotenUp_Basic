@@ -8,7 +8,6 @@ MainGame g_mainGame;
 
 std::random_device rd;
 std::default_random_engine dre{ rd() };
-std::uniform_int_distribution<int> uid_0_10{ 0, 10 };
 std::uniform_int_distribution<int> uid_0_255{ 0, 255 };
 std::uniform_int_distribution<int> uid_0_WINSIZEX{ 0, WINSIZE_X };
 

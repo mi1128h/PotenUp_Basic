@@ -37,6 +37,5 @@ typedef struct tagFPOINT
 
 extern random_device rd;
 extern default_random_engine dre;
-extern uniform_int_distribution<int> uid_0_10;
 extern uniform_int_distribution<int> uid_0_255;
 extern uniform_int_distribution<int> uid_0_WINSIZEX;
