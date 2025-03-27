@@ -81,7 +81,7 @@
     <ClCompile Include="BulletFactory.cpp">
       <Filter>MainGame\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="TimeManager.cpp">
+    <ClCompile Include="TimerManager.cpp">
       <Filter>2D Framework\Timer</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
@@ -143,7 +143,7 @@
     <ClInclude Include="BulletFactory.h">
       <Filter>MainGame\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="TimeManager.h">
+    <ClInclude Include="TimerManager.h">
       <Filter>2D Framework\Timer</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">

@@ -16,7 +16,7 @@ using namespace std;
 
 #include "KeyManager.h"
 #include "ImageManager.h"
-#include "TimeManager.h"
+#include "TimerManager.h"
 
 // 컴파일러에서 해당 코드를 뒤에 정의된 코드로 변경한다
 #define WINSIZE_X 600

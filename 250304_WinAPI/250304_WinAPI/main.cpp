@@ -57,7 +57,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	g_hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, g_lpszClassName, g_lpszClassName,
 		WS_OVERLAPPEDWINDOW, 50, 50, rcWindowSize.right - rcWindowSize.left, rcWindowSize.bottom - rcWindowSize.top, NULL, NULL, g_hInstance, NULL);
 
-	TimeManager::GetInstance()->Init();
+	TimerManager::GetInstance()->Init();
 	g_mainGame.Init();
 
 	ShowWindow(g_hWnd, nCmdShow);
@@ -74,14 +74,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 		else
 		{
-			TimeManager::GetInstance()->Update();
+			TimerManager::GetInstance()->Update();
 			g_mainGame.Update();
 			g_mainGame.Render();
 		}
 	}
 
 	g_mainGame.Release();
-	TimeManager::GetInstance()->Release();
+	TimerManager::GetInstance()->Release();
 
 	return message.wParam;
 }

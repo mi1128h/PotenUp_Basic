@@ -3,16 +3,19 @@
 #include "Singleton.h"
 
 class Timer;
-class TimeManager : public Singleton<TimeManager>
+class TimerManager : public Singleton<TimerManager>
 {
+private:
+	Timer* timer;
+	wchar_t szText[128];
+
 public:
 	void Init();
 	void Release();
 	void Update();
 	void Render(HDC hdc);
 
-private:
-	Timer* timer;
-	wchar_t szText[128];
+	float GetDeltaTime();
+
 };
 

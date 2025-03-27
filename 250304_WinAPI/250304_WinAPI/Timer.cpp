@@ -2,28 +2,27 @@
 
 void Timer::Init()
 {
-	isHardware = true;
-	timeScale = 0.0f;
-	timeElapsed = 0.0f;
-	currTime = 0;
-	prevTime = 0;
-	periodFrequency = 0;
+    isHardware = false;
+    timeScale = 0.0f;
+    timeElapsed = 0.0f;
+    currTime = 0;
+    lastTime = 0;
+    periodFrequency = 0;
+    fpsTimeElapsed = 0.0f;
+    fpsFrameCount = 0;
+    FPS = 0;
 
-	fpsElapsedTime = 0.0f;
-	fpsFrameCount = 0;
-	fps = 0;
-	
-	isHardware = ::QueryPerformanceFrequency((LARGE_INTEGER*)&periodFrequency);
-	if (isHardware)
-	{
-		::QueryPerformanceCounter((LARGE_INTEGER*)&prevTime);
-		timeScale = 1.0f / periodFrequency;
-	}
-	else
-	{
-		prevTime = timeGetTime();
-		timeScale = 0.001f;
-	}
+    isHardware = QueryPerformanceFrequency((LARGE_INTEGER*)&periodFrequency);
+    if (isHardware)
+    {
+        QueryPerformanceCounter((LARGE_INTEGER*)&lastTime);
+        timeScale = 1.0f / periodFrequency;
+    }
+    else
+    {
+        lastTime = timeGetTime();
+        timeScale = 0.001f;
+    }
 }
 
 void Timer::Release()
@@ -32,39 +31,40 @@ void Timer::Release()
 
 void Timer::Tick()
 {
-	if (isHardware)
-	{
-		QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
-	}
-	else
-	{
-		currTime = timeGetTime();
-	}
+    if (isHardware)
+    {
+        QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
+    }
+    else
+    {
+        currTime = timeGetTime();
+    }
 
-	timeElapsed = (currTime - prevTime) * timeScale;
+    timeElapsed = (currTime - lastTime) * timeScale;
+    // 프레임 계산
+    fpsTimeElapsed += timeElapsed;
+    fpsFrameCount++;
 
-	fpsElapsedTime += timeElapsed;
-	fpsFrameCount++;
-	if (fpsElapsedTime >= 1.0f)
-	{
-		fps = fpsFrameCount;
-		fpsFrameCount = 0;
-		fpsElapsedTime = 0.0f;
-	}
-	prevTime = currTime;
+    if (fpsTimeElapsed >= 1.0f)
+    {
+        FPS = fpsFrameCount;
+        fpsFrameCount = 0.0f;
+        fpsTimeElapsed = 0.0f;
+    }
+
+    lastTime = currTime;
 }
 
 float Timer::GetCurrTime()
 {
-	__int64 time;
-	if (isHardware)
-	{
-		QueryPerformanceCounter((LARGE_INTEGER*)&time);
-	}
-	else
-	{
-		time = timeGetTime();
-	}
-
-	return time * timeScale;
+    __int64 time;
+    if (isHardware)
+    {
+        QueryPerformanceCounter((LARGE_INTEGER*)&time);
+    }
+    else
+    {
+        time = timeGetTime();
+    }
+    return time * timeScale;
 }
