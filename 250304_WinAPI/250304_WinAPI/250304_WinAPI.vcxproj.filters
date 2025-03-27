@@ -28,6 +28,9 @@
     <Filter Include="MainGame\Enemy">
       <UniqueIdentifier>{911acd6f-953a-4af8-abb4-c28685495bab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2D Framework\Timer">
+      <UniqueIdentifier>{b1f33669-d2a6-4e4b-ab2f-2540db0af942}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -77,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="BulletFactory.cpp">
       <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>2D Framework\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>2D Framework\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="BulletFactory.h">
       <Filter>MainGame\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>2D Framework\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>2D Framework\Timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
