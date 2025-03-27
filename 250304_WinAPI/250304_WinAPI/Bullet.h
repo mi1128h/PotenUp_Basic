@@ -21,7 +21,7 @@ protected:
 
 public:
 	void Init(FPOINT pos, float angle, float damage);
-	virtual void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife);
+	virtual void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife);
 	void Release();
 	virtual void Update();
 	virtual void Render(HDC hdc);
@@ -56,7 +56,7 @@ protected:
 	float angle_360{};	// new direction after countdown
 
 public:
-	void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife) override;
+	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetBombValues(int time, float angle);
 	void Update() override;
 	void Move() override;
@@ -68,7 +68,7 @@ private:
 	int bounceNum{};
 
 public:
-	void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife) override;
+	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetBounceValues(int cnt);
 	void CheckWallCollision() override;
 };
@@ -80,7 +80,7 @@ private:
 	float lifeTime;
 
 public:
-	void SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife) override;
+	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetConfettiValues(int life);
 	void Update() override;
 	void Render(HDC hdc) override;

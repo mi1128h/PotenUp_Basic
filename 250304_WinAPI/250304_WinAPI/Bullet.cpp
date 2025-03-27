@@ -22,7 +22,7 @@ void Bullet::Init(FPOINT pos, float angle, float dmg)
 	image = im->GetImage(L"Image/bullet.bmp");
 }
 
-void Bullet::SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife)
+void Bullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)
 {
 }
 
@@ -108,9 +108,9 @@ Bullet::~Bullet()
 {
 }
 
-void BombBullet::SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife)
+void BombBullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)
 {
-	SetBombValues(bombTime, newAngle);
+	SetBombValues(explodeTime, newAngle);
 }
 
 void BombBullet::SetBombValues(int time, float angle)
@@ -134,7 +134,7 @@ void BombBullet::Move()
 	}
 }
 
-void BounceBullet::SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife)
+void BounceBullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)
 {
 	SetBounceValues(bounceNum);
 }
@@ -159,7 +159,7 @@ void BounceBullet::CheckWallCollision()
 	}
 }
 
-void ConfettiBullet::SetValues(float bombTime, float newAngle, int bounceNum, float confettiLife)
+void ConfettiBullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)
 {
 	SetConfettiValues(confettiLife);
 }

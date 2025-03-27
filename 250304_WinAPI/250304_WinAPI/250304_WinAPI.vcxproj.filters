@@ -75,6 +75,9 @@
     <ClCompile Include="Rocket.cpp">
       <Filter>MainGame</Filter>
     </ClCompile>
+    <ClCompile Include="BulletFactory.cpp">
+      <Filter>MainGame\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Rocket.h">
       <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletFactory.h">
+      <Filter>MainGame\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

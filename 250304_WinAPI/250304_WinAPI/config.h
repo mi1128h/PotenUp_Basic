@@ -7,6 +7,7 @@
 #include <bitset>
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "KeyManager.h"
 
