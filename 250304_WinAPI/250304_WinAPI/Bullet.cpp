@@ -108,6 +108,14 @@ Bullet::~Bullet()
 {
 }
 
+BombBullet::BombBullet()
+{
+}
+
+BombBullet::~BombBullet()
+{
+}
+
 void BombBullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)
 {
 	SetBombValues(explodeTime, newAngle);
@@ -134,6 +142,14 @@ void BombBullet::Move()
 	}
 }
 
+BounceBullet::BounceBullet()
+{
+}
+
+BounceBullet::~BounceBullet()
+{
+}
+
 void BounceBullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)
 {
 	SetBounceValues(bounceNum);
@@ -157,6 +173,14 @@ void BounceBullet::CheckWallCollision()
 			position.y = ClampVal(position.y, 0.0f, (float)WINSIZE_Y);
 		}
 	}
+}
+
+ConfettiBullet::ConfettiBullet()
+{
+}
+
+ConfettiBullet::~ConfettiBullet()
+{
 }
 
 void ConfettiBullet::SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife)

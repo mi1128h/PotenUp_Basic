@@ -1,11 +1,11 @@
 #pragma once
 #include "config.h"
-#include "Bullet.h"
 
+class Bullet;
 class BulletFactory
 {
 public:
-	BulletFactory() {}
+	BulletFactory();
 	virtual ~BulletFactory();
 
 	void AddBullet(int cnt);
@@ -31,7 +31,7 @@ private:
 class BasicBulletFactory : public BulletFactory
 {
 public:
-	BasicBulletFactory() {}
+	BasicBulletFactory();
 	virtual ~BasicBulletFactory();
 
 private:
@@ -44,7 +44,7 @@ private:
 class BombBulletFactory : public BulletFactory
 {
 public:
-	BombBulletFactory() {}
+	BombBulletFactory();
 	virtual ~BombBulletFactory();
 
 private:
@@ -59,7 +59,7 @@ private:
 class BounceBulletFactory : public BulletFactory
 {
 public:
-	BounceBulletFactory() {}
+	BounceBulletFactory();
 	virtual ~BounceBulletFactory();
 
 private:
@@ -74,7 +74,7 @@ private:
 class ConfettiBulletFactory : public BulletFactory
 {
 public:
-	ConfettiBulletFactory() {}
+	ConfettiBulletFactory();
 	virtual ~ConfettiBulletFactory();
 
 private:

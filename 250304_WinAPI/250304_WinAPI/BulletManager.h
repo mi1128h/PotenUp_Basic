@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "BulletFactory.h"
 
 enum class BulletType {
 	Basic,
@@ -14,7 +13,7 @@ class BulletFactory;
 class BulletManager : public GameObject
 {
 public:
-	BulletManager() {}
+	BulletManager();
 	~BulletManager();
 
 	void Init();

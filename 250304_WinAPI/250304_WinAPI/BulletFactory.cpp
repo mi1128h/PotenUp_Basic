@@ -1,4 +1,9 @@
 #include "BulletFactory.h"
+#include "Bullet.h"
+
+BulletFactory::BulletFactory()
+{
+}
 
 BulletFactory::~BulletFactory()
 {
@@ -47,6 +52,10 @@ void BulletFactory::Render(HDC hdc)
     }
 }
 
+BasicBulletFactory::BasicBulletFactory()
+{
+}
+
 BasicBulletFactory::~BasicBulletFactory()
 {
 }
@@ -66,6 +75,10 @@ void BasicBulletFactory::InitBullet(std::unique_ptr<Bullet>& bullet, int cnt, in
 void BasicBulletFactory::SetSpecialValues(float angle, float damage, float explodeTime, int bounceNum, float confettiLife)
 {
     BulletFactory::SetSpecialValues(angle, damage, explodeTime, bounceNum, confettiLife);
+}
+
+BombBulletFactory::BombBulletFactory()
+{
 }
 
 BombBulletFactory::~BombBulletFactory()
@@ -90,6 +103,10 @@ void BombBulletFactory::SetSpecialValues(float angle, float damage, float explod
     this->explodeTime = explodeTime;
 }
 
+BounceBulletFactory::BounceBulletFactory()
+{
+}
+
 BounceBulletFactory::~BounceBulletFactory()
 {
 }
@@ -110,6 +127,10 @@ void BounceBulletFactory::SetSpecialValues(float angle, float damage, float expl
 {
     BulletFactory::SetSpecialValues(angle, damage, explodeTime, bounceNum, confettiLife);
     this->bounceNum = bounceNum;
+}
+
+ConfettiBulletFactory::ConfettiBulletFactory()
+{
 }
 
 ConfettiBulletFactory::~ConfettiBulletFactory()

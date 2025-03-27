@@ -20,6 +20,9 @@ protected:
 	Image* image;
 
 public:
+	Bullet();
+	virtual ~Bullet();
+
 	void Init(FPOINT pos, float angle, float damage);
 	virtual void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife);
 	void Release();
@@ -44,9 +47,6 @@ public:
 
 	virtual void CheckWallCollision();
 	void CheckEnemyCollision(Enemy* enemy);
-
-	Bullet();
-	virtual ~Bullet();
 };
 
 class BombBullet : public Bullet
@@ -56,6 +56,9 @@ protected:
 	float angle_360{};	// new direction after countdown
 
 public:
+	BombBullet();
+	virtual ~BombBullet();
+
 	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetBombValues(int time, float angle);
 	void Update() override;
@@ -68,6 +71,9 @@ private:
 	int bounceNum{};
 
 public:
+	BounceBullet();
+	virtual ~BounceBullet();
+
 	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetBounceValues(int cnt);
 	void CheckWallCollision() override;
@@ -80,6 +86,9 @@ private:
 	float lifeTime;
 
 public:
+	ConfettiBullet();
+	virtual ~ConfettiBullet();
+
 	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
 	void SetConfettiValues(int life);
 	void Update() override;

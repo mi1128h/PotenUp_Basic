@@ -1,4 +1,9 @@
 #include "BulletManager.h"
+#include "BulletFactory.h"
+
+BulletManager::BulletManager()
+{
+}
 
 BulletManager::~BulletManager()
 {
