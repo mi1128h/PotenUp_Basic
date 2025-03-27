@@ -11,6 +11,8 @@
 
 void MainGame::Init()
 {
+	hdc = GetDC(g_hWnd);
+
 	backBuffer = new Image();
 	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y))) {
 		MessageBox(g_hWnd, L"backBuffer 생성 실패", L"경고", MB_OK);
@@ -130,7 +132,7 @@ void MainGame::Update()
 #endif
 }
 
-void MainGame::Render(HDC hdc)
+void MainGame::Render()
 {
 	if (!backBuffer) return;
 	// 백버퍼에 복사
@@ -254,16 +256,12 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 {
 	switch (iMessage) {
 	case WM_CREATE:
-		hTimer = (HANDLE)SetTimer(hWnd, 0, 100, NULL);
 #ifdef TANKGAME
 		hTimer2 = (HANDLE)SetTimer(hWnd, 1, 3000, NULL);
 #endif
 		break;
 	case WM_TIMER:
 		switch (wParam) {
-		case 0:
-			Update();
-			break;
 #ifdef TANKGAME
 		case 1:
 			CreateEnemy();
@@ -344,15 +342,7 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		InvalidateRect(g_hWnd, NULL, FALSE);
 		break;
 
-	case WM_PAINT:
-		hdc = BeginPaint(g_hWnd, &ps);
-
-		Render(hdc);
-
-		EndPaint(g_hWnd, &ps);
-		break;
 	case WM_DESTROY:
-		KillTimer(hWnd, 0);
 #ifdef TANKGAME
 		KillTimer(hWnd, 1);
 #endif

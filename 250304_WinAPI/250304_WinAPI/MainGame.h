@@ -34,7 +34,7 @@ public:
 	void Init();
 	void Release();
 	void Update();
-	void Render(HDC hdc);
+	void Render();
 	void RenderInfo(HDC hdc);
 
 	void CreateEnemy();
