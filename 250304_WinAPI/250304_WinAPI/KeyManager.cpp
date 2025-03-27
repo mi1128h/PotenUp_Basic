@@ -25,8 +25,10 @@ bool KeyManager::IsOnceKeyDown(int key)
     */
 
     if (GetAsyncKeyState(key) & 0x8000) {
-        if (keyDown[key] == false) keyDown[key] = true;
-        return true;
+        if (keyDown[key] == false) {
+            keyDown[key] = true;
+            return true;
+        }
     }
     else {
         keyDown[key] = false;

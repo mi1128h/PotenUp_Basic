@@ -58,7 +58,7 @@ void EnemyManager::Release()
 
 void EnemyManager::Update()
 {
-	rushTime -= 1;
+	rushTime -= TimerManager::GetInstance()->GetDeltaTime();
 	for (Enemy* e : enemyList) {
 		e->Update();
 		if (rushTime <= 0 and !e->GetRush()) {
@@ -66,10 +66,10 @@ void EnemyManager::Update()
 			rushTime = rushCoolTime;
 		}
 
-		if (e->GetRushElapsedTime() > 2.0f and !e->GetFireBullet()) {
+		if (e->GetRushElapsedTime() > 0.5f and !e->GetFireBullet()) {
 			if (bulletManager) {
 				float angle = GetAngle(e->GetPos(), targetPoint);
-				bulletManager->SetBulletValues(angle, 2, 10, 5, 5);
+				bulletManager->SetBulletValues(angle, 2, 2, 5, 0.5);
 				bulletManager->Fire(BulletType::Basic, e->GetPos());
 				e->SetFireBullet(true);
 			}

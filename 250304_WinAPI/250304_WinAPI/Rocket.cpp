@@ -9,7 +9,7 @@ void Rocket::Init()
 	position = { WINSIZE_X / 2, WINSIZE_Y - 100 };
 	dx = 0;
 	dy = 0;
-	speed = 20;
+	speed = 200;
 	damage = 3;
 
 	ImageManager* im = ImageManager::GetInstance();
@@ -18,7 +18,7 @@ void Rocket::Init()
 
 	bulletManager = new BulletManager;
 	bulletManager->Init();
-	bulletManager->SetBulletValues(90, damage, 10, 5, 5);
+	bulletManager->SetBulletValues(90, damage, 1.5f, 5, 0.3f);
 }
 
 void Rocket::Release()
@@ -69,6 +69,8 @@ void Rocket::ProcessInput()
 
 	if(km->IsOnceKeyDown('I')) {
 		if (bulletManager) {
+			//bulletManager->Fire(BulletType::Bomb, position);
+			//bulletManager->Fire(BulletType::Bounce, position);
 			bulletManager->Fire(BulletType::Confetti, position);
 		}
 	}
@@ -89,8 +91,9 @@ void Rocket::Render(HDC hdc)
 
 void Rocket::Move()
 {
-	position.x += dx * speed;
-	position.y += dy * speed;
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+	position.x += dx * speed * deltaTime;
+	position.y += dy * speed * deltaTime;
 
 	int width{}, height{};
 	if (image) {

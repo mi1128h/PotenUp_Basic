@@ -8,7 +8,7 @@ void Bullet::Init(FPOINT pos, float angle, float dmg)
 	isLoaded = true;
 	position = pos;
 	fireAngle = angle;
-	speed = 20.0f;
+	speed = 200.0f;
 	size = 10;
 	damage = dmg;
 	rcCollision = GetRectAtCenter(position.x, position.y, size, size);
@@ -55,8 +55,9 @@ void Bullet::Render(HDC hdc)
 
 void Bullet::Move()
 {
-	position.x += cosf(TORADIAN(fireAngle)) * speed;
-	position.y -= sinf(TORADIAN(fireAngle)) * speed;
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+	position.x += cosf(TORADIAN(fireAngle)) * speed * deltaTime;
+	position.y -= sinf(TORADIAN(fireAngle)) * speed * deltaTime;
 }
 
 void Bullet::UpdateGuidedAngle()
@@ -120,7 +121,7 @@ void BombBullet::SetValues(float explodeTime, float newAngle, int bounceNum, flo
 	SetBombValues(explodeTime, newAngle);
 }
 
-void BombBullet::SetBombValues(int time, float angle)
+void BombBullet::SetBombValues(float time, float angle)
 {
 	countDown = time;
 	angle_360 = angle;
@@ -128,16 +129,18 @@ void BombBullet::SetBombValues(int time, float angle)
 
 void BombBullet::Update()
 {
-	if (countDown > 0) countDown--;
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+	if (countDown > 0) countDown -= deltaTime;
 	Bullet::Update();
 }
 
 void BombBullet::Move()
 {
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
 	if (countDown > 0) Bullet::Move();
 	else {
-		position.x += cosf(TORADIAN(angle_360)) * speed;
-		position.y -= sinf(TORADIAN(angle_360)) * speed;
+		position.x += cosf(TORADIAN(angle_360)) * speed * deltaTime;
+		position.y -= sinf(TORADIAN(angle_360)) * speed * deltaTime;
 	}
 }
 
@@ -168,8 +171,8 @@ void BounceBullet::CheckWallCollision()
 			bounceNum--;
 			bool isUpsideDown = IsOutOfRange({ WINSIZE_X / 2, position.y }, WINSIZE_X, WINSIZE_Y);
 			fireAngle = 180 * (isUpsideDown ? 2 : 1) - fireAngle;
-			position.x = ClampVal(position.x, 0.0f, (float)WINSIZE_X);
-			position.y = ClampVal(position.y, 0.0f, (float)WINSIZE_Y);
+			position.x = ClampVal(position.x, 10.0f, (float)WINSIZE_X - 10.0f);
+			position.y = ClampVal(position.y, 10.0f, (float)WINSIZE_Y - 10.0f);
 		}
 	}
 }
@@ -188,7 +191,7 @@ void ConfettiBullet::SetValues(float explodeTime, float newAngle, int bounceNum,
 	SetConfettiValues(confettiLife);
 }
 
-void ConfettiBullet::SetConfettiValues(int life)
+void ConfettiBullet::SetConfettiValues(float life)
 {
 	//colors[0] = uid_200_255(dre);
 	colors[0] = (float)uid_0_255(dre) / 255.0f * 55.0f + 200;
@@ -200,11 +203,12 @@ void ConfettiBullet::SetConfettiValues(int life)
 
 void ConfettiBullet::Update()
 {
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
 	BombBullet::Update();
 	if (countDown <= 0) {
 		//speed = uid_0_10(dre);
-		speed = (float)uid_0_255(dre) / 255.0f * 10.0f;
-		lifeTime--;
+		speed = (float)uid_0_255(dre) / 255.0f * 300.0f;
+		lifeTime -= deltaTime;
 	}
 	if (lifeTime <= 0) isLoaded = true;
 }
@@ -219,7 +223,7 @@ void ConfettiBullet::Render(HDC hdc)
 		HBRUSH hBrush = CreateSolidBrush(RGB(colors[0], colors[1], colors[2]));
 		HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 
-		RenderRectAtCenter(hdc, position.x, position.y, lifeTime, lifeTime);
+		RenderRectAtCenter(hdc, position.x, position.y, size * lifeTime, size * lifeTime);
 
 		SelectObject(hdc, hOldBrush);
 		DeleteObject(hBrush);

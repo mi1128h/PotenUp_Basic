@@ -9,7 +9,7 @@ class Enemy : public GameObject
 private:
 	FPOINT position;
 	float dx, dy;
-	int moveCnt;
+	float horizonMoveTime;
 	Tank* target;
 	int hp;
 	int size;
@@ -27,7 +27,7 @@ private:
 
 	Image* image;
 	int animationFrame;
-	int elapsedFrame;
+	float elapsedTime;
 
 	static vector<Bullet*> vBullets;
 	static int nLoadedBullets;

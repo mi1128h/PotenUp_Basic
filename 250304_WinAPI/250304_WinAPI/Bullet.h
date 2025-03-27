@@ -60,7 +60,7 @@ public:
 	virtual ~BombBullet();
 
 	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
-	void SetBombValues(int time, float angle);
+	void SetBombValues(float time, float angle);
 	void Update() override;
 	void Move() override;
 };
@@ -90,7 +90,7 @@ public:
 	virtual ~ConfettiBullet();
 
 	void SetValues(float explodeTime, float newAngle, int bounceNum, float confettiLife) override;
-	void SetConfettiValues(int life);
+	void SetConfettiValues(float life);
 	void Update() override;
 	void Render(HDC hdc) override;
 };

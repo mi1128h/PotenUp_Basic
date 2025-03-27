@@ -23,18 +23,18 @@ void Enemy::Init(float x, float y, Tank* tank)
 	position = { x, y };
 	dx = 0;
 	dy = 0;
-	moveCnt = 5;
+	horizonMoveTime = 1.0f;
 	target = tank;
 	hp = 10;
 	size = 20;
-	speed = 10;
+	speed = 100;
 	damage = 10;
 	bulletsNum = 0;
 	fireInterval = 1;
 	elapsedFireTime = 0;
 
 	animationFrame = 0;
-	elapsedFrame = 0;
+	elapsedTime = 0;
 	
 	rush = false;
 	rushElapsedTime = 0;
@@ -68,18 +68,18 @@ void Enemy::Update()
 		HorizontalMove();
 	}
 	else {
-		rushElapsedTime++;
+		rushElapsedTime += TimerManager::GetInstance()->GetDeltaTime();
 		dx = 0;
 		dy += 0.2f;
 		dy = ClampVal(dy, 1.0f, 3.0f);
 	}
 	Move();
 
-	elapsedFrame++;
-	if (elapsedFrame > 1) {
+	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
+	if (elapsedTime > 1) {
 		animationFrame++;
-		elapsedFrame = 0;
 		animationFrame %= image->GetSpritesNumX() * image->GetSpritesNumY();
+		elapsedTime = 0.0f;
 	}
 
 	CheckWallCollision();
@@ -95,17 +95,18 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::HorizontalMove()
 {
-	if (moveCnt > 0) {
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+	if (horizonMoveTime > 0) {
 		dx = 1;
-		moveCnt--;
+		horizonMoveTime -= deltaTime;
 	}
-	else if (moveCnt < 0) {
+	else if (horizonMoveTime < 0) {
 		dx = -1;
-		moveCnt++;
+		horizonMoveTime += deltaTime;
 	}
 
-	if (moveCnt == 0) {
-		moveCnt = dx > 0 ? -5 : 5;
+	if (abs(horizonMoveTime) <= 0.1) {
+		horizonMoveTime = dx > 0 ? -1.0f : 1.0f;
 	}
 }
 
@@ -118,8 +119,10 @@ void Enemy::Move()
 	//position.x += cosf(TORADIAN(moveAngle)) * speed;
 	//position.y -= sinf(TORADIAN(moveAngle)) * speed;
 
-	position.x += dx * speed;
-	position.y += dy * speed;
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+
+	position.x += dx * speed * deltaTime;
+	position.y += dy * speed * deltaTime;
 	int width{}, height{};
 	if (image) {
 		width = image->GetWidth() / image->GetSpritesNumX();
