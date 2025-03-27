@@ -18,16 +18,12 @@ private:
 	int mousePosX{}, mousePosY{};
 	wchar_t szText[128]{};
 
-	Tank* tank;
-	vector<Enemy*> enemies;
-	int nDeadEnemies;
-
 	RoundManager* roundManager;
 
 	Image* backBuffer;
 	AnimBackground* background;
-	EnemyManager* enemyManager;
 
+	EnemyManager* enemyManager;
 	Rocket* rocket;
 
 public:
@@ -35,11 +31,7 @@ public:
 	void Release();
 	void Update();
 	void Render();
-	void RenderInfo(HDC hdc);
 
-	void CreateEnemy();
-	void SetGuidedBulletsTarget();
-	void RestartGame();
 	LRESULT MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
 	MainGame();
