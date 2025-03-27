@@ -1,6 +1,5 @@
 #include "AnimBackground.h"
 #include "Image.h"
-#include "ImageManager.h"
 
 void AnimBackground::Init()
 {

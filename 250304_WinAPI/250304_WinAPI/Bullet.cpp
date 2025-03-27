@@ -2,7 +2,6 @@
 #include "CommonFunction.h"
 #include "Enemy.h"
 #include "Image.h"
-#include "ImageManager.h"
 
 void Bullet::Init(FPOINT pos, float angle, float dmg)
 {

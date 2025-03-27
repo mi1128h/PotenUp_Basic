@@ -3,7 +3,6 @@
 #include "Tank.h"
 #include "Bullet.h"
 #include "Image.h"
-#include "ImageManager.h"
 
 /*
 	STL (Standard Template Library)

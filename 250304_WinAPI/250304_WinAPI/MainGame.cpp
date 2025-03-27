@@ -8,7 +8,6 @@
 #include "AnimBackground.h"
 #include "EnemyManager.h"
 #include "Rocket.h"
-#include "ImageManager.h"
 
 void MainGame::Init()
 {
