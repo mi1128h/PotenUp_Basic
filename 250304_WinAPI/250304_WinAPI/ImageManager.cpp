@@ -8,10 +8,15 @@ void ImageManager::Init()
 void ImageManager::Release()
 {
     for (pair<const wstring, Image*>& p : imageList) {
-        p.second->Release();
-        delete p.second;
-        p.second = NULL;
+        if (p.second) {
+            p.second->Release();
+            delete p.second;
+            p.second = NULL;
+        }
     }
+    imageList.clear();
+
+    ReleaseInstance();
 }
 
 void ImageManager::LoadImageAtManager(const wchar_t* filePath, int width, int height, int spritesNumX, int spritesNumY, bool isTransparent, COLORREF transColor)
