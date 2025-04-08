@@ -8,6 +8,8 @@
 #include <iostream>
 #include <bitset>
 #include <map>
+#include <fstream>
+#include <functional>
 
 using namespace std;
 

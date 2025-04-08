@@ -19,6 +19,7 @@ typedef struct tagTile
 } TILE_INFO;
 
 class Image;
+class Button;
 class TilemapTool : public GameObject
 {
 public:
@@ -33,6 +34,9 @@ public:
 
 	void ProcessMouseMessage();
 
+	void SaveTilemap();
+	void LoadTilemap();
+
 private:
 	Image* sampleTile;
 	RECT rcSampleTile;
@@ -40,5 +44,8 @@ private:
 	TILE_INFO tileInfo[TILE_X * TILE_Y];
 	RECT rcMain;
 	POINT selectedTile;
+
+	Button* saveButton;
+	Button* loadButton;
 };
 

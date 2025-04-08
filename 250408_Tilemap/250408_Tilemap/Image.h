@@ -91,5 +91,7 @@ public:
 	inline int GetMaxFrameY() { return imageInfo->maxFrameY; }
 	inline int GetWidth() { return imageInfo->width; }
 	inline int GetHeight() { return imageInfo->height; }
+	inline int GetFrameWidth() { return imageInfo->frameWidth; }
+	inline int GetFrameHeight() { return imageInfo->frameHeight; }
 };
 

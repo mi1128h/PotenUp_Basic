@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "ImageManager.h"
 #include "CommonFunction.h"
+#include "Button.h"
 
 TilemapTool::TilemapTool()
 {
@@ -43,16 +44,39 @@ HRESULT TilemapTool::Init()
     rcMain.right = TILE_X * TILE_SIZE;
     rcMain.bottom = TILE_Y * TILE_SIZE;
 
+    // UI
+    saveButton = new Button();
+    saveButton->Init(TILEMAPTOOL_X - sampleTile->GetWidth() + 180, sampleTile->GetHeight() + 100);
+    saveButton->SetFunction(std::bind(&TilemapTool::SaveTilemap, this));
+
+    loadButton = new Button();
+    loadButton->Init(TILEMAPTOOL_X - sampleTile->GetWidth() + 310, sampleTile->GetHeight() + 100);
+    loadButton->SetFunction(std::bind(&TilemapTool::LoadTilemap, this));
+
     return S_OK;
 }
 
 void TilemapTool::Release()
 {
+    if (saveButton)
+    {
+        saveButton->Release();
+        delete saveButton;
+        saveButton = nullptr;
+    }
+    if (loadButton)
+    {
+        loadButton->Release();
+        delete loadButton;
+        loadButton = nullptr;
+    }
 }
 
 void TilemapTool::Update()
 {
     ProcessMouseMessage();
+    if (saveButton) saveButton->Update();
+    if (loadButton) loadButton->Update();
 }
 
 void TilemapTool::Render(HDC hdc)
@@ -65,6 +89,11 @@ void TilemapTool::Render(HDC hdc)
     }
 
     sampleTile->Render(hdc, TILEMAPTOOL_X - sampleTile->GetWidth(), 0);
+
+    sampleTile->FrameRender(hdc, TILEMAPTOOL_X - sampleTile->GetWidth(), sampleTile->GetHeight() + 100, selectedTile.x, selectedTile.y, false, false);
+
+    if (saveButton) saveButton->Render(hdc);
+    if (loadButton) loadButton->Render(hdc);
 }
 
 void TilemapTool::ProcessMouseMessage()
@@ -94,5 +123,34 @@ void TilemapTool::ProcessMouseMessage()
             tileInfo[tileY * TILE_X + tileX].frameX = selectedTile.x;
             tileInfo[tileY * TILE_X + tileX].frameY = selectedTile.y;
         }
+
+        //if (PointInRect(mouse, saveButton))
+        //{
+        //    SaveTilemap();
+        //}
+        //else if (PointInRect(mouse, loadButton))
+        //{
+        //    LoadTilemap();
+        //}
+    }
+}
+
+void TilemapTool::SaveTilemap()
+{
+    ofstream out{ "타일맵데이터.txt" };
+    for (int i = 0; i < TILE_X * TILE_Y; ++i)
+    {
+        out << tileInfo[i].frameX << ' ' << tileInfo[i].frameY << '\n';
+    }
+
+    out.close();
+}
+
+void TilemapTool::LoadTilemap()
+{
+    ifstream in{ "타일맵데이터.txt" };
+    for (int i = 0; i < TILE_X * TILE_Y; ++i)
+    {
+        in >> tileInfo[i].frameX >>tileInfo[i].frameY;
     }
 }

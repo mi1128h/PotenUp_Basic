@@ -34,6 +34,12 @@
     <Filter Include="MainGame\Scene">
       <UniqueIdentifier>{f24918d7-a71b-479a-ac1d-32418d44772a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2D Framework\UI">
+      <UniqueIdentifier>{07b89694-b830-43a6-b47a-e682b7508247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D Framework\UI\Button">
+      <UniqueIdentifier>{e71d4684-87a3-4d6a-8b5c-38277f2fb221}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>2D Framework\UI\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>2D Framework\UI\Button</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
