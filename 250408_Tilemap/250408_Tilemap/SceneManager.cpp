@@ -46,14 +46,16 @@ HRESULT SceneManager::ChangeScene(string key)
     if (iter == mapScenes.end()) return E_FAIL;
     if (iter->second == currentScene) return S_OK;
 
-    iter->second->Init();
-    if (currentScene)
+    if (SUCCEEDED(iter->second->Init()))
     {
-        currentScene->Release();
+        if (currentScene)
+        {
+            currentScene->Release();
+        }
+        currentScene = iter->second;
+        return S_OK;
     }
-    currentScene = iter->second;
-
-    return S_OK;
+    return E_FAIL;
 }
 
 GameObject* SceneManager::AddScene(string key, GameObject* scene)

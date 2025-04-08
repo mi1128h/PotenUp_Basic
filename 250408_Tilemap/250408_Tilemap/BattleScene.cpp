@@ -1,6 +1,7 @@
 #include "BattleScene.h"
 #include "Image.h"
 #include "EnemyManager.h"
+#include "CommonFunction.h"
 
 BattleScene::BattleScene()
 {
@@ -12,6 +13,8 @@ BattleScene::~BattleScene()
 
 HRESULT BattleScene::Init()
 {
+	SetClientRect(g_hWnd, WINSIZE_X, WINSIZE_Y);
+
 	backGround = new Image();
 	if (FAILED(backGround->Init(TEXT("Image/BackGround.bmp"), WINSIZE_X, WINSIZE_Y)))
 	{

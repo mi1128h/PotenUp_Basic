@@ -3,11 +3,17 @@
 #include "Image.h"
 #include "Timer.h"
 #include "TilemapTool.h"
+#include "BattleScene.h"
 
 HRESULT MainGame::Init()
 {
 	ImageManager::GetInstance()->Init();
 	KeyManager::GetInstance()->Init();
+	SceneManager::GetInstance()->Init();
+
+	SceneManager::GetInstance()->AddScene("전투씬_1", new BattleScene());
+	SceneManager::GetInstance()->AddScene("타일맵툴", new TilemapTool());
+	SceneManager::GetInstance()->ChangeScene("타일맵툴");
 
 	hdc = GetDC(g_hWnd);
 
@@ -44,12 +50,12 @@ void MainGame::Release()
 
 	KeyManager::GetInstance()->Release();
 	ImageManager::GetInstance()->Release();
+	SceneManager::GetInstance()->Release();
 }
 
 void MainGame::Update()
 {
-	if(tilemapTool) tilemapTool->Update();
-
+	SceneManager::GetInstance()->Update();
 	InvalidateRect(g_hWnd, NULL, false);
 }
 
@@ -58,7 +64,7 @@ void MainGame::Render()
 	// 백버퍼에 먼저 복사
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	tilemapTool->Render(hBackBufferDC);
+	SceneManager::GetInstance()->Render(hBackBufferDC);
 
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), g_ptMouse.x, g_ptMouse.y);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
@@ -77,8 +83,10 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		switch (wParam)
 		{
 		case 'a': case 'A':
+			SceneManager::GetInstance()->ChangeScene("전투씬_1");
 			break;
 		case 'd': case 'D':
+			SceneManager::GetInstance()->ChangeScene("타일맵툴");
 			break;
 		}
 		break;

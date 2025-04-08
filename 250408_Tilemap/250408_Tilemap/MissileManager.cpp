@@ -16,6 +16,16 @@ HRESULT MissileManager::Init()
 
 void MissileManager::Release()
 {
+	for (auto& missile : vecMissiles)
+	{
+		if (missile)
+		{
+			missile->Release();
+			delete missile;
+			missile = nullptr;
+		}
+	}
+	vecMissiles.clear();
 }
 
 void MissileManager::Update()

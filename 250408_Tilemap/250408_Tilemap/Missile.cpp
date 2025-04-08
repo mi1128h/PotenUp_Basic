@@ -11,20 +11,13 @@ HRESULT Missile::Init()
 	angle = 90.0f;
 	size = 20;
 	//destination;
-	image = new Image();
-	image->Init(TEXT("Image/bullet.bmp"), 21, 21, true, RGB(255, 0, 255));
+	image = ImageManager::GetInstance()->AddImage("¹Ì»çÀÏ", TEXT("Image/bullet.bmp"), 21, 21, true, RGB(255, 0, 255));
 
 	return S_OK;
 }
 
 void Missile::Release()
 {
-	if (image)
-	{
-		image->Release();
-		delete image;
-		image = nullptr;
-	}
 }
 
 void Missile::Update()
