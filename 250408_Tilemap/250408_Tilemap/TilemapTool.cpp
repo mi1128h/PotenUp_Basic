@@ -11,7 +11,7 @@ TilemapTool::~TilemapTool()
 {
 }
 
-void TilemapTool::Init()
+HRESULT TilemapTool::Init()
 {
     SetClientRect(g_hWnd, TILEMAPTOOL_X, TILEMAPTOOL_Y);
 
@@ -42,6 +42,8 @@ void TilemapTool::Init()
     rcMain.top = 0;
     rcMain.right = TILE_X * TILE_SIZE;
     rcMain.bottom = TILE_Y * TILE_SIZE;
+
+    return S_OK;
 }
 
 void TilemapTool::Release()

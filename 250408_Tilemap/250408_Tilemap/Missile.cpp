@@ -2,7 +2,7 @@
 #include "CommonFunction.h"
 #include "Image.h"
 
-void Missile::Init()
+HRESULT Missile::Init()
 {
 	pos = { 0, 0 };
 	isActived = false;
@@ -13,6 +13,8 @@ void Missile::Init()
 	//destination;
 	image = new Image();
 	image->Init(TEXT("Image/bullet.bmp"), 21, 21, true, RGB(255, 0, 255));
+
+	return S_OK;
 }
 
 void Missile::Release()

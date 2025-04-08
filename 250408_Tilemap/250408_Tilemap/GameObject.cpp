@@ -1,7 +1,8 @@
 #include "GameObject.h"
 
-void GameObject::Init()
+HRESULT GameObject::Init()
 {
+	return S_OK;
 }
 
 void GameObject::Release()

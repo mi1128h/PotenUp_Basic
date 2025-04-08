@@ -1,14 +1,13 @@
 #pragma once
 #include "GameObject.h"
-#include <vector>
 
-class Enemy;
-class EnemyManager : public GameObject
+class Image;
+class EnemyManager;
+class BattleScene : public GameObject
 {
-private: 
-	Enemy* enemys;
-	vector<Enemy*> vecEnemys;
-	wchar_t szText[128];
+public:
+	BattleScene();
+	virtual ~BattleScene();
 
 public:
 	virtual HRESULT Init() override;
@@ -16,6 +15,9 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
-	void AddEnemy(int size);
+private:
+	Image* backGround;
+	EnemyManager* enemyManager;
+
 };
 

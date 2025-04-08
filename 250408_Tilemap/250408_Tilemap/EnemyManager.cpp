@@ -8,7 +8,7 @@
 // 5. 미사일 매니저 구현 - 플레이어도 사용, 적 사용
 // 6. 적이 1마리씩 밑으로 돌격한다. (중간에 미사일 1발 발사)
 
-void EnemyManager::Init()
+HRESULT EnemyManager::Init()
 {
 	// 1. 배열
 	//enemys = new Enemy[10];
@@ -34,6 +34,8 @@ void EnemyManager::Init()
 		vecEnemys[i]->Init(310.0f + 130.0f * (i % 5) , 
 			80.0f + 90.0f * (i / 5));
 	}
+
+	return S_OK;
 }
 
 void EnemyManager::Release()

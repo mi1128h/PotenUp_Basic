@@ -26,7 +26,7 @@ public:
 	virtual ~TilemapTool();
 
 public:
-	virtual void Init() override;
+	virtual HRESULT Init() override;
 	virtual void Release() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;

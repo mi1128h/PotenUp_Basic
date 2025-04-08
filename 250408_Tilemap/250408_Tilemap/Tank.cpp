@@ -2,7 +2,7 @@
 #include "CommonFunction.h"
 #include "Missile.h"
 
-void Tank::Init()
+HRESULT Tank::Init()
 {
 	pos.x = WINSIZE_X / 2;
 	pos.y = WINSIZE_Y;
@@ -26,6 +26,7 @@ void Tank::Init()
 		missiles[i].Init();
 	}
 
+	return S_OK;
 }
 
 void Tank::Release()

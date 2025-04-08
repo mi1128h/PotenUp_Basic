@@ -1,7 +1,7 @@
 #include "KOF_Iori.h"
 #include "Image.h"
 
-void KOF_Iori::Init()
+HRESULT KOF_Iori::Init()
 {
 	pos = { 0.0f, 0.0f };
 	moveSpeed = 5.0f;
@@ -10,10 +10,13 @@ void KOF_Iori::Init()
 		true, RGB(255,0,255))))
 	{
 		MessageBox(g_hWnd, TEXT("Image/iori_walk.bmp 파일 로드에 실패"), TEXT("경고"), MB_OK);
+		return E_FAIL;
 	}
 
 	elapsedFrame = 0;
 	currAnimaionFrame = 0;
+
+	return S_OK;
 }
 
 void KOF_Iori::Release()

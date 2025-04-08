@@ -1,11 +1,10 @@
 #include "MainGame.h"
 #include "CommonFunction.h"
 #include "Image.h"
-#include "EnemyManager.h"
 #include "Timer.h"
 #include "TilemapTool.h"
 
-void MainGame::Init()
+HRESULT MainGame::Init()
 {
 	ImageManager::GetInstance()->Init();
 	KeyManager::GetInstance()->Init();
@@ -18,18 +17,11 @@ void MainGame::Init()
 		MessageBox(g_hWnd, 
 			TEXT("백버퍼 생성 실패"), TEXT("경고"), MB_OK);
 	}
-	backGround = new Image();
-	if (FAILED(backGround->Init(TEXT("Image/BackGround.bmp"), WINSIZE_X, WINSIZE_Y)))
-	{
-		MessageBox(g_hWnd,
-			TEXT("Image/backGround.bmp 생성 실패"), TEXT("경고"), MB_OK);
-	}
-
-	enemyManager = new EnemyManager();
-	enemyManager->Init();
-
+	
 	tilemapTool = new TilemapTool();
 	tilemapTool->Init();
+
+	return S_OK;
 }
 
 void MainGame::Release()
@@ -39,20 +31,6 @@ void MainGame::Release()
 		tilemapTool->Release();
 		delete tilemapTool;
 		tilemapTool = nullptr;
-	}
-
-	if (enemyManager)
-	{
-		enemyManager->Release();
-		delete enemyManager;
-		enemyManager = nullptr;
-	}
-
-	if (backGround)
-	{
-		backGround->Release();
-		delete backGround;
-		backGround = nullptr;
 	}
 
 	if (backBuffer)
@@ -70,8 +48,6 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
-	//enemyManager->Update();
-
 	if(tilemapTool) tilemapTool->Update();
 
 	InvalidateRect(g_hWnd, NULL, false);
@@ -82,14 +58,10 @@ void MainGame::Render()
 	// 백버퍼에 먼저 복사
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	backGround->Render(hBackBufferDC);
-
 	tilemapTool->Render(hBackBufferDC);
 
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), g_ptMouse.x, g_ptMouse.y);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
-
-	//enemyManager->Render(hBackBufferDC);
 
 	TimerManager::GetInstance()->Render(hBackBufferDC);
 

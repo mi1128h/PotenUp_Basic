@@ -1,7 +1,7 @@
 #include "MissileManager.h"
 #include "Missile.h"
 
-void MissileManager::Init()
+HRESULT MissileManager::Init()
 {
 	vecMissiles.resize(30);
 	for (iterMissiles = vecMissiles.begin();
@@ -10,6 +10,8 @@ void MissileManager::Init()
 		(*iterMissiles) = new Missile();
 		(*iterMissiles)->Init();
 	}
+
+	return S_OK;
 }
 
 void MissileManager::Release()
