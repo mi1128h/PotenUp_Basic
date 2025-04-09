@@ -34,14 +34,41 @@ int edgeCost[NUM_NODE][NUM_NODE] =
 	{ I,I,I,I,4,I,4,0 },//8
 };
 
-int Dijkstra(int start, int end);
+stack<int> Dijkstra(int start, int end);
+
+bool OutOfRange(int start, int end)
+{
+	if (start < 1 or end < 1) return true;
+	if (start > NUM_NODE or end > NUM_NODE) return true;
+	return false;
+}
 
 int main()
 {
-	cout << Dijkstra(0, 7);
+	int startNode{}, endNode{};
+	cout << "시작 노드: ";
+	cin >> startNode;
+	cout << "도착 노드: ";
+	cin >> endNode;
+
+	if (OutOfRange(startNode, endNode))
+	{
+		cout << "잘못된 범위 입력" << endl;
+		return 1;
+	}
+
+	stack<int> route = Dijkstra(startNode - 1, endNode - 1);
+
+	cout << "루트: ";
+	while (!route.empty())
+	{
+		cout << route.top() << ' ';
+		route.pop();
+	}
+	cout << endl;
 }
 
-int Dijkstra(int start, int end)
+stack<int> Dijkstra(int start, int end)
 {
 	vector<int> minList;
 	minList.resize(NUM_NODE, INT_MAX);
@@ -90,17 +117,12 @@ int Dijkstra(int start, int end)
 	int nextRoute = end;
 	while (true)
 	{
-		route.push(nextRoute);
+		route.push(nextRoute + 1);
 		if (nextRoute == parentList[nextRoute]) break;
 		nextRoute = parentList[nextRoute];
 	}
 
-	while (!route.empty())
-	{
-		cout << route.top() + 1 << ' ';
-		route.pop();
-	}
-	cout << endl;
+	cout << "비용: " << minList[end] << endl;;
 
-	return minList[end];
+	return route;
 }
