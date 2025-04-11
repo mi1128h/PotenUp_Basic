@@ -146,6 +146,33 @@ void AstarScene::Render(HDC hdc)
 	}
 }
 
+void AstarScene::MoveToDest()
+{
+	if (startTile == destTile) return;
+
+	openList.clear();
+	closeList.clear();
+	currTile = startTile;
+	destTile->SetParentTile(NULL);
+	FindPath();
+
+	stack<AstarTile*> path;
+	AstarTile* tempTile = destTile;
+	while (tempTile != startTile)
+	{
+		if (!tempTile->GetParentTile()) break;
+		path.push(tempTile);
+		tempTile = tempTile->GetParentTile();
+	}
+
+	if (path.size() > 0)
+	{
+		startTile->SetColor(RGB(100, 100, 100));
+		startTile = path.top();
+		startTile->SetColor(RGB(255, 0, 0));
+	}
+}
+
 void AstarScene::FindPath()
 {
 	if (currTile)
@@ -169,7 +196,7 @@ void AstarScene::FindPath()
 			int nextX = currTile->GetIdX() + dx[i];
 			int nextY = currTile->GetIdY() + dy[i];
 			
-			if (OutOfRange(nextX, nextY)) continue;
+			if (!AbleToMove(nextX, nextY, dx[i], dy[i])) continue;
 
 			AddOpenList(&map[nextY][nextX]);
 		}
@@ -194,7 +221,6 @@ void AstarScene::FindPath()
 void AstarScene::AddOpenList(AstarTile* neighborTile)
 {
 	if (find(closeList.begin(), closeList.end(), neighborTile) != closeList.end()) return;
-	if (neighborTile->GetType() == AstarTileType::Wall) return;
 
 	float originCostFromStart = neighborTile->GetCostFromStart();
 	AstarTile* originParentTile = neighborTile->GetParentTile();
@@ -226,29 +252,27 @@ bool AstarScene::OutOfRange(int x, int y)
 	return false;
 }
 
-void AstarScene::MoveToDest()
+bool AstarScene::AbleToMove(int nx, int ny, int dx, int dy)
 {
-	if (startTile == destTile) return;
+	if (OutOfRange(nx, ny)) return false;
+	if (map[ny][nx].GetType() == AstarTileType::Wall) return false;
 
-	openList.clear();
-	closeList.clear();
-	currTile = startTile;
-	destTile->SetParentTile(NULL);
-	FindPath();
+	// not diagonal
+	if (dx == 0 or dy == 0) return true;
 
-	stack<AstarTile*> path;
-	AstarTile* tempTile = destTile;
-	while (tempTile != startTile)
+	// prev x, y
+	int px = nx - dx;
+	int py = ny - dy;
+
+	// diagonal
+	if ((dx * dy == 1) or (dx * dy == -1))
 	{
-		if (!tempTile->GetParentTile()) break;
-		path.push(tempTile);
-		tempTile = tempTile->GetParentTile();
+		if (map[py][nx].GetType() == AstarTileType::Wall and
+			map[ny][px].GetType() == AstarTileType::Wall)
+		{
+			return false;
+		}
 	}
 
-	if (path.size() > 0)
-	{
-		startTile->SetColor(RGB(100, 100, 100));
-		startTile = path.top();
-		startTile->SetColor(RGB(255, 0, 0));
-	}
+	return true;
 }

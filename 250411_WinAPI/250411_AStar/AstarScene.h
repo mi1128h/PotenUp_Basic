@@ -86,10 +86,11 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 
+	void MoveToDest();
 	void FindPath();
 	void AddOpenList(AstarTile* neighborTile);
 	bool OutOfRange(int x, int y);
-	void MoveToDest();
+	bool AbleToMove(int nx, int ny, int dx, int dy);
 
 private:
 	// 이차원 배열 맵을 구성
