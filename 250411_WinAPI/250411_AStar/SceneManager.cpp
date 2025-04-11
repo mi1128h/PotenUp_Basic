@@ -5,6 +5,19 @@ GameObject* SceneManager::currentScene = nullptr;
 GameObject* SceneManager::loadingScene = nullptr;
 GameObject* SceneManager::nextScene = nullptr;
 
+DWORD CALLBACK LoadingThread(LPVOID pvParam)
+{
+	if (SUCCEEDED(SceneManager::nextScene->Init()))
+	{
+		SceneManager::currentScene = SceneManager::nextScene;
+		SceneManager::loadingScene->Release();
+		SceneManager::loadingScene = NULL;
+		SceneManager::nextScene = NULL;
+	}
+
+	return 0;
+}
+
 void SceneManager::Init()
 {
 }
@@ -66,6 +79,52 @@ HRESULT SceneManager::ChangeScene(string key)
 	return E_FAIL;
 }
 
+HRESULT SceneManager::ChangeScene(string key, string loadingKey)
+{
+	auto iter = mapScenes.find(key);	// nextScene
+	if (iter == mapScenes.end())
+	{
+		return E_FAIL;
+	}
+
+	if (iter->second == currentScene)
+	{
+		return S_OK;
+	}
+
+	// Find Loading Scene
+	map<string, GameObject*>::iterator iterLoading;
+	iterLoading = mapLoadingScenes.find(loadingKey);
+	if (iterLoading == mapLoadingScenes.end())
+	{
+		return ChangeScene(key);
+	}
+
+	if (SUCCEEDED(iterLoading->second->Init()))
+	{
+		if (currentScene)
+		{
+			currentScene->Release();
+		}
+		currentScene = iterLoading->second;
+		nextScene = iter->second;
+		loadingScene = iterLoading->second;
+
+		// 다음 씬을 초기화할 쓰레드 생성
+		DWORD loadingThreadId;
+		HANDLE hThread;
+		hThread = CreateThread(NULL, 0, LoadingThread, NULL, 0, &loadingThreadId);
+
+		if (hThread != NULL)
+		{
+			CloseHandle(hThread);
+		}
+
+		return S_OK;
+	}
+	return E_FAIL;
+}
+
 GameObject* SceneManager::AddScene(string key, GameObject* scene)
 {
 	if (scene == nullptr)
@@ -82,4 +141,22 @@ GameObject* SceneManager::AddScene(string key, GameObject* scene)
 	mapScenes.insert(make_pair(key, scene));
 
     return scene;
+}
+
+GameObject* SceneManager::AddLoadingScene(string key, GameObject* scene)
+{
+	if (scene == nullptr)
+	{
+		return nullptr;
+	}
+
+	auto iter = mapLoadingScenes.find(key);
+	if (iter != mapLoadingScenes.end())
+	{
+		return iter->second;
+	}
+
+	mapLoadingScenes.insert(make_pair(key, scene));
+
+	return scene;
 }

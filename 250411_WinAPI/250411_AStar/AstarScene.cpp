@@ -133,6 +133,11 @@ void AstarScene::Update()
 	{
 		MoveToDest();
 	}
+
+	if(KeyManager::GetInstance()->IsOnceKeyDown(VK_RETURN))
+	{
+		SceneManager::GetInstance()->ChangeScene("전투씬_1", "로딩_1");
+	}
 }
 
 void AstarScene::Render(HDC hdc)

@@ -18,6 +18,8 @@ HRESULT BattleScene::Init()
 	enemyManager = new EnemyManager();
 	enemyManager->Init();
 
+	Sleep(1000);
+
 	return S_OK;
 }
 
