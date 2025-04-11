@@ -1,4 +1,5 @@
 #include "AstarScene.h"
+#include "CommonFunction.h"
 
 HRESULT AstarTile::Init()
 {
@@ -58,6 +59,26 @@ void AstarTile::SetColor(COLORREF color)
 	hBrush = CreateSolidBrush(color);
 }
 
+void AstarTile::CalculateCost(const AstarTile* goal)
+{
+	if (!parentTile)
+	{
+		costFromStart = 0;
+	}
+	else
+	{
+		costFromStart = parentTile->costFromStart + GetDistance({ (float)parentTile->idX, (float)parentTile->idY }, { (float)idX, (float)idY });
+	}
+	costToGoal = GetDistance({ (float)goal->idX, (float)goal->idY }, { (float)idX, (float)idY });
+	totalCost = costFromStart + costToGoal;
+}
+
+bool AstarTile::operator==(const AstarTile& other)
+{
+	if (idX == other.idX and idY == other.idY) return true;
+	return false;
+}
+
 HRESULT AstarScene::Init()
 {
 	for (int i = 0; i < ASTAR_TILE_COUNT; i++)	// 세로반복 (y)
@@ -107,8 +128,11 @@ void AstarScene::Update()
 		}
 	}
 
-
 	// TODO 
+	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
+	{
+		MoveToDest();
+	}
 }
 
 void AstarScene::Render(HDC hdc)
@@ -126,20 +150,104 @@ void AstarScene::FindPath()
 {
 	if (currTile)
 	{
+		// 도착여부 판단
+		if (currTile == destTile)
+		{
+			return;
+		}
+		else
+		{
+			openList.erase(remove(openList.begin(), openList.end(), currTile), openList.end());
+			closeList.push_back(currTile);
+		}
+
 		// 주위에 있는 이동가능한 타일들을 F값 계산 후보에 넣는다.
-		AddOpenList(currTile);
+		int dx[] = {  1, 1,  1, 0,  0, -1, -1, -1 };
+		int dy[] = {  1, 0, -1, 1, -1,  1,  0, -1 };
+		for (int i = 0; i < 8; ++i)
+		{
+			int nextX = currTile->GetIdX() + dx[i];
+			int nextY = currTile->GetIdY() + dy[i];
+			
+			if (OutOfRange(nextX, nextY)) continue;
+
+			AddOpenList(&map[nextY][nextX]);
+		}
+
+		if (openList.empty()) return;
 
 		// 후보들 중 F값이 가장 작은 타일을 다음 currTile 선정
+		auto minCostTile = min_element(openList.begin(), openList.end(), [](const AstarTile* a, const AstarTile* b) {
+			return a->GetTotalCost() < b->GetTotalCost();
+			});
 
-		// 도착여부 판단
-
-		// G 값이 갱신되는지 판단 (parentTile도 갱신)
+		if (minCostTile != openList.end())
+		{
+			currTile = *minCostTile;
+		}
 
 		// 반복
-		//FindPath();
+		FindPath();
 	}
 }
 
-void AstarScene::AddOpenList(AstarTile* currTile)
+void AstarScene::AddOpenList(AstarTile* neighborTile)
 {
+	if (find(closeList.begin(), closeList.end(), neighborTile) != closeList.end()) return;
+	if (neighborTile->GetType() == AstarTileType::Wall) return;
+
+	float originCostFromStart = neighborTile->GetCostFromStart();
+	AstarTile* originParentTile = neighborTile->GetParentTile();
+
+	neighborTile->SetParentTile(currTile);
+	neighborTile->CalculateCost(destTile);
+
+	if (find(openList.begin(), openList.end(), neighborTile) == openList.end())
+	{
+		openList.push_back(neighborTile);
+	}
+	else
+	{
+		if (originCostFromStart < neighborTile->GetCostFromStart())
+		{
+			if (originParentTile->GetType() != AstarTileType::Wall)
+			{
+				neighborTile->SetParentTile(originParentTile);
+				neighborTile->CalculateCost(destTile);
+			}
+		}
+	}
+}
+
+bool AstarScene::OutOfRange(int x, int y)
+{
+	if (x < 0 or x >= ASTAR_TILE_COUNT) return true;
+	if (y < 0 or y >= ASTAR_TILE_COUNT) return true;
+	return false;
+}
+
+void AstarScene::MoveToDest()
+{
+	if (startTile == destTile) return;
+
+	openList.clear();
+	closeList.clear();
+	currTile = startTile;
+	FindPath();
+
+	stack<AstarTile*> path;
+	AstarTile* tempTile = destTile;
+	while (tempTile != startTile)
+	{
+		if (!tempTile->GetParentTile()) break;
+		path.push(tempTile);
+		tempTile = tempTile->GetParentTile();
+	}
+
+	if (path.size() > 0)
+	{
+		startTile->SetColor(RGB(100, 100, 100));
+		startTile = path.top();
+		startTile->SetColor(RGB(255, 0, 0));
+	}
 }

@@ -31,6 +31,33 @@ enum class AstarTileType { Start, End, Wall, None };
 
 class AstarTile : public GameObject
 {
+public:
+	virtual ~AstarTile() {};
+
+public:
+	virtual HRESULT Init();
+	HRESULT Init(int idX, int idY);
+	virtual void Release();
+	virtual void Update();
+	virtual void Render(HDC hdc);
+
+	void SetColor(COLORREF color);
+	void SetType(AstarTileType type) { this->type = type; }
+	AstarTileType GetType() { return this->type; }
+
+	void SetParentTile(AstarTile* other) { parentTile = other; }
+	AstarTile* GetParentTile() const { return parentTile; }
+	float GetCostFromStart() const { return costFromStart; }
+	float GetTotalCost() const { return totalCost; }
+	int GetIdX() const { return idX; }
+	int GetIdY() const { return idY; }
+
+public:
+	void CalculateCost(const AstarTile* goal);
+
+public:
+	bool operator==(const AstarTile& other);
+
 private:
 	int idX, idY;
 	POINT center;
@@ -46,24 +73,25 @@ private:
 	COLORREF color;
 	HBRUSH hBrush;
 	HBRUSH hOldBrush;
-
-public:
-	virtual HRESULT Init();
-	HRESULT Init(int idX, int idY);
-	virtual void Release();
-	virtual void Update();
-	virtual void Render(HDC hdc);
-
-	void SetColor(COLORREF color);
-	void SetType(AstarTileType type) { this->type = type; }
-	AstarTileType GetType() { return this->type; }
-
-	virtual ~AstarTile() {};
-
 };
 
 class AstarScene : public GameObject
 {
+public:
+	virtual ~AstarScene() {};
+
+public:
+	virtual HRESULT Init();
+	virtual void Release();
+	virtual void Update();
+	virtual void Render(HDC hdc);
+
+	void FindPath();
+	void AddOpenList(AstarTile* neighborTile);
+	bool OutOfRange(int x, int y);
+	void MoveToDest();
+
+private:
 	// 이차원 배열 맵을 구성
 	AstarTile map[ASTAR_TILE_COUNT][ASTAR_TILE_COUNT];
 
@@ -74,16 +102,5 @@ class AstarScene : public GameObject
 
 	vector<AstarTile*> openList;
 	vector<AstarTile*> closeList;
-
-public:
-	virtual HRESULT Init();
-	virtual void Release();
-	virtual void Update();
-	virtual void Render(HDC hdc);
-
-	void FindPath();
-	void AddOpenList(AstarTile* currTile);
-
-	virtual ~AstarScene() {};
 };
 
