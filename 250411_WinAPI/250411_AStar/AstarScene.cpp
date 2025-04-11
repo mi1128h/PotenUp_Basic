@@ -233,6 +233,7 @@ void AstarScene::MoveToDest()
 	openList.clear();
 	closeList.clear();
 	currTile = startTile;
+	destTile->SetParentTile(NULL);
 	FindPath();
 
 	stack<AstarTile*> path;
